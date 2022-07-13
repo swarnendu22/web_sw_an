@@ -1,0 +1,73 @@
+<h2 mat-dialog-title>Select Category And Upload Excel Files</h2>
+<mat-dialog-content>
+    <div class="loading" *ngIf="submitted">
+        <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+    <div class="row">
+        <div class="col-5">
+            <ul class="tds-text">
+                <li>You can submit ONE of the following -</li>
+                <li>Trademark certificate or application AND Notarized Affidavit </li>
+                <li>Brand Authorization letter</li>
+
+            </ul>
+        </div>
+        <div class="col-7">
+            <div class="hoz-form">
+                <!-- <div class="row">
+                    <div class="col-12">
+
+                        <div class="tree-view-valid">
+                            <tree-select class="exception_category_tree" name="simpleSelect" [items]="categoryItems" idField="id" textField="name" childrenField="childList"
+                                required=true [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}" (ngModelChange)="categorySelectionValue($event)"
+                                [filterPlaceholder]="FilterPlaceholder" [allowFilter]="ShowFilter" [disabled]="Disabled" [allowParentSelection]="AllowParentSelection"
+                                [restructureWhenChildSameName]="RestructureWhenChildSameName" expandMode="all">
+                            </tree-select>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="row">
+                    <div class="col-12">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Attribute Set</mat-label>
+
+                            <mat-select [(ngModel)]="attributeSetId">
+
+                                <mat-option>
+                                    <ngx-mat-select-search #mySellerInput [formControl]="sellerFilterCtrl" [placeholderLabel]="'Find Attribute...'" [noEntriesFoundLabel]="'no matches  found'">
+                                    </ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let attribute of attributeSetsData | dropdownfilter:mySellerInput.value:'name'" [value]="attribute.id">{{attribute.label}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div *ngFor="let item of imageUrl" class="col-4 upload-doc">
+                        <div class="upload-xls">
+                            <img src="../../../../../../assets/img/xls.png">
+                            <p>{{item.name}}</p>
+                            <i class="fa fa-times delete-doc" (click)="deleteImage(item)"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="attach-file" *ngIf="!checkForm()">
+
+                    <app-img-upload-aws [className]="'custom-input select-file'" [type]="'excel'" [awsFolderName]="'ndh-admin/gstn'" [accept]="'.xls,.xlsx'"
+                        (imgUploaded)="onFileUpload($event)">
+                    </app-img-upload-aws>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button color="primary" cdkFocusInitial (click)="upload($event)" (keydown.enter)="$event.preventDefault()"
+        [disabled]="!checkForm()">Upload</button>
+</mat-dialog-actions>

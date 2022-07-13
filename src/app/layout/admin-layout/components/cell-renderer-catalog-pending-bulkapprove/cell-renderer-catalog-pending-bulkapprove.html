@@ -1,0 +1,17 @@
+<div style="display: flex;">
+    <a mat-flat-button color="primary" matTooltip="Download Log" aria-label="Download Log" class="btn-data btn-sm-data"
+        (click)="downloadLog()">
+        <mat-icon>cloud_download</mat-icon>
+    </a>
+
+    <a mat-flat-button color="primary" matTooltip="Validate" aria-label="Validate" class="btn-data btn-sm-data"
+        (click)="ValidateBulk()"
+        *ngIf="convertLowerCase(params.data.type)=='masterproduct' || convertLowerCase(params.data.type)=='storeproduct'">
+        <mat-icon>visibility</mat-icon>
+    </a>
+
+    <a mat-flat-button *ngIf="data.type=='BULK_PRODUCT_IDS' || data.type=='BULK_PRODUCT_BARCODE'" color="primary"
+        matTooltip="Retry Process" aria-label="Retry Process" class="btn-data btn-sm-data" (click)="retryProcess()">
+        <mat-icon>refresh</mat-icon>
+    </a>
+</div>

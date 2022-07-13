@@ -1,0 +1,33 @@
+<div class="top-bar box-shadow">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title">Product Exception</h3>
+    </div>
+    <div class="form-header-btn">
+      <button
+        routerLink="/category/exception/add-new-product-exception"
+        mat-raised-button
+        class="noshadow top-btn-font"
+        color="primary"
+      >
+        <mat-icon>add</mat-icon> Add New Product Exception
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="box-shadow bg-white padding-10" style="height: calc(100% - 100px)">
+  <ag-grid-angular
+    style="width: 100%; height: 100%;"
+    class="ag-theme-balham"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    (firstDataRendered)="onFirstDataRendered($event)"
+    (gridSizeChanged)="onGridSizeChanged($event)"
+    (gridReady)="onGridReady($event)"
+    (alwaysShowVerticalScroll)="(true)"
+    [pagination]="true"
+    [paginationPageSize]="10"
+  >
+  </ag-grid-angular>
+</div>

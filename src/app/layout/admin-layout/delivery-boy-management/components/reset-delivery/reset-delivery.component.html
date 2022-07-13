@@ -1,0 +1,28 @@
+<form [formGroup]="driverDetailsForm">
+    <div class="driver-details-view">
+        <div class="driver-details-view-area">
+            <div class="hoz-form">
+                <h4>Reset Delivery</h4>
+                <div class="row mb-3">
+                    <div class="col-md-">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Reasons</mat-label>
+                            <mat-select>
+                                <mat-option value="1">Reason 1</mat-option>
+                                <mat-option value="2">Reason 2</mat-option>
+                                <mat-option value="3">Others</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Comment</mat-label>
+                            <textarea rows="10" matInput></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="button" mat-raised-button color="primary" class="mr-2">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

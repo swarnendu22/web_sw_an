@@ -1,0 +1,98 @@
+<form [formGroup]="addNewZipCodeForm" autocomplete="off">
+  <h2 mat-dialog-title>Add Zip</h2>
+  <mat-dialog-content>
+    <div class="hoz-form">
+      <mat-form-field appearance="outline">
+        <!-- <mat-hint align="end">{{ zip.value?.length || 0 }}/6</mat-hint> -->
+        <mat-label>Zip Code</mat-label>
+        <input type="text" min="0" minlength="6" maxlength="6" numbersOnly
+          onKeyPress="if(this.value.length==6) return false;" matInput #zip formControlName="zipCode" trim="blur"
+          autocomplete="off" required />
+      </mat-form-field>
+      <ng-container *ngIf="
+          !addNewZipCodeForm.get('zipCode').valid &&
+          addNewZipCodeForm.get('zipCode').touched
+        ">
+        <mat-hint align="start" class="error" *ngIf="addNewZipCodeForm.get('zipCode').hasError('required')">Required
+          Field</mat-hint>
+        <mat-hint align="start" class="error" *ngIf="addNewZipCodeForm.get('zipCode').hasError('pattern')">Invalid
+          Zipcode</mat-hint>
+        <mat-hint align="start" class="error" *ngIf="addNewZipCodeForm.get('zipCode').hasError('duplicate')">Zip Code is
+          already exist
+
+        </mat-hint>
+      </ng-container>
+
+      <mat-form-field appearance="outline">
+        <mat-label>COD Available</mat-label>
+        <mat-select formControlName="isCodAvailable" required>
+          <mat-option [value]="1">Yes</mat-option>
+          <mat-option [value]="0">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <ng-container *ngIf="
+          !addNewZipCodeForm.get('isCodAvailable').valid &&
+          addNewZipCodeForm.get('isCodAvailable').touched
+        ">
+        <mat-hint align="start" class="error" *ngIf="addNewZipCodeForm.get('isCodAvailable').hasError('required')">
+          Required Field</mat-hint>
+      </ng-container>
+      <!-- <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option [value]="1">Active</mat-option>
+          <mat-option [value]="0">In Active</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <ng-container *ngIf="
+          !addNewZipCodeForm.get('status').valid &&
+          addNewZipCodeForm.get('status').touched
+        ">
+        <mat-hint align="start" class="error" *ngIf="addNewZipCodeForm.get('status').hasError('required')">Required
+          Field</mat-hint>
+      </ng-container> -->
+      <mat-form-field appearance="outline">
+        <mat-label>Delivery Charge</mat-label>
+        <input matInput type="text" min="0" maxlength="5" appBlockCopyPaste numbersOnly
+          formControlName="additionalDelivery" trim="blur" autocomplete="off" required />
+      </mat-form-field>
+      <ng-container *ngIf="
+          !addNewZipCodeForm.get('additionalDelivery').valid &&
+          addNewZipCodeForm.get('additionalDelivery').touched
+        ">
+        <mat-hint align="start" class="error" *ngIf="
+            addNewZipCodeForm.get('additionalDelivery').hasError('required')
+          ">Required Field</mat-hint>
+        <mat-hint align="start" class="error" *ngIf="
+            addNewZipCodeForm.get('additionalDelivery').hasError('maxlength')
+          ">Invalid Additional Delivery Charges</mat-hint>
+        <mat-hint align="start" class="error" *ngIf="
+            addNewZipCodeForm.get('additionalDelivery').hasError('pattern')
+          ">Additional Delivery Charges must be a number</mat-hint>
+      </ng-container>
+
+      <mat-form-field appearance="outline">
+        <mat-label>TAT (in Hrs)</mat-label>
+        <input matInput type="text" min="0" maxlength="3" appBlockCopyPaste numbersOnly formControlName="deliveryTat"
+          trim="blur" autocomplete="off" required />
+      </mat-form-field>
+      <ng-container *ngIf="
+          !addNewZipCodeForm.get('deliveryTat').valid &&
+          addNewZipCodeForm.get('deliveryTat').touched
+        ">
+        <mat-hint align="start" class="error" *ngIf="addNewZipCodeForm.get('deliveryTat').hasError('required')">Required
+          Field</mat-hint>
+        <mat-hint align="start" class="error" *ngIf="addNewZipCodeForm.get('deliveryTat').hasError('maxlength')">Invalid
+          Delivery TAT</mat-hint>
+        <mat-hint align="start" class="error" *ngIf="addNewZipCodeForm.get('deliveryTat').hasError('pattern')">Delivery
+          TAT must be a number</mat-hint>
+      </ng-container>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-flat-button color="primary" [disabled]="addNewZipCodeForm.invalid" (click)="submitPincode()">
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Add Zip</h2>
+<mat-dialog-content>
+  <div class="hoz-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Zip Code</mat-label>
+      <input type="number" onKeyPress="if(this.value.length==6) return false;" matInput #zip />
+      <mat-hint align="end">{{zip.value?.length || 0}}/6</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>COD Available</mat-label>
+      <mat-select>
+        <mat-option value="option1">Yes</mat-option>
+        <mat-option value="option2">No</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Delivery Charge</mat-label>
+      <input matInput trim="blur" autocomplete="off" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>TAT (in Hrs)</mat-label>
+      <input matInput trim="blur" autocomplete="off" />
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-flat-button color="primary" [mat-dialog-close]="true">Save</button>
+</mat-dialog-actions>

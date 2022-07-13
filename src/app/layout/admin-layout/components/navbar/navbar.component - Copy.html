@@ -1,0 +1,142 @@
+<div class="sb-container nav-header" [ngClass]="changecolor ? 'dark' : 'light'">
+  <mat-toolbar class="toolbar" *ngIf="!hideToolbar">
+    <button mat-icon-button (click)="expandEvent()" class="toggleBtn">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="logo">
+      <a routerLink="/dashboard" mat-list-item>
+        <img src="../../assets/img/logo-white.svg" height="38" />
+      </a>
+    </div>
+    <div class="top-menu">
+      <button class="round-btn" mat-stroked-button [matMenuTriggerFor]="topmenu" aria-label="Example icon-button with a menu">
+        <mat-icon fontSet="material-icons-outlined">layers</mat-icon> {{ moduleName }}
+        <mat-icon fontSet="material-icons-outlined">arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #topmenu="matMenu">
+        <a *ngFor="let option of sideMenuObjKeys" (click)="
+            currentSideMenu = sideMenuObj[option]['sidenavmenu'];
+            moduleName = option
+          " mat-menu-item [routerLink]="['/', sideMenuObj[option]['mainLink']]" routerLinkActive="topmenu-active">
+          <mat-icon fontSet="material-icons-outlined">{{ sideMenuObj[option].icon }}</mat-icon>
+          <span class="topmenu-name">{{ option }} </span>
+        </a>
+      </mat-menu>
+    </div>
+    <span class="spacer"></span>
+    <!-- <button mat-icon-button (click)="clickEvent()">
+      <mat-icon>color_lens</mat-icon>
+    </button>
+    <button mat-icon-button [matMenuTriggerFor]="notificationList" class="profile-icon">
+      <mat-icon matBadge="3" matBadgeColor="warn">notifications</mat-icon>
+    </button>
+    <mat-menu #notificationList="matMenu" class="notification-list">
+      <mat-list role="list">
+        <mat-list-item role="listitem">
+          <div class="notification-item">
+            <span>12 New users registered</span> <span>Just now</span>
+          </div>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+          <div class="notification-item">
+            <span>New invoice received</span> <span>14 mins</span>
+          </div>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+          <div class="notification-item">
+            <span>DB overloaded 80%</span> <span>20 mins</span>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </mat-menu> -->
+    <div class="gap"></div>
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="profile-icon">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <div class="user-details">
+        <div class="row align-items-center">
+          <div class="col-4" style="padding-right: 0;">
+            <div class="user-pic">
+              <img src="../../assets/img/user.jpg" />
+            </div>
+          </div>
+          <div class="col-8 user-name">
+            <h4>{{ userName }}</h4>
+          </div>
+        </div>
+      </div>
+      <!-- <button mat-menu-item tabindex="-1">
+        <mat-icon>account_box</mat-icon>
+        <span>My Profile</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Account Setting</span>
+      </button> -->
+      <button mat-menu-item [routerLink]="['/reset-password']">
+        <mat-icon>autorenew</mat-icon>
+        Change Password
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>power_settings_new</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+  <mat-sidenav-container class="sidenav-container" autosize>
+    <mat-sidenav #sidenav class="sidenav" mode="side" opened="true" *ngIf="isExpanded">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let sideMenu of currentSideMenu">
+          <!-- (click)="expandMainMenuEvent(sideMenu.subLinks.length)" -->
+          <mat-expansion-panel-header (click)="routeSingleMenu(sideMenu)" [collapsedHeight]="'50px'" [expandedHeight]="'50px'" [class.parentLink]="sideMenu.subLinks.length === 0">
+            <mat-panel-title>
+              <mat-icon fontSet="material-icons-outlined">{{ sideMenu.icon }}</mat-icon>
+              <span *ngIf="isExpanded" class="menu-name">{{ sideMenu.subMenuName }}
+              </span>
+              <!-- <span class="badge badge-danger badge-menu">{{sideMenu.menuStatus}}</span> -->
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <!-- (click)="expandEvent()" -->
+          <mat-nav-list>
+            <span *ngFor="let link of sideMenu.subLinks">
+              <a (click)="routeMethod(link.navLink)" mat-list-item [routerLinkActive]="['selected']" [routerLinkActiveOptions]="{exact:
+                true}">
+                {{ link.name }}
+                <!-- <span class="badge badge-danger badge-menu">{{ link.menuStatus }}</span> -->
+              </a>
+            </span>
+          </mat-nav-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-sidenav>
+
+    <mat-sidenav #sidenav class="sidenav" mode="side" opened="true" *ngIf="!isExpanded">
+      <div *ngFor="let sideMenu of currentSideMenu" class="small-menu-icon">
+        <ul class="small-menu-ul">
+          <li [matMenuTriggerFor]="subMenu" [matTooltip]="sideMenu.name" matTooltipPosition="after">
+            <mat-icon fontSet="material-icons-outlined">{{ sideMenu.icon }}</mat-icon>
+            <mat-menu #subMenu="matMenu">
+              <mat-nav-list class="small-menu-head" [routerLink]="
+                  sideMenu.subLinks.length === 0 ? [sideMenu.link] : []
+                " [class.smallParentLink]="sideMenu.subLinks.length === 0">{{ sideMenu.subMenuName }}</mat-nav-list>
+              <mat-nav-list class="small-menu-list" *ngFor="let link of sideMenu.subLinks">
+                <a (click)="routeMethod(link.navLink)" mat-list-item>
+                  {{ link.name }}
+                </a>
+              </mat-nav-list>
+            </mat-menu>
+          </li>
+        </ul>
+      </div>
+    </mat-sidenav>
+    <div class="sidenav-content">
+      <div class="container-fluid" style="padding: 0">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <!-- <footer class="bottom-footer">
+      <p>© 2020 www.senrysa.com All Rights Reserved</p>
+    </footer> -->
+  </mat-sidenav-container>
+</div>

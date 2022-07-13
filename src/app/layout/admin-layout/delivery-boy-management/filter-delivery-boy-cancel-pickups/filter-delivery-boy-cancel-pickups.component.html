@@ -1,0 +1,17 @@
+<div class="filter-modal-form">
+    <div class="hoz-form">
+        <mat-form-field appearance="outline">
+            <mat-select [(ngModel)]="status" placeholder="Cancel Pickups Status" id="storeStatus">
+                <mat-option style="color: #2AACD8" value="APPROVED">APPROVED</mat-option>
+                <mat-option style="color: #2AACD8" value="PENDING">PENDING</mat-option>
+                <mat-option style="color: #2AACD8" value="REJECTED">REJECTED</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="process('cancel')">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="process('process')">Search</button>
+</div>

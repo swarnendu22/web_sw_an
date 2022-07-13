@@ -1,0 +1,45 @@
+<div class="">
+    <div class="loading" *ngIf="loading">
+        <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+    <div class="top-bar box-shadow">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title">Payment Reconcilation List </h3>
+            </div>
+            <div class="form-header-btn">
+                <mat-form-field appearance="fill">
+                    <mat-label>From Date</mat-label>
+                    <input matInput [matDatepicker]="startDate" [(ngModel)]="start_date" (ngModelChange)="changeDate()">
+                    <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                    <mat-datepicker #startDate></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>To Date</mat-label>
+                    <input matInput [matDatepicker]="endDate" [(ngModel)]="end_date" (ngModelChange)="changeDate()">
+                    <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                    <mat-datepicker #endDate></mat-datepicker>
+                </mat-form-field>
+                <button type="button" (click)="uploadContentSheet()" mat-raised-button class="top-btn-font" color="primary">
+                    <mat-icon fontSet="material-icons-outlined">cloud_upload</mat-icon> Upload Payment File
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="bg-white single-pagination" style="height: calc(100% - 50px)">
+
+    <ag-grid-angular style="width:100%; height: 100%" class="ag-theme-balham merchant-store-check" [rowData]="rowData" [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef" (firstDataRendered)="onFirstDataRendered($event)" (gridReady)="onGridReady($event)" [rowSelection]="rowSelection"
+        [enableFilter]="true" [floatingFilter]="true" (gridSizeChanged)="onGridSizeChanged($event)">
+    </ag-grid-angular>
+
+    <ul style="display: none;">
+        <li *ngFor="let item of rowData | paginate: { id: 'dataPagination', itemsPerPage: 100, currentPage: pageNo, totalItems: totalRecords }">{{ item.id }}</li>
+    </ul>
+    <pagination-controls (pageChange)="getPageNoData($event)" id="dataPagination"></pagination-controls>
+
+</div>

@@ -1,0 +1,7 @@
+.width-class-90{
+    width: 90%;
+}
+.filter-modal-form .form-group{
+    display: flex;
+}
+.filter-modal-form .form-group a{margin-left:5px;}

@@ -1,0 +1,48 @@
+<div class="filter-modal-form">
+  <div class="hoz-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput trim="blur" appBlockCopyPaste>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Phone</mat-label>
+      <input matInput trim="blur" appBlockCopyPaste>
+    </mat-form-field>
+    <div class="d-flex justify-content-between align-items-center mt-2 mb-3">
+      <p class="mb-0">Delivery Boy:</p>
+      <mat-slide-toggle color="primary">Inactive</mat-slide-toggle>
+    </div>
+    <mat-form-field appearance="outline">
+      <mat-select [(ngModel)]="status" placeholder="Delivery Boy Status" id="storeStatus">
+        <mat-option style="color: #2AACD8" value="APPROVED">APPROVED</mat-option>
+        <mat-option style="color: #2AACD8" value="PENDING">PENDING</mat-option>
+        <mat-option style="color: #2AACD8" value="REJECTED">REJECTED</mat-option>
+        <mat-option style="color: #2AACD8" value="HOLD">HOLD</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Region/State</mat-label>
+      <input matInput [(ngModel)]="state_name" trim="blur" appBlockCopyPaste>
+    </mat-form-field>
+    <div class="d-flex align-items-center">
+      <mat-form-field appearance="outline">
+        <mat-select [(ngModel)]="vehicle_type" placeholder="Vehicle Type" id="vehicleType">
+          <mat-option style="color: #2AACD8" value="">All</mat-option>
+          <mat-option style="color: #2AACD8" value="Bicycle">Bicycle</mat-option>
+          <mat-option style="color: #2AACD8" value="Two Wheeler">Two Wheeler</mat-option>
+          <mat-option style="color: #2AACD8" value="eRiksa">eRickshaw</mat-option>
+          <mat-option style="color: #2AACD8" value="Four Wheeler">Four Wheeler</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!-- <a href="javascript:void(0);" class="cancel" *ngIf="status" (click)="status = null">
+            <mat-icon>cancel</mat-icon>
+        </a> -->
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="process('cancel')">Cancel</button>
+  <button type="button" class="btn btn-primary" (click)="process('process')">Search</button>
+</div>

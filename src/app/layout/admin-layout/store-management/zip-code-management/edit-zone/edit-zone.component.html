@@ -1,0 +1,298 @@
+<div class="loading" *ngIf="loading">
+    <mat-spinner [diameter]="50"></mat-spinner>
+</div>
+<form [formGroup]="addNewZoneForm" autocomplete="off">
+    <div class="top-bar box-shadow">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title">Update Circle</h3>
+            </div>
+            <div class="form-header-btn">
+                <ng-container>
+                    <ng-container *ngIf="getFormDisableStats('addNewZoneForm')">
+                        <button typr="button" routerLink="/store/zip-code-management/zone" mat-raised-button
+                            class="noshadow top-btn-font white-btn">
+                            <mat-icon>arrow_back</mat-icon> Back
+                        </button>
+                        <button type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+                            (click)="toggleFormDisable('addNewZoneForm')">
+                            <mat-icon>edit</mat-icon> Edit
+                        </button>
+                    </ng-container>
+                    <ng-container *ngIf="!getFormDisableStats('addNewZoneForm')">
+                        <button *ngIf="isEdit" type="button" mat-raised-button class="noshadow top-btn-font"
+                            color="defalt" (click)="toggleFormDisable('addNewZoneForm')">
+                            <mat-icon>cancel</mat-icon> Cancel
+                        </button>
+                        <ng-container *ngIf="isEdit">
+                            <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary"
+                                (keydown.enter)="$event.preventDefault()" (click)="submitZone($event)">
+                                <mat-icon>save</mat-icon> Save
+                            </button>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <!-- [disabled]="
+                    zoneID
+                      ? true
+                      : !(addNewZoneForm.valid && addNewZoneForm.dirty) -->
+    <fieldset>
+        <div class="box-shadow bg-white padding-10 hoz-form">
+            <div class="row">
+                <div class="col-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Zone Name</mat-label>
+                        <input matInput type="text" formControlName="zoneName" trim="blur" autocomplete="off"
+                            required />
+                        <span *ngIf="!addNewZoneForm.get('zoneName').valid && addNewZoneForm.get('zoneName').touched"
+                            class="mandatory-alert" [tooltip]="zonetool" content-type="template">
+                            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                        </span>
+                    </mat-form-field>
+                    <ng-template #zonetool>
+                        <p align="start" class="mb-1" *ngIf="addNewZoneForm.get('zoneName').hasError('pattern')">
+                            Zone Name should be alphanumeric e.g Sector 5</p>
+                        <p align="start" class="mb-1" *ngIf="addNewZoneForm.get('zoneName').hasError('required')">
+                            Required Field</p>
+                    </ng-template>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Deliver TAT (in Hr)</mat-label>
+                        <input matInput type="text" min="0" maxlength="3" appBlockCopyPaste numbersOnly
+                            formControlName="deliveryTat" trim="blur" autocomplete="off" required />
+                        <span *ngIf="!addNewZoneForm.get('deliveryTat').valid &&
+                        addNewZoneForm.get('deliveryTat').touched" class="mandatory-alert" [tooltip]="deliverTat"
+                            content-type="template">
+                            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                        </span>
+                    </mat-form-field>
+                    <ng-template #deliverTat>
+                        <p align="start" class="mb-1" *ngIf="addNewZoneForm.get('deliveryTat').hasError('required')">
+                            Required Field</p>
+                        <p align="start" class="mb-1" *ngIf="addNewZoneForm.get('deliveryTat').hasError('pattern')">
+                            Delivery TAT must be a number</p>
+                        <p align="start" class="mb-1" *ngIf="addNewZoneForm.get('deliveryTat').hasError('maxlength')">
+                            Invalid Delivery TAT</p>
+                    </ng-template>
+
+                    <!-- <mat-form-field *ngIf="isEdit" appearance="outline">
+                        <mat-label>Status</mat-label>
+                        <mat-select formControlName="status">
+                            <mat-option [value]="1">Active</mat-option>
+                            <mat-option [value]="0">In Active</mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+                </div>
+                <div class="col-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>COD Available</mat-label>
+                        <mat-select formControlName="isCodAvailable" required>
+                            <mat-option [value]="true">Yes</mat-option>
+                            <mat-option [value]="false">No</mat-option>
+                        </mat-select>
+                        <span
+                            *ngIf="!addNewZoneForm.get('isCodAvailable').valid && addNewZoneForm.get('isCodAvailable').touched"
+                            class="mandatory-alert" [tooltip]="codAvailabletool" content-type="template">
+                            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                        </span>
+                    </mat-form-field>
+                    <ng-template #codAvailabletool>
+                        <p align="start" class="mb-1" *ngIf="addNewZoneForm.get('isCodAvailable').hasError('required')">
+                            Required Field</p>
+                    </ng-template>
+
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Additional Delivery Charge</mat-label>
+                        <input matInput type="text" min="0" maxlength="5" numbersOnly appBlockCopyPaste
+                            formControlName="additionalDelivery" trim="blur" autocomplete="off" required />
+                        <span
+                            *ngIf="!addNewZoneForm.get('additionalDelivery').valid && addNewZoneForm.get('additionalDelivery').touched"
+                            class="mandatory-alert" [tooltip]="addDeliverytool" content-type="template">
+                            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                        </span>
+                    </mat-form-field>
+                    <ng-template #addDeliverytool>
+                        <p align="start" class="mb-1" *ngIf="
+                  addNewZoneForm.get('additionalDelivery').hasError('required')
+                ">Required Field</p>
+                        <p align="start" class="mb-1" *ngIf="
+                  addNewZoneForm.get('additionalDelivery').hasError('pattern')
+                ">Additional Delivery Charges must be a number</p>
+                        <p align="start" class="mb-1" *ngIf="
+                  addNewZoneForm.get('additionalDelivery').hasError('maxlength')
+                ">Invalid Additional Delivery Charges</p>
+                    </ng-template>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Select Region</mat-label>
+                        <mat-select formControlName="regionId" required>
+                            <mat-option>
+                                <ngx-mat-select-search #region [formControl]="regionControl"
+                                    [placeholderLabel]="'Find Region ..'" [noEntriesFoundLabel]="'no matches  found'">
+                                </ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option [value]="regionSingle.id" *ngFor="
+                              let regionSingle of regionLists
+                                | dropdownfilter: region.value:'name'
+                            ">{{ regionSingle.name }}</mat-option>
+                        </mat-select>
+                        <span *ngIf="!addNewZoneForm.get('regionId').valid &&
+                          addNewZoneForm.get('regionId').touched" class="mandatory-alert" [tooltip]="regiontool"
+                            content-type="template">
+                            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                        </span>
+                    </mat-form-field>
+                    <ng-template #regiontool>
+                        <p align="start" class="mb-1" *ngIf="
+                            addNewZoneForm.get('regionId').hasError('required')
+                          ">Required Field</p>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<fieldset [disabled]="getFormDisableStats('addNewZoneForm')" [formGroup]="userByZoneIdForm">
+    <div class="box-shadow bg-white padding-10 mt-3">
+        <div class="single-title">
+            <h4>User Group</h4>
+            <!-- <mat-hint *ngIf="!zoneID && !this.isEdit" style="padding-left: 60px;color:red;font-size: 12px;">Add new Zone to
+          enable this
+          Section</mat-hint> -->
+        </div>
+        <table class="table layout-fixed" formArrayName="users">
+            <thead>
+                <tr>
+                    <th class="smallCell width32">User Group</th>
+                    <th class="smallCell">Allow COD</th>
+                    <th class="smallCell">Add. Delivery Charge</th>
+                    <th class="smallCell">Add. TAT(in Hr)</th>
+                    <th class="smallCell text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of userByZoneIdForm.get('users')['controls']; let i=index" [formGroupName]="i">
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <input readonly=true matInput placeholder="User Name" formControlName="userName" />
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-select placeholder="COD" formControlName="isCodAvailable">
+                                <mat-option selected [value]="false">No</mat-option>
+                                <mat-option [value]="true">Yes</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <input matInput type="text" min="0" maxlength="5" numbersOnly
+                                placeholder="Enter Delivery Charges" formControlName="additionalDelivery" required />
+                            <span
+                                *ngIf="!userByZoneIdForm.get('users')['controls'][i].get('additionalDelivery').valid && userByZoneIdForm.get('users')['controls'][i].get('additionalDelivery').touched"
+                                class="mandatory-alert" [tooltip]="tableDeliverycharge" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #tableDeliverycharge>
+                            <p align="start" class="mb-1"
+                                *ngIf="userByZoneIdForm.get('users')['controls'][i].get('additionalDelivery').hasError('required')">
+                                Required Field
+                            </p>
+                            <p align="start" class="mb-1"
+                                *ngIf="userByZoneIdForm.get('users')['controls'][i].get('additionalDelivery').hasError('maxlength')">
+                                Invalid Additional Delivery Charges</p>
+                            <p align="start" class="mb-1"
+                                *ngIf="userByZoneIdForm.get('users')['controls'][i].get('additionalDelivery').hasError('pattern')">
+                                Additional Delivery Charges must be a number</p>
+                        </ng-template>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <input matInput type="text" min="0" maxlength="3" numbersOnly
+                                placeholder="Enter  TAT (in Hrs)" formControlName="deliveryTat" required />
+                            <span
+                                *ngIf="!userByZoneIdForm.get('users')['controls'][i].get('deliveryTat').valid && userByZoneIdForm.get('users')['controls'][i].get('deliveryTat').touched"
+                                class="mandatory-alert" [tooltip]="tableTat" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #tableTat>
+                            <p align="start" class="mb-1"
+                                *ngIf="userByZoneIdForm.get('users')['controls'][i].get('deliveryTat').hasError('required')">
+                                Required Field
+                            </p>
+                            <p align="start" class="mb-1"
+                                *ngIf="userByZoneIdForm.get('users')['controls'][i].get('deliveryTat').hasError('maxlength')">
+                                Invalid Delivery TAT</p>
+                            <p align="start" class="mb-1"
+                                *ngIf="userByZoneIdForm.get('users')['controls'][i].get('deliveryTat').hasError('pattern')">
+                                Delivery TAT must be a number</p>
+                        </ng-template>
+                    </td>
+                    <td class="text-center" *ngIf="isEdit">
+                        <button *ngIf="!user.value['saveToggle']" type="button" class="btn-icon red" color="defalt"
+                            (click)="cancelEdit(i)">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                        <button *ngIf="!user.value['modifyToggle']" [disabled]="user.value['modifyToggle']"
+                            type=" button" class="btn-icon" (click)="modifyUser(i)">
+                            <mat-icon>create</mat-icon>
+                        </button>
+                        <button type="button" [disabled]="user.value['saveToggle']" class="btn-icon green"
+                            (click)="SaveUser(i)">
+                            <mat-icon>save</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</fieldset>
+<fieldset [disabled]="getFormDisableStats('addNewZoneForm')">
+    <div class="box-shadow bg-white padding-10 mt-3">
+        <div class="content-head">
+            <div class="content-head-caption">
+                <h3>Add Zip Code</h3>
+                <!-- <mat-hint style="padding-left: 60px;color:grey;font-size: 12px;">Click here for format</mat-hint> -->
+            </div>
+            <div class="content-head-action">
+                <mat-icon style="color: grey; padding-top: 5px; margin-right: 3px;"
+                    matTooltip="Data Format e.g:- Zip Code: 700091, Is COD Available: 1/0, TAT(in Hrs): 54, Add.Delivery Charges: 65">
+                    info</mat-icon>
+                <button (click)="saveUploadedZipcode()" *ngIf="fileUplodedBtn" mat-flat-button color="primary">
+                    <mat-icon>save</mat-icon> Save
+                </button>
+                <button (click)="openZipDialog()" style=" margin-right: 5px;" mat-flat-button color="primary"
+                    [disabled]="getFormDisableStats('addNewZoneForm')">
+                    <mat-icon>add</mat-icon> Add
+                </button>
+                <mat-hint *ngIf="showMatHint" style="padding-left: 60px;color:red;font-size: 12px;">Add atleast 1 or
+                    more Zipcode.
+                </mat-hint>
+                <button mat-flat-button color="primary" (click)="uploadFilePopup()">
+                    <mat-icon>insert_drive_file</mat-icon> Upload Bulk File
+                </button>
+            </div>
+        </div>
+        <ng-container *ngIf="rowData.length > 0">
+            <div class="form-content-body mt-3">
+                <ag-grid-angular style="width: 100%; height: 80vh;" class="ag-theme-balham" [rowData]="rowData"
+                    [columnDefs]="columnDefs" [floatingFilter]="true" (firstDataRendered)="onFirstDataRendered($event)"
+                    (gridReady)="onGridReady($event)" (alwaysShowVerticalScroll)="(true)" [pagination]="true"
+                    [enableFilter]="true" [animateRows]="true" [enableSorting]="true" [floatingFilter]="true">
+                </ag-grid-angular>
+            </div>
+        </ng-container>
+    </div>
+</fieldset>

@@ -1,0 +1,53 @@
+<div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title">Products</h3>
+            <!-- <div class="sort-data">
+                <mat-label>Sort By:</mat-label>
+                <mat-form-field>
+                    <mat-select [(value)]="selected">
+                        <mat-option value="d">Date Created</mat-option>
+                        <mat-option value="c">Category</mat-option>
+                        <mat-option value="n">NUPC</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div> -->
+        </div>
+        <div class="ml-auto form-header-btn">
+            <!-- <button type="button" (click)="openProductFilter()" mat-raised-button class="top-btn-font drop mr-2"
+                color="primary">
+                Filter <mat-icon>filter_list</mat-icon>
+            </button>
+            <button type="button" mat-raised-button class="top-btn-font" color="primary">
+                <mat-icon>add</mat-icon> Add New Master Catalog
+            </button> -->
+            <!-- <button mat-raised-button class="top-btn-font drop" color="primary" [matMenuTriggerFor]="beforeMenu">Action <mat-icon>keyboard_arrow_down</mat-icon></button>
+        <mat-menu #beforeMenu="matMenu" class="drop-action" xPosition="before">
+          <button type="button" mat-menu-item>View Details</button>
+          <button type="button" mat-menu-item>View in Store</button>
+        </mat-menu> -->
+        </div>
+    </div>
+</div>
+<!-- <div class="loading" *ngIf="loading">
+    <mat-spinner [diameter]="50"></mat-spinner>
+  </div> -->
+<!-- <div class="grid-function-box">
+    <button type="button" class="btn-function">Add Tags</button>
+    <button type="button" class="btn-function">Disable Product</button>
+    <button type="button" class="btn-function">Add to Collection</button>
+    <button type="button" class="btn-function">Download to CSV</button>
+</div> -->
+<div class="bg-white single-pagination" style="height: calc(100% - 150px)">
+    <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData"
+        [defaultColDef]="defaultColDef" [columnDefs]="columnDefs" (firstDataRendered)="onFirstDataRendered($event)"
+        (gridReady)="onGridReady($event)" [floatingFilter]="true" [enableFilter]="true"
+        (gridSizeChanged)="onGridSizeChanged($event)" [suppressRowClickSelection]="true" [rowSelection]="rowSelection"
+        (selectionChanged)="onSelectionChanged($event)">
+    </ag-grid-angular>
+    <ul style="display: none;">
+        <li></li>
+    </ul>
+    <pagination-controls></pagination-controls>
+
+</div>

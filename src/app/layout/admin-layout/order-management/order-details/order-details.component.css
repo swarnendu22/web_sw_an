@@ -1,0 +1,10 @@
+::ng-deep .mat-select-value {
+    padding-left: 8px;
+}
+.all-order-div{
+    width: 100%; 
+    display: flex; 
+    justify-content: space-between;
+    margin-bottom: 13px; 
+    align-items: center;
+}

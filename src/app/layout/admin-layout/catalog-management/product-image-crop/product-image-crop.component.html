@@ -1,0 +1,44 @@
+<mat-dialog-content class="mat-typography" style="min-height:350px">
+    <div class="row">
+        <h5 style="padding: 0px 15px 10px;font-size: 16px;">Crop Image</h5>
+        <div class="col-12" style="padding-bottom: 10px; display: flex;">
+            <mat-radio-button class="mr-3" value="Square" (change)="radioChange('Square')" [checked]="cropOption=='Square'">Square</mat-radio-button>
+            <mat-radio-button class="mr-3" value="Rectangle" (change)="radioChange('Rectangle')"  [checked]="cropOption=='Rectangle'">Rectangle</mat-radio-button>  
+            
+            <div *ngIf="cropOption=='Rectangle'" style="display: flex; margin-top: -9.5px;">
+                <mat-form-field appearance="outline" style="width: 60px; margin-right: 15px;">
+                    <mat-label>X-Axis</mat-label>
+                    <mat-select [(ngModel)]="xaxis" placeholder="X-Axis">
+                    <mat-option *ngFor="let number of number_list; let i= index;" [value]="number">{{ number }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="width: 60px;">
+                    <mat-label>Y-Axis</mat-label>
+                    <mat-select [(ngModel)]="yaxis" placeholder="Y-Axis">
+                    <mat-option *ngFor="let number of number_list; let i= index;" [value]="number">{{ number }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>            
+            
+        </div>
+        <div class="col-6 text-center" *ngIf="url && editImageUrl">
+            <image-cropper *ngIf="cropOption=='Square'" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="3 / 3" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+
+            <image-cropper *ngIf="cropOption=='Rectangle'" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="xaxis/yaxis" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+
+            <button type="button" matTooltip="Crop Image" aria-label="Crop Image" class="btn btn-crop"
+                (click)="imageCroppedDone()">
+                <mat-icon>crop</mat-icon>
+            </button>
+        </div>
+        <div class="col-6 text-center">
+            <div class="upload-image-view">
+                <img [src]="url" *ngIf="url" height="300" />
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="imageSubmitCancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="imageSubmit()">Submit</button>
+</mat-dialog-actions>

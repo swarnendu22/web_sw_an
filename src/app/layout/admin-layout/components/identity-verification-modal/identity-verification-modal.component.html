@@ -1,0 +1,172 @@
+<mat-dialog-content class="mat-typography hoz-form">
+  <div class="user-profile-img">
+    <!-- <img src="{{ payload['photoUrl'] }}"> -->
+    <img
+      [src]="payload['photoUrl'] != '' && payload['idFrontUrl'] != null ? payload['photoUrl'] : './../../../assets/img/no-photo-1.png'">
+  </div>
+  <div class="row" [formGroup]="form">
+    <div class="col-md-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input readonly type="text" matInput value="{{ payload['idName'] }}">
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Type</mat-label>
+        <input readonly type="text" matInput value="{{ payload['idType'] }}">
+      </mat-form-field>
+    </div>
+    <div class="col-md-12">
+      <div class="user-document-file">
+        <!-- <p>Document</p> -->
+        <img
+          [src]="payload['idFrontUrl'] != '' && payload['idFrontUrl'] != null ? payload['idFrontUrl'] : './../../../assets/img/no-photo-1.png'">
+        <img
+          [src]="payload['idBackUrl'] != '' && payload['idBackUrl'] != null ? payload['idBackUrl'] : './../../../assets/img/no-photo-1.png'">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Document UID</mat-label>
+        <input readonly type="text" matInput value="{{ payload['idNo'] }}">
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Gender</mat-label>
+        <input readonly type="text" matInput value="{{ payload['idGender'] }}">
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Country</mat-label>
+        <input readonly type="text" matInput value="{{ payload['country'] }}">
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field class="forDate" appearance="outline">
+        <mat-label>Date of Birth</mat-label>
+        <input matInput [matDatepicker]="pickerdate" [min]="minFromDate" [max]="maxToDate" formControlName="dobForm">
+        <mat-datepicker-toggle matSuffix [for]="pickerdate"></mat-datepicker-toggle>
+        <mat-datepicker #pickerdate></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Verification Status</mat-label>
+        <input readonly type="text" matInput
+          value="{{ payload['isVerified'] && payload['isVerified'] == 1 ? 'Verified' : 'Pending'}}">
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Verified By</mat-label>
+        <input readonly type="text" matInput value="{{ payload['verifiedBy'] }}">
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Verification Type</mat-label>
+        <input readonly type="text" matInput value="{{ payload['verificationType'] }}">
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field class="forDate" appearance="outline">
+        <mat-label>Verified Date</mat-label>
+        <input readonly matInput [matDatepicker]="verifieddate" formControlName="verificationDateForm">
+        <mat-datepicker-toggle matSuffix [for]="verifieddate" disabled></mat-datepicker-toggle>
+        <mat-datepicker #verifieddate></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Processing Status</mat-label>
+        <input readonly type="text" matInput
+          value="{{ payload['isPending'] && payload['isPending'] == 1 ? 'Pending' : 'Complete'}}">
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <!-- <mat-form-field appearance="outline"> -->
+      <!-- <mat-label>Matching Status</mat-label> -->
+      <mat-slide-toggle color="primary" formControlName="matchStatusForm">Face Matched ?</mat-slide-toggle>
+      <!-- <input type="text" matInput formControlName="matchStatusForm"
+          value="{{}}"> -->
+      <!-- </mat-form-field> -->
+    </div>
+    <div class="col-md-6">
+      <mat-form-field class="forDate" appearance="outline">
+        <mat-label>Created At</mat-label>
+        <input readonly matInput [matDatepicker]="createddate" formControlName="entryDateForm">
+        <!-- value="{{ entryDate }}" -->
+        <mat-datepicker-toggle matSuffix [for]="createddate" disabled></mat-datepicker-toggle>
+        <mat-datepicker #createddate></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="d-flex justify-content-between">
+  <button mat-raised-button [mat-dialog-close]="true">Cancel</button>
+  <div>
+    <button mat-raised-button class="mr-2" color="primary" (click)="Approve($event)">Approve</button>
+    <button mat-raised-button color="warn" (click)="Reject($event)">Reject</button>
+  </div>
+</mat-dialog-actions>
+
+
+
+<!-- <ng-container>
+  Identity Details
+  <mat-dialog-actions align="end">
+    <mat-icon mat-dialog-close>clear</mat-icon>
+  </mat-dialog-actions>
+  <h1 mat-dialog-title>Identity Details
+  </h1> 
+  <div mat-dialog-content>
+    <div *ngIf="payload">
+      
+      <mat-grid-list cols="3" rowHeight="3:2">
+        <mat-grid-tile>
+          <div>
+            <span><img src="" alt="photoUrl" height="200" width="200" /> </span>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div>
+            <span><img src="" alt="idFrontUrl" height="200" width="200" /> </span>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div>
+            <span><img src="" alt="idFrontUrl" height="200" width="200" /> </span>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="3" rowHeight="3:1">
+        <mat-grid-tile><span>Name: </span></mat-grid-tile>
+        <mat-grid-tile><span>type: </span></mat-grid-tile>
+        <mat-grid-tile><span>Document UID: </span></mat-grid-tile>
+        <mat-grid-tile><span>Gender: </span></mat-grid-tile>
+        <mat-grid-tile><span>Country: </span></mat-grid-tile>
+        <mat-grid-tile><span>Date of birth: </span></mat-grid-tile>
+        <mat-grid-tile><span>Verification Status:
+            </span></mat-grid-tile>
+        <mat-grid-tile><span>Verification Type: </span></mat-grid-tile>
+        <mat-grid-tile><span>Verified By: </span></mat-grid-tile>
+        <mat-grid-tile><span>Verified Date:</span></mat-grid-tile>
+        <mat-grid-tile><span>Status: </span>
+        </mat-grid-tile>
+        <mat-grid-tile><span>Matching Status:
+            </span>
+        </mat-grid-tile>
+        <mat-grid-tile><span>Created At: </span></mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button color="primary" (click)="Approve($event)">Approve</button>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button color="warn" (click)="Reject($event)">Reject</button>
+  </div>
+</ng-container> -->

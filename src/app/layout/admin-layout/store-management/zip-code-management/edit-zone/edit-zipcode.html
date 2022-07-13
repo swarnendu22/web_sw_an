@@ -1,0 +1,106 @@
+<form [formGroup]="updateZipCodeForm" autocomplete="off">
+    <h2 mat-dialog-title>Update Zip</h2>
+    <mat-dialog-content>
+        <div class="hoz-form">
+            <mat-form-field appearance="outline">
+                <mat-label>Zip Code</mat-label>
+                <input type="text" onKeyPress="if(this.value.length==6) return false;" appBlockCopyPaste numbersOnly
+                    matInput #zip formControlName="zipCode" trim="blur" autocomplete="off" />
+                <mat-hint align="end">{{ zip.value?.length || 0 }}/6</mat-hint>
+            </mat-form-field>
+            <ng-container *ngIf="
+            !updateZipCodeForm.get('zipCode').valid &&
+            updateZipCodeForm.get('zipCode').touched
+          ">
+                <mat-hint align="start" class="error" *ngIf="updateZipCodeForm.get('zipCode').hasError('required')">
+                    Required
+                    Field</mat-hint>
+                <mat-hint align="start" class="error" *ngIf="updateZipCodeForm.get('zipCode').hasError('pattern')">
+                    Invalid
+                    Zipcode</mat-hint>
+                <mat-hint align="start" class="error" *ngIf="updateZipCodeForm.get('zipCode').hasError('duplicate')">Zip
+                    Code is
+                    already exist
+
+                </mat-hint>
+            </ng-container>
+
+            <mat-form-field appearance="outline">
+                <mat-label>COD Available</mat-label>
+                <mat-select formControlName="isCodAvailable" required>
+                    <mat-option [value]="1">Yes</mat-option>
+                    <mat-option [value]="0">No</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <ng-container *ngIf="
+            !updateZipCodeForm.get('isCodAvailable').valid &&
+            updateZipCodeForm.get('isCodAvailable').touched
+          ">
+                <mat-hint align="start" class="error"
+                    *ngIf="updateZipCodeForm.get('isCodAvailable').hasError('required')">
+                    Required Field</mat-hint>
+            </ng-container>
+            <!-- <mat-form-field appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="status">
+                    <mat-option [value]="1">Active</mat-option>
+                    <mat-option [value]="0">In Active</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <ng-container *ngIf="
+            !updateZipCodeForm.get('status').valid &&
+            updateZipCodeForm.get('status').touched
+          ">
+                <mat-hint align="start" class="error" *ngIf="updateZipCodeForm.get('status').hasError('required')">
+                    Required
+                    Field</mat-hint>
+            </ng-container> -->
+            <mat-form-field appearance="outline">
+                <mat-label>Delivery Charge</mat-label>
+                <input matInput type="text" maxlength="5" min="0" appBlockCopyPaste numbersOnly
+                    formControlName="additionalDelivery" trim="blur" autocomplete="off" required />
+            </mat-form-field>
+            <ng-container *ngIf="
+            !updateZipCodeForm.get('additionalDelivery').valid &&
+            updateZipCodeForm.get('additionalDelivery').touched
+          ">
+                <mat-hint align="start" class="error" *ngIf="
+              updateZipCodeForm.get('additionalDelivery').hasError('required')
+            ">Required Field</mat-hint>
+                <mat-hint align="start" class="error" *ngIf="
+              updateZipCodeForm.get('additionalDelivery').hasError('maxlength')
+            ">Invalid Additional Delivery Charges</mat-hint>
+                <mat-hint align="start" class="error" *ngIf="
+              updateZipCodeForm.get('additionalDelivery').hasError('pattern')
+            ">Additional Delivery Charges must be a number</mat-hint>
+            </ng-container>
+
+            <mat-form-field appearance="outline">
+                <mat-label>TAT (in Hrs)</mat-label>
+                <input matInput type="text" maxlength="3" min="0" appBlockCopyPaste numbersOnly
+                    formControlName="deliveryTat" trim="blur" autocomplete="off" required />
+            </mat-form-field>
+            <ng-container *ngIf="
+            !updateZipCodeForm.get('deliveryTat').valid &&
+            updateZipCodeForm.get('deliveryTat').touched
+          ">
+                <mat-hint align="start" class="error" *ngIf="updateZipCodeForm.get('deliveryTat').hasError('required')">
+                    Required
+                    Field</mat-hint>
+                <mat-hint align="start" class="error"
+                    *ngIf="updateZipCodeForm.get('deliveryTat').hasError('maxlength')">Invalid
+                    Delivery TAT</mat-hint>
+                <mat-hint align="start" class="error" *ngIf="updateZipCodeForm.get('deliveryTat').hasError('pattern')">
+                    Delivery
+                    TAT must be a number</mat-hint>
+            </ng-container>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Close</button>
+        <button mat-flat-button color="primary" (click)="updateZipcode()"
+            [disabled]="!(updateZipCodeForm.valid && updateZipCodeForm.dirty)">
+            Save
+        </button>
+    </mat-dialog-actions>
+</form>

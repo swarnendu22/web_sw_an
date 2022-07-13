@@ -1,0 +1,76 @@
+<div class="store-coupon-select">
+    <div class="top-bar box-shadow">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title">Edit Collection Banner</h3>
+            </div>
+            <div class="mr-auto">
+                <h3 class="m-subheader__title"></h3>
+            </div>
+            <div class="form-header-btn">
+                <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" color="primary" [routerLink]="['/merchant/collection-banner']">
+                    <mat-icon>arrow_back</mat-icon> Back
+                </button>
+                <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (keydown.enter)="$event.preventDefault()"
+                (click)="onFormSubmit($event)">
+                    <mat-icon>save</mat-icon> Update
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="box-shadow bg-white padding-10">
+        <form [formGroup]="bannerForm" autocomplete="off" novalidate>
+            <div class="row">
+                <div class="col-sm-6 mb-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Collection Name</mat-label>
+                        <input matInput formControlName="collection_name">
+                    </mat-form-field>
+                </div>
+
+                <div class="col-sm-2 mb-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Layout</mat-label>
+                        <mat-select formControlName="display_layout">
+                            <mat-option value="P1001">P1001</mat-option>
+                            <mat-option value="P1002">P1002</mat-option>
+                            <mat-option value="P1003">P1003</mat-option>
+                            <mat-option value="P1004">P1004</mat-option>
+                            <mat-option value="P1005">P1005</mat-option>
+                            <mat-option value="P1006">P1006</mat-option>
+                            <mat-option value="P2001">P2001</mat-option>
+                            <mat-option value="P2002">P2002</mat-option>
+                            <mat-option value="P2003">P2003</mat-option>
+                            <mat-option value="P2004">P2004</mat-option>
+                            <mat-option value="P2005">P2005</mat-option>
+                            <mat-option value="P2006">P2006</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <div class="row mt-3">
+                <div class="col-3">
+                    <div style="padding-bottom: 10px;">(Recommended Size 600px x 400px)</div>
+                    <div class="upload-image-view1">
+                        <img [src]="banner_url" *ngIf="banner_url" height="200"><br/>
+                    </div>
+                    <div class="btn-upload-image" style="max-width: 180px;">
+                      <input type='file' accept="image/jpeg, image/png"
+                        (change)="onSelectFile($event)" class="custom-input banner_asset">
+                    </div>
+                </div>
+
+                <div class="col-2 text-center mt-3" *ngIf="banner_url && edit_banner_url">
+                    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="3 / 2"
+                      format="png" outputType="file" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+                      (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+                    <button type="button" matTooltip="Crop Image" aria-label="Crop Image" class="btn btn-crop"
+                      (click)="imageCroppedDone()">
+                      <mat-icon>crop</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

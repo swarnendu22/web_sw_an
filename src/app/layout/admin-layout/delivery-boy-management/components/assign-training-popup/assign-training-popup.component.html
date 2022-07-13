@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Assign for Training</h2>
+<mat-dialog-content class="mat-typography">
+	<div class="row">
+		<div class="col-md-6">
+			<mat-form-field appearance="outline">
+				<input matInput [matDatepicker]="upicker" [(ngModel)]="from_date"/>
+				<mat-datepicker-toggle matSuffix [for]="upicker"></mat-datepicker-toggle>
+				<mat-datepicker #upicker></mat-datepicker>
+			</mat-form-field>
+		</div>
+		<div class="col-md-6">
+			<mat-form-field appearance="outline">
+				<input matInput [matDatepicker]="fpicker" [(ngModel)]="to_date"/>
+				<mat-datepicker-toggle matSuffix [for]="fpicker"></mat-datepicker-toggle>
+				<mat-datepicker #fpicker></mat-datepicker>
+			</mat-form-field>
+		</div>
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+	<button mat-button mat-dialog-close>Cancel</button>
+	<button mat-raised-button mat-dialog-close color="primary" cdkFocusInitial (click)="submit()">Submit</button>
+</mat-dialog-actions>

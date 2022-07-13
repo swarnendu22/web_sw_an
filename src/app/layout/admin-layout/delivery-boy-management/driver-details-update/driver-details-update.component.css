@@ -1,0 +1,40 @@
+.inValid-file {
+  border: 2px solid red;
+  border-radius: 4px;
+}
+
+.driver-details-table {
+  overflow: auto;
+  max-height: 450px;
+  background: white;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+}
+
+.driver-details table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.driver-details table th {
+  background: #e9ecef;
+  padding: 10px !important;
+  font-size: 14px;
+  font-weight: 600;
+  color: #383838;
+}
+
+.driver-details table th,
+.driver-details table td {
+  padding: 5px 10px;
+  border-bottom: 5px solid #ffffff;
+  background: #f3f3f3;
+}
+
+.driver-details table tr:last-child td {
+  border-bottom: 0px solid #ffffff;
+}
+
+.driver-details .mat-form-field {
+  width: 100%
+}

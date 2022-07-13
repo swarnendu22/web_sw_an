@@ -1,0 +1,66 @@
+<form [formGroup]="deMerchandiseForm" autocomplete="off" novalidate>
+
+    <h2 mat-dialog-title class="d-flex justify-content-between">
+        <span>Delivery Boy Inventory</span>
+        <div class="d-flex align-items-center">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Security Deposit</mat-label>
+                <input matInput formControlName="security_deposit_amount">
+            </mat-form-field>
+            <button style="height: 52px;width: 300px;margin-left: 15px;" mat-raised-button type="button" color="primary" (click)="addItem()">
+                <mat-icon style="font-size: 20px">add</mat-icon>Add new inventory</button>
+        </div>
+    </h2>
+
+    <mat-dialog-content class="mat-typography">
+        <div class="inventory-box" formArrayName="delivery_boy_inventories">
+            <div class="row align-items-center" *ngFor="let item of deMerchandiseForm.get('delivery_boy_inventories').controls;let i=index;"
+                [formGroupName]="i">
+                <!-- <div class="col-4">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="name">
+                    </mat-form-field>
+                </div> -->
+                <div class="col">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Inventory Type</mat-label>
+                        <mat-select formControlName="inventory_type">
+                            <mat-option [value]="inventory_item" *ngFor="let inventory_item of inventory_typeKeys">{{inventory_item}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Size</mat-label>
+                        <mat-select formControlName="size">
+                            <mat-option [value]="size_item" *ngFor="let size_item of inventory_types[formArrControls(i).get('inventory_type').value]">{{size_item}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Amount Paid</mat-label>
+                        <input matInput numbersOnly formControlName="amount_paid">
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Quantity</mat-label>
+                        <input matInput numbersOnly formControlName="quantity">
+                    </mat-form-field>
+                </div>
+                <div class="col-1">
+                    <button mat-mini-fab color="warn" aria-label="" *ngIf="i!=0" (click)="deleteRow(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="primary" (click)="submitDeMerchandise()">Submit</button>
+    </mat-dialog-actions>
+</form>

@@ -1,0 +1,163 @@
+import { Component, OnInit } from '@angular/core';
+import { GetAllCatalogList } from 'src/app/actions/catalog-management.action';
+import { Store, select } from '@ngrx/store';
+import { CellRendererButtonComponent } from '../../components/cell-renderer-button/cell-renderer-button.component';
+//[rowModelType]="rowModelType" [cacheBlockSize]="cacheBlockSize" [maxBlocksInCache]="maxBlocksInCache"
+@Component({
+  selector: 'app-manage-master-catalog',
+  templateUrl: './manage-master-catalog.component.html',
+  styleUrls: ['./manage-master-catalog.component.css']
+}) 
+export class ManageMasterCatalogComponent implements OnInit {
+  columnDefs = [
+
+    // {
+    //   resizable: true, headerName: 'Product_Id', width: 150, field: 'id'
+    // },
+    // {
+    //   resizable: true, headerName: 'Product_Id', width: 150, valueGetter: (params) => {
+    //     return this.valueGetterForProductDetails(params, 0);
+    //   },
+    // },
+    // {
+    //   field: 'nupc', resizable: true, valueGetter: (params) => {
+    //     return this.valueGetterForProductDetails(params, 1);
+    //   }
+    // },
+    // {
+    //   headerName: 'Product Name', resizable: true, width: 300, valueGetter: (params) => {
+    //     return this.valueGetterForProductDetails(params, 2);
+    //   }
+    // },
+    // {
+    //   headerName: 'Product Type', resizable: true, valueGetter: (params) => {
+    //     const value = String.fromCharCode(this.valueGetterForProductDetails(params, 5)) == 'c' ? 'configurable' : 'simple';
+    //     return value;
+    //   }
+    // },
+    // {
+    //   headerName: 'Slug', resizable: true, valueGetter: (params) => {
+    //     return this.valueGetterForProductDetails(params, 3);
+    //   }
+    // },
+    // {
+    //   headerName: 'Action',
+    //   field: 'value',
+    //   colId: 'params',
+    //   getIdByIndex: 0,
+    //   cellRendererFramework: CellRendererButtonComponent,
+    //   sortable: false,
+    //   filter: false,
+    //   floatingFiltersHeight: 0,
+    //   resizable: true,
+    //   // width: 200
+    // },
+  ];
+  defaultColDef = {
+    sortable: true,
+    resizable: true,
+    filter: 'agTextColumnFilter'
+  }
+  allCatalogList = [];
+  rowData = [];
+  rowModelType = 'serverSide';
+  cacheBlockSize = 50;
+  maxBlocksInCache = 30;
+  pageNo = 1;
+  constructor(private store: Store<any>) { }
+
+  ngOnInit() {
+    this.store.dispatch(new GetAllCatalogList({ pageNo: this.pageNo }));
+  }
+  onGridSizeChanged(params) {
+    // var gridWidth = document.getElementById("grid-wrapper").offsetWidth;
+    var gridWidth = params.clientWidth
+    var columnsToShow = [];
+    var columnsToHide = [];
+    var totalColsWidth = 0;
+    var allColumns = params.columnApi.getAllColumns();
+    for (var i = 0; i < allColumns.length; i++) {
+      let column = allColumns[i];
+      totalColsWidth += column.getMinWidth();
+      if (totalColsWidth > gridWidth) {
+        columnsToHide.push(column.colId);
+      } else {
+        columnsToShow.push(column.colId);
+      }
+    }
+    params.columnApi.setColumnsVisible(columnsToShow, true);
+    params.columnApi.setColumnsVisible(columnsToHide, false);
+    params.api.sizeColumnsToFit();
+  }
+  onFirstDataRendered(params) {
+    // params.api.sizeColumnsToFit();
+  }
+
+  onGridReady(event) {
+    this.store.pipe(select('catalogMgmt')).subscribe(res => {
+
+      let data = res.allCatalogDetails ? res.allCatalogDetails['payload'] : null;
+      if (data) {
+        this.allCatalogList.push(...data);
+      }
+      if (this.allCatalogList.length > 0) {
+        // this.rowData = this.allCatalogList;
+        let self = this;
+        if (this.pageNo === 1) {
+          let server = this.FakeServer(this.allCatalogList, this.cacheBlockSize, self)
+          let datasource = this.ServerSideDatasource(server)
+          event.api.setServerSideDatasource(datasource);
+        }
+        // event.api.setRowData(this.rowData);
+        console.log(this.allCatalogList);
+      }
+
+    });
+  }
+  ServerSideDatasource(server) {
+    return {
+      getRows(params) {
+        setTimeout(() => {
+          let response = server.getResponse(params.request);
+          if (response.success) {
+            params.successCallback(response.rows, response.lastRow);
+          } else {
+            params.failCallback();
+          }
+        }, 500);
+      }
+    };
+  }
+  FakeServer(allData, cacheBlockSize, self) {
+    return {
+      getResponse(request) {
+        console.log("asking for rows: " + request.startRow + " to " + request.endRow);
+        let rowsThisPage;
+        self.pageNo = parseInt(request.endRow, 10) / cacheBlockSize;
+        console.log('PAGE_NO', this.pageNo);
+        if (self.pageNo !== 1) {
+          console.log('THIS', this, self);
+          self.getData();
+        }
+        console.log('START,END', request.startRow, request.endRow);
+        rowsThisPage = allData.slice(request.startRow, request.endRow);
+        let lastRow = allData.length <= request.endRow ? allData.length : -1;
+        return {
+          success: true,
+          rows: rowsThisPage,
+          lastRow: lastRow
+        };
+      }
+    };
+  }
+
+  getData() {
+    this.store.dispatch(new GetAllCatalogList({ pageNo: this.pageNo }));
+  }
+  valueGetterForProductDetails(params, index) {
+    return params.data[index]
+  }
+  invokeParentMethod(params) {
+    console.log(params);
+  }
+}

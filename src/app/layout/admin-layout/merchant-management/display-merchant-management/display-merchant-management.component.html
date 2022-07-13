@@ -1,0 +1,1030 @@
+<div class="top-bar box-shadow">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title"> {{this.pageDetail.pageTitle}} </h3>
+    </div>
+
+
+    <div class="form-header-btn">
+      <button type="button" *ngIf="store_status == 'APPROVED-NO-PRODUCT' || store_status == 'APPROVED'" mat-raised-button class="noshadow top-btn-font white-btn"
+        color="warn" (click)="rejectApproveOperation('REJECTED')">
+        Reject
+      </button>
+      <button type="button" *ngIf="store_status == 'PENDING' || store_status == 'REJECTED' || store_status == 'DELETED'" mat-raised-button
+        class="noshadow top-btn-font white-btn" color="accent" (click)="rejectApproveOperation('APPROVED')">
+        Approve
+      </button>
+      <button type="button" [routerLink]="['/merchant/manage-active-merchant']" mat-raised-button class="noshadow top-btn-font white-btn"
+        color="primary">
+        <mat-icon>arrow_back</mat-icon> Back
+      </button>
+
+
+    </div>
+  </div>
+</div>
+<div class="box-shadow bg-white padding-10 hoz-form" id="basicDetailsForm">
+  <form [formGroup]="basicDetailsForm" (ngSubmit)="onSubmit('basicDetailsForm')">
+
+    <div class="content-head">
+      <div class="content-head-caption">
+        <h3>Basic Details</h3>
+      </div>
+      <div class="content-head-action">
+        <!-- <div class="form-header-btn" *ngIf="!approveMode">
+          <ng-container *ngIf="getFormDisableStats('basicDetailsForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" (click)="toggleFormDisable('basicDetailsForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('basicDetailsForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" (click)="toggleFormDisable('basicDetailsForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button mat-raised-button class="noshadow top-btn-font" color="primary">
+              <mat-icon>save</mat-icon> Save
+            </button>
+          </ng-container>
+        </div> -->
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-sm-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Store Name
+            <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+          </mat-label>
+          <input matInput formControlName="store_display_name" (keyup)="assignToLegalName($event)" trim="blur" />
+          <span *ngIf="!basicDetailsForm.get('store_display_name').valid && basicDetailsForm.get('store_display_name').touched" matTooltipClass="downline"
+            matTooltip="This is required Field" aria-label="This field is Required" class="mandatory-alert">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+
+        <ng-container *ngIf="approveMode">
+          <mat-hint align="start" class="request_class" *ngIf="requestObj['store_display_name']">
+            <span *ngIf="requestObj['store_display_name'] !== basicDetailsForm.get('store_display_name').value">Requested Change: {{requestObj['store_display_name']}}
+            </span>
+          </mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Support No
+            <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+          </mat-label>
+          <input matInput formControlName="store_support" trim="blur" />
+          <span *ngIf="!basicDetailsForm.get('store_support').valid && basicDetailsForm.get('store_support').touched" matTooltipClass="downline"
+            matTooltip="This is required Field" aria-label="This field is Required" class="mandatory-alert">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+
+        <ng-container *ngIf="approveMode">
+          <mat-hint align="start" class="request_class" *ngIf="requestObj['store_support']">
+            <span *ngIf="requestObj['store_support'] !== basicDetailsForm.get('store_support').value">Requested Change: {{requestObj['store_support']}}
+            </span>
+          </mat-hint>
+        </ng-container>
+
+      </div>
+
+      <div class="col-sm-6">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Contact Number
+            <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+          </mat-label>
+          <input type="text" autocomplete="nope" formControlName="store_contact" matInput numbersOnly trim="blur" />
+
+          <ng-container *ngIf="!basicDetailsForm.get('store_contact').valid && basicDetailsForm.get('store_contact').touched">
+            <span *ngIf="!basicDetailsForm.get('store_contact').hasError('required')" matTooltipClass="downline" matTooltip="This is required Field"
+              aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+
+            <span *ngIf="!basicDetailsForm.get('store_contact').hasError('maxlength')" matTooltipClass="downline" matTooltip="Invalid mobile no"
+              aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </ng-container>
+
+        </mat-form-field>
+
+        <ng-container *ngIf="approveMode">
+          <mat-hint align="start" class="request_class" *ngIf="requestObj['store_contact']">
+            <span *ngIf="requestObj['store_contact'] !== basicDetailsForm.get('store_contact').value">Requested Change: {{requestObj['store_contact']}}
+            </span>
+          </mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Registered Email
+            <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+          </mat-label>
+
+          <input type="email" matInput formControlName="store_email" trim="blur" />
+          <button type="button" class="matSuffix-text" *ngIf="basicDetailsForm.get('store_email').valid && basicDetailsForm.get('store_email').touched"
+            matSuffix mat-button color="primary" [disabled]="getFormDisableStats('basicDetailsForm')" (click)="checkAvaibilityOnClick()">
+            Check Availability
+          </button>
+
+          <ng-container *ngIf="!basicDetailsForm.get('store_email').valid && basicDetailsForm.get('store_email').touched">
+
+            <span *ngIf="!basicDetailsForm.get('store_email').hasError('required')" matTooltipClass="downline" matTooltip="This is required Field"
+              aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+
+            <span *ngIf="!basicDetailsForm.get('store_email').hasError('pattern')" matTooltipClass="downline" matTooltip="Invalid Email Id"
+              aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+
+          </ng-container>
+
+          <span *ngIf="merchantEmailAvaibilityText !== 'Email is Available' && merchantEmailAvaibilityText !== ''" matTooltipClass="downline"
+            matTooltip="Email id already present, please try another" aria-label="Email Id Already Present" class="mandatory-alert">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+
+        </mat-form-field>
+
+
+        <ng-container *ngIf="approveMode">
+          <mat-hint align="start" class="request_class" *ngIf="requestObj['primaryEmail']">
+            <span *ngIf="requestObj['primaryEmail'] !== basicDetailsForm.get('primaryEmail').value">Requested Change: {{requestObj['primaryEmail']}}
+            </span>
+          </mat-hint>
+        </ng-container>
+        <mat-hint>{{merchantEmailAvaibilityText}}</mat-hint>
+      </div>
+
+
+
+
+      <div class="col-sm-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Store Status
+            <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+          </mat-label>
+          <mat-select formControlName="store_status">
+            <ng-container *ngIf="storeType">
+              <mat-option [value]="storeStatus.statusKey" *ngFor="let storeStatus of storeStatus">
+                {{storeStatus.statusValue}}</mat-option>
+            </ng-container>
+          </mat-select>
+
+          <span *ngIf="!basicDetailsForm.get('store_status').valid && basicDetailsForm.get('store_status').touched && merchantDetailsForm.get('store_status').hasError('required')"
+            matTooltipClass="downline" matTooltip="This field is Required" aria-label="This field is Required" class="mandatory-alert">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+      </div>
+
+      <div class="col-sm-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Store Local Listing Range
+            <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+          </mat-label>
+          <input type="text" autocomplete="nope" formControlName="store_local_listing_range" matInput numbersOnly trim="blur" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-sm-6 form-content-body">
+        <div class="offset-1">
+          <div class="upload-image-view">
+            <img *ngIf="basicDetailsForm.get('logourl') && basicDetailsForm.get('logourl').value && checkExtension(basicDetailsForm.get('logourl').value)!='pdf'"
+              height="99%" width="99%" [src]="basicDetailsForm.get('logourl').value" />
+            <img *ngIf="basicDetailsForm.get('logourl') && basicDetailsForm.get('logourl').value && checkExtension(basicDetailsForm.get('logourl').value)=='pdf'"
+              height="99%" width="99%" src="../../../../../../assets/img/pdf.png" />
+            <br />
+          </div>
+          <div class="btn-sm-upload" style="width:32%">
+            <app-img-upload-aws [className]="'custom-input icon'" [awsFolderName]="'logourl'" [accept]="['image/jpeg', 'image/jpg','image/png','application/pdf']"
+              (imgUploaded)="onFileUpload($event,'logourl')" [acceptFileSize]="'true'" [supportedExtension]="'.jpeg,.jpg,.png,.pdf'"
+              [fileSizeLimit]="'2097152'">
+            </app-img-upload-aws>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-checkbox class="p-3" formControlName="store_allow_local_listing"></mat-checkbox>
+            <mat-label>Store Allow Local Listing
+            </mat-label>
+          </div>
+          <div class="col-sm-6">
+            <mat-checkbox class="p-3" formControlName="store_is_active"></mat-checkbox>
+            <mat-label>Active Store
+            </mat-label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-checkbox class="p-3" formControlName="self_ship"></mat-checkbox>
+            <mat-label>Home Delivery
+            </mat-label>
+          </div>
+          <div class="col-sm-6">
+            <mat-checkbox class="p-3" formControlName="store_pickup"></mat-checkbox>
+            <mat-label>Store Pickup
+            </mat-label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-checkbox class="p-3" formControlName="store_multi_brand_store"></mat-checkbox>
+            <mat-label>Is Multi Brande
+            </mat-label>
+          </div>
+          <div class="col-sm-6">
+            <mat-checkbox class="p-3" formControlName="store_allow_marketplace"></mat-checkbox>
+            <mat-label>Store Allow Market Place
+            </mat-label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-checkbox class="p-3" formControlName="allowCartWithOthers"></mat-checkbox>
+            <mat-label>Allow Cart With Others
+            </mat-label>
+          </div>
+        </div>
+      </div> -->
+
+    </div>
+  </form>
+</div>
+
+<div class="box-shadow bg-white padding-10 mt-3 hoz-form" id="addressDetailsForm">
+  <form [formGroup]="addressDetailsForm" (ngSubmit)="onSubmit('addressDetailsForm')">
+
+    <div class="content-head">
+      <div class="content-head-caption">
+        <h3>Address Details</h3>
+      </div>
+      <!-- <div class="content-head-action">
+        <div class="apprive-reject-btn" *ngIf="approveMode">
+          <ng-container *ngIf="formApproveMode['addressDetailsForm']">
+            <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (click)="requestProcess('APPROVED')">
+              <mat-icon>check</mat-icon> Accept
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font" color="warn" (click)="requestProcess('REJECTED')">
+              <mat-icon>cancel</mat-icon> Reject
+            </button>
+          </ng-container>
+        </div>
+        <div class="form-header-btn" *ngIf="!approveMode">
+          <ng-container *ngIf="getFormDisableStats('addressDetailsForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" (click)="toggleFormDisable('addressDetailsForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('addressDetailsForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" color="defalt" (click)="toggleFormDisable('addressDetailsForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button mat-raised-button class="noshadow top-btn-font" color="primary">
+              <mat-icon>save</mat-icon> Save
+            </button>
+          </ng-container>
+        </div>
+      </div> -->
+    </div>
+
+    <div class="form-content-body">
+      <div class="row mt-3">
+        <div class="col-8">
+          <mat-form-field appearance="outline">
+
+            <mat-label>Full Address
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <textarea matInput formControlName="store_address" trim="blur"></textarea>
+
+            <span *ngIf="!addressDetailsForm.get('store_address').valid && addressDetailsForm.get('store_address').touched" matTooltipClass="downline"
+              matTooltip="This Field Is Required" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+
+          </mat-form-field>
+
+          <ng-container *ngIf="approveMode">
+            <mat-hint align="start" class="request_class" *ngIf="requestObj['store_address']">
+              <span *ngIf="requestObj['store_address'] !== addressDetailsForm.get('store_address').value">Requested Change: {{requestObj['store_address']}}
+              </span>
+            </mat-hint>
+          </ng-container>
+        </div>
+
+        <div class="col-4">
+          <mat-form-field appearance="outline">
+
+            <mat-label>Short Address
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <textarea matInput formControlName="shortAddress" trim="blur"></textarea>
+
+            <span *ngIf="!addressDetailsForm.get('shortAddress').valid && addressDetailsForm.get('shortAddress').touched" matTooltipClass="downline"
+              matTooltip="This Field Is Required" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+
+          </mat-form-field>
+
+          <ng-container *ngIf="approveMode">
+            <mat-hint align="start" class="request_class" *ngIf="requestObj['shortAddress']">
+              <span *ngIf="requestObj['shortAddress'] !== addressDetailsForm.get('shortAddress').value">Requested Change: {{requestObj['shortAddress']}}
+              </span>
+            </mat-hint>
+          </ng-container>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Landmark</mat-label>
+            <input matInput formControlName="store_landmark" trim="blur" />
+          </mat-form-field>
+          <ng-container *ngIf="approveMode">
+            <mat-hint align="start" class="request_class" *ngIf="requestObj['landmark']">
+              <span *ngIf="requestObj['store_landmark'] !== addressDetailsForm.get('store_landmark').value">Requested Change: {{requestObj['store_landmark']}}
+              </span>
+            </mat-hint>
+          </ng-container>
+          <mat-form-field appearance="outline">
+            <mat-label>City
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input matInput formControlName="store_city" trim="blur" />
+            <span *ngIf="!addressDetailsForm.get('store_city').valid && addressDetailsForm.get('store_city').touched" matTooltipClass="downline"
+              matTooltip="This field is Required" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+
+          <ng-container *ngIf="approveMode">
+            <mat-hint align="start" class="request_class" *ngIf="requestObj['city']">
+              <span *ngIf="requestObj['store_city'] !== addressDetailsForm.get('store_city').value">Requested Change: {{requestObj['store_city']}}
+              </span>
+            </mat-hint>
+          </ng-container>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>ZIP Code
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input matInput type="number" formControlName="store_zip" trim="blur" />
+
+            <ng-container *ngIf="!addressDetailsForm.get('store_zip').valid && addressDetailsForm.get('store_zip').touched">
+
+              <span *ngIf="addressDetailsForm.get('store_zip').hasError('required')" matTooltipClass="downline" matTooltip="This field is Required"
+                aria-label="This field is Required" class="mandatory-alert">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+
+              <span *ngIf="addressDetailsForm.get('store_zip').hasError('pattern')" matTooltipClass="downline" matTooltip="Invalid Pincode"
+                aria-label="This field is Required" class="mandatory-alert">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+
+            </ng-container>
+
+          </mat-form-field>
+
+          <ng-container *ngIf="approveMode">
+            <mat-hint align="start" class="request_class" *ngIf="requestObj['store_zip']">
+              <span *ngIf="requestObj['store_zip'] !== addressDetailsForm.get('store_zip').value">Requested Change: {{requestObj['store_zip']}}
+              </span>
+            </mat-hint>
+          </ng-container>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Region
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <mat-select formControlName="store_region" [value]="addressDetailsForm.get('store_region').value">
+              <ng-container *ngIf="detailsList.regionsList">
+                <mat-option [value]="region.id" *ngFor="let region of detailsList.regionsList.payload">{{region.name}}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+            <span *ngIf="!addressDetailsForm.get('store_region').valid && addressDetailsForm.get('store_region').touched" matTooltipClass="downline"
+              matTooltip="This Field Is Required" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+
+          <ng-container *ngIf="approveMode">
+            <mat-hint align="start" class="request_class" *ngIf="requestObj['store_region']">
+              <span *ngIf="requestObj['store_region'] !== addressDetailsForm.get('store_region').value">Requested Change: {{requestObj['store_region']}}
+              </span>
+            </mat-hint>
+          </ng-container>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Store Latitude
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input readonly="true" matInput type="number" formControlName="store_latitude" trim="blur" />
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Store Longitude
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input readonly="true" matInput type="number" formControlName="store_longitude" trim="blur" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-12">
+          <div class="border border-primary">
+            <!-- <agm-map [scrollwheel]="!getFormDisableStats('addressDetailsForm')"  [zoom]="13" [latitude]="map.lat" [longitude]="map.lng" style="height: 310px" >
+                <agm-marker [latitude]="map.lat" [longitude]="map.lng" [markerDraggable]="!getFormDisableStats('addressDetailsForm')" (dragEnd)="markerDragEnd($event)"></agm-marker>
+              </agm-map> -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<!-- <div class="box-shadow bg-white padding-10 mt-3 hoz-form" id="categoryDetailsForm">
+  <form [formGroup]="storeOperationForm" (ngSubmit)="onSubmit('storeOperationForm')">
+
+    <div class="content-head">
+      <div class="content-head-caption">
+        <h3>Store Operation</h3>
+      </div>
+      <div class="content-head-action">
+        <div class="apprive-reject-btn" *ngIf="approveMode">
+          <ng-container *ngIf="formApproveMode['storeOperationForm']">
+            <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (click)="requestProcess('APPROVED')">
+              <mat-icon>check</mat-icon> Accept
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font" color="warn" (click)="requestProcess('REJECTED')">
+              <mat-icon>cancel</mat-icon> Reject
+            </button>
+          </ng-container>
+        </div>
+        <div class="form-header-btn" *ngIf="!approveMode">
+          <ng-container *ngIf="getFormDisableStats('storeOperationForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" (click)="toggleFormDisable('storeOperationForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('storeOperationForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" color="defalt" (click)="toggleFormDisable('storeOperationForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button mat-raised-button class="noshadow top-btn-font" color="primary">
+              <mat-icon>save</mat-icon> Save
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-content-body">
+      <div class="row mt-3">
+        <div class="col-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Select Day
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <mat-select formControlName="dayName" [(value)]="storeDaysOperation.dayName" name="dayName">
+              <ng-container *ngIf="dayList">
+                <mat-option [value]="days.daysKey" *ngFor="let days of dayList">
+                  {{days.daysValue}}</mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Store Open
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input formControlName="openTime" [(ngModel)]='storeDaysOperation.openTime' matInput name="openTime" trim="blur" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Store Close
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input formControlName="closeTime" [(ngModel)]='storeDaysOperation.closeTime' name="closeTime" matInput trim="blur" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-2">
+          <mat-checkbox formControlName="isOpen" [(ngModel)]="storeDaysOperation.isOpen" [checked]="storeDaysOperation.isOpen" class="p-3"
+            name="isOpen"></mat-checkbox>
+          <mat-label>Is Open
+          </mat-label>
+        </div>
+
+        <div class="col-1">
+          <button type="button" (click)="addStoreOperations()" class="btn-icon red mt-0 no-border ml-2">
+            <mat-icon>library_add</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <ng-container *ngIf="selectedStoreDaysOperationList && selectedStoreDaysOperationList.length>0">
+          <div class="col-12 mt-1">
+            <table class="table layout-fixed box-shadow">
+              <thead>
+                <tr>
+                  <th class="widthP30">Day</th>
+                  <th class="widthP30">Open-Closing Time</th>
+                  <th class="widthP30">Is StoreOpen</th>
+                  <th class="widthP10">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let storeOperation of selectedStoreDaysOperationList">
+                  <td>
+                    <a class="mt-5" href="javascript:();">
+                      <p>{{storeOperation.dayName | uppercase }}</p>
+                    </a>
+                  </td>
+                  <td class="hierarchy-p">
+                    <a href="javascript:();">
+                      <p>{{storeOperation.openTime }}
+                        <mat-icon>arrow_right_alt</mat-icon> {{storeOperation.closeTime }}</p>
+                    </a>
+                  </td>
+                  <td class="hierarchy-p">
+                    <a href="javascript:();">
+                      <p>
+                        <mat-icon *ngIf="storeOperation.isOpen">lock_open</mat-icon>
+                        <mat-icon *ngIf="!storeOperation.isOpen">lock</mat-icon>
+                      </p>
+                    </a>
+                  </td>
+                  <td class="hierarchy-p">
+                    <button type="button" (click)="deleteStoreOperations(storeOperation)" class="btn-icon red mt-0 no-border">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+      </div>
+
+    </div>
+  </form>
+</div> -->
+
+
+
+
+
+<!-- <div class="box-shadow bg-white padding-10 mt-3 hoz-form" id="categoryDetailsForm">
+  <form [formGroup]="categoryDetailsForm" (ngSubmit)="onSubmit('categoryDetailsForm')">
+
+    <div class="content-head">
+      <div class="content-head-caption">
+        <h3>Manage Category</h3>
+      </div>
+      <div class="content-head-action">
+        <div class="apprive-reject-btn" *ngIf="approveMode">
+          <ng-container *ngIf="formApproveMode['categoryDetailsForm']">
+            <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (click)="requestProcess('APPROVED')">
+              <mat-icon>check</mat-icon> Accept
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font" color="warn" (click)="requestProcess('REJECTED')">
+              <mat-icon>cancel</mat-icon> Reject
+            </button>
+          </ng-container>
+        </div>
+        <div class="form-header-btn" *ngIf="!approveMode">
+          <ng-container *ngIf="getFormDisableStats('categoryDetailsForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" (click)="toggleFormDisable('categoryDetailsForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('categoryDetailsForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" color="defalt" (click)="toggleFormDisable('categoryDetailsForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button mat-raised-button class="noshadow top-btn-font" color="primary">
+              <mat-icon>save</mat-icon> Save
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-content-body">
+      <div class="row mt-3">
+        <div class="col-12">
+          <ng-container *ngIf="!getFormDisableStats('categoryDetailsForm')">
+
+            <tree-select name="simpleSelect" [items]="items" idField="id" textField="name" childrenField="childList" required=true [(ngModel)]="selectedItem"
+              (ngModelChange)="onSelectedChange($event)" [ngModelOptions]="{standalone: true}" [filterPlaceholder]="FilterPlaceholder"
+              [allowFilter]="ShowFilter" [disabled]="Disabled" [allowParentSelection]="AllowParentSelection" [restructureWhenChildSameName]="RestructureWhenChildSameName"
+              expandMode="all">
+            </tree-select>
+
+          </ng-container>
+        </div>
+
+        <ng-container *ngIf="storeCategoryList && storeCategoryList.length>0">
+          <div class="col-12 mt-1">
+            <table class="table layout-fixed box-shadow">
+              <thead>
+                <tr>
+                  <th class="widthP10">Image</th>
+                  <th class="widthP80">Category name</th>
+                  <th class="widthP10">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let storeCategory of storeCategoryList">
+                  <td>
+                    <img height="55" [src]="storeCategory.imageUrl">
+                  </td>
+                  <td class="hierarchy-p">
+                    <a href="javascript:();">
+                      <p>{{storeCategory.name | uppercase }}</p>
+                    </a>
+                  </td>
+                  <td class="hierarchy-p">
+                    <button type="button" (click)="deleteSelectedCategory(storeCategory)" class="btn-icon red mt-0 no-border">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+</div> -->
+
+
+<!-- <div class="box-shadow bg-white padding-10 mt-3 hoz-form" id="bankDetailsForm">
+  <form [formGroup]="bankDetailsForm" (ngSubmit)="onSubmit('bankDetailsForm')">
+    <div class="content-head">
+      <div class="content-head-caption">
+        <h3>Bank Details</h3>
+      </div>
+      <div class="content-head-action">
+        <div class="form-header-btn" *ngIf="!approveMode">
+          <ng-container *ngIf="getFormDisableStats('bankDetailsForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" (click)="toggleFormDisable('bankDetailsForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('bankDetailsForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" (click)="toggleFormDisable('bankDetailsForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button mat-raised-button class="noshadow top-btn-font" color="primary">
+              <mat-icon>save</mat-icon> Save
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="form-content-body">
+      <div class="row mt-3">
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Bank Name
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input matInput formControlName="bankName" trim="blur" />
+
+            <span *ngIf="!bankDetailsForm.get('bankName').valid && bankDetailsForm.get('bankName').touched" matTooltipClass="downline"
+              matTooltip="This field is Required" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+
+          </mat-form-field>
+
+
+          <mat-form-field appearance="outline">
+            <mat-label>Beneficiary Name
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input autocomplete="nope" matInput formControlName="beneficiaryName" trim="blur" />
+            <span *ngIf="!bankDetailsForm.get('beneficiaryName').valid && bankDetailsForm.get('beneficiaryName').touched" matTooltipClass="downline"
+              matTooltip="" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>IFSC Code
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input matInput formControlName="ifscCode" trim="blur" />
+
+            <span *ngIf="!bankDetailsForm.get('ifscCode').valid && bankDetailsForm.get('ifscCode').touched" matTooltipClass="downline"
+              matTooltip="" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Branch Name
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input autocomplete="nope" matInput formControlName="branchName" trim="blur" />
+
+            <span *ngIf="!bankDetailsForm.get('branchName').valid && bankDetailsForm.get('branchName').touched" matTooltipClass="downline"
+              matTooltip="" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Account Number
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input autocomplete="nope" matInput formControlName="accountNumber" trim="blur" />
+
+            <ng-container *ngIf="!bankDetailsForm.get('accountNumber').valid && bankDetailsForm.get('accountNumber').touched">
+
+              <span *ngIf="bankDetailsForm.get('accountNumber').hasError('required')" matTooltipClass="downline" matTooltip="" aria-label="This field is Required"
+                class="mandatory-alert">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+
+              <span *ngIf="bankDetailsForm.get('accountNumber').hasError('pattern')" matTooltipClass="downline" matTooltip="" aria-label="This field is Required"
+                class="mandatory-alert">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+
+            </ng-container>
+          </mat-form-field>
+
+
+          <mat-form-field appearance="outline">
+            <mat-label>Account Type
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <mat-select formControlName="accountType">
+              <mat-option value="c">Current Account</mat-option>
+              <mat-option value="s">Savings Account</mat-option>
+            </mat-select>
+            <span *ngIf="!bankDetailsForm.get('accountType').valid && bankDetailsForm.get('accountType').touched && bankDetailsForm.get('accountType').hasError('required')"
+              matTooltipClass="downline" matTooltip="This field is Required" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div> -->
+
+
+<div class="box-shadow bg-white padding-10 mt-3 hoz-form" id="merchantDetailsForm">
+  <form [formGroup]="merchantDetailsForm" (ngSubmit)="onSubmit('merchantDetailsForm')">
+
+    <div class="content-head">
+      <div class="content-head-caption">
+        <h3>Merchant Details</h3>
+      </div>
+      <!-- <div class="content-head-action">
+        <div class="apprive-reject-btn" *ngIf="approveMode">
+          <ng-container *ngIf="formApproveMode['merchantDetailsForm']">
+            <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (click)="requestProcess('APPROVED')">
+              <mat-icon>check</mat-icon> Accept
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font" color="warn" (click)="requestProcess('REJECTED')">
+              <mat-icon>cancel</mat-icon> Reject
+            </button>
+          </ng-container>
+        </div>
+        <div class="form-header-btn" *ngIf="!approveMode">
+          <ng-container *ngIf="getFormDisableStats('merchantDetailsForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" (click)="toggleFormDisable('merchantDetailsForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('merchantDetailsForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" color="defalt" (click)="toggleFormDisable('merchantDetailsForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button mat-raised-button class="noshadow top-btn-font" color="primary">
+              <mat-icon>save</mat-icon> Save
+            </button>
+          </ng-container>
+        </div>
+      </div> -->
+    </div>
+
+    <div class="form-content-body">
+      <div class="row mt-3">
+        <div class="col-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Merchant Category
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <mat-select formControlName="businessCategoryId" [value]="merchantDetailsForm.get('businessCategoryId').value">
+              <ng-container *ngIf="detailsList.buisnessCategory">
+                <mat-option [value]="sellerType.id" *ngFor="let sellerType of detailsList.buisnessCategory.payload">
+                  {{sellerType.businessCategoryName}}</mat-option>
+              </ng-container>
+            </mat-select>
+
+            <span *ngIf="!merchantDetailsForm.get('businessCategoryId').valid && merchantDetailsForm.get('businessCategoryId').touched && merchantDetailsForm.get('businessCategoryId').hasError('required')"
+              matTooltipClass="downline" matTooltip="This field is Required" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+
+          <ng-container *ngIf="approveMode">
+            <mat-hint align="start" class="request_class" *ngIf="requestObj['businessCategoryId']">
+              <span *ngIf="requestObj['businessCategoryId'] !== merchantDetailsForm.get('businessCategoryId').value">Requested Change: {{getValueForDropDownInApprove('buisnessCategory',requestObj['businessCategoryId'],'businessCategoryName','id')}}
+              </span>
+            </mat-hint>
+          </ng-container>
+        </div>
+        <div class="col-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Merchant Type
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <mat-select formControlName="store_org_business_model">
+              <mat-option value="LOCAL">LOCAL</mat-option>
+              <mat-option value="MARKETPLACE">MARKETPLACE</mat-option>
+              <mat-option value="HYPER">HYPER</mat-option>
+            </mat-select>
+
+            <span *ngIf="!merchantDetailsForm.get('store_org_business_model').valid && merchantDetailsForm.get('store_org_business_model').touched && merchantDetailsForm.get('store_org_business_model').hasError('required')"
+              matTooltipClass="downline" matTooltip="This field is Required" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+
+          </mat-form-field>
+
+
+          <ng-container *ngIf="approveMode">
+            <mat-hint align="start" class="request_class" *ngIf="requestObj['store_org_business_model']">
+              <span *ngIf="requestObj['store_org_business_model'] !== merchantDetailsForm.get('store_org_business_model').value">Requested Change: {{requestObj['store_org_business_model']}}
+              </span>
+            </mat-hint>
+          </ng-container>
+        </div>
+        <div class="col-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Store Type
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <mat-select formControlName="store_type" [value]="merchantDetailsForm.get('store_type').value">
+              <ng-container *ngIf="storeType">
+                <mat-option [value]="storeTy.store_type" *ngFor="let storeTy of storeType">
+                  {{storeTy.store_type}}</mat-option>
+              </ng-container>
+            </mat-select>
+
+            <span *ngIf="!merchantDetailsForm.get('store_type').valid && merchantDetailsForm.get('store_type').touched && merchantDetailsForm.get('store_type').hasError('required')"
+              matTooltipClass="downline" matTooltip="This field is Required" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<!-- <div class="box-shadow bg-white padding-10 mt-3 hoz-form" id="paymentDetailsForm">
+  <form [formGroup]="paymentDetailsForm" (ngSubmit)="onSubmit('paymentDetailsForm')">
+
+    <div class="content-head">
+      <div class="content-head-caption">
+        <h3>Commission & Payment</h3>
+      </div>
+      <div class="content-head-action">
+        <div class="apprive-reject-btn">
+          <ng-container *ngIf="formApproveMode['paymentDetailsForm']">
+            <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (click)="requestProcess('APPROVED')">
+              <mat-icon>check</mat-icon> Accept
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font" color="warn" (click)="requestProcess('REJECTED')">
+              <mat-icon>cancel</mat-icon> Reject
+            </button>
+          </ng-container>
+        </div>
+        <div class="form-header-btn" *ngIf="!approveMode">
+          <ng-container *ngIf="getFormDisableStats('paymentDetailsForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" (click)="toggleFormDisable('paymentDetailsForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('paymentDetailsForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" color="defalt" (click)="toggleFormDisable('paymentDetailsForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button mat-raised-button class="noshadow top-btn-font" color="primary">
+              <mat-icon>save</mat-icon> Save
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-content-body">
+      <div class="row mt-3">
+        <div class="col-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Commission Mode
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <mat-select formControlName="commissionGroupId" [value]="paymentDetailsForm.get('commissionGroupId').value">
+              <ng-container *ngIf="detailsList.commissionType">
+                <mat-option [value]="commission.id" *ngFor="let commission of detailsList.commissionType.payload">
+                  {{commission.groupName}} </mat-option>
+              </ng-container>
+            </mat-select>
+
+            <span *ngIf="!paymentDetailsForm.get('commissionGroupId').valid && paymentDetailsForm.get('commissionGroupId').touched && paymentDetailsForm.get('commissionGroupId').hasError('required')"
+              matTooltipClass="downline" matTooltip="This field is Required" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+
+          </mat-form-field>
+
+          <ng-container *ngIf="approveMode">
+            <mat-hint align="start" class="request_class" *ngIf="requestObj['commissionGroupId']">
+              <span *ngIf="requestObj['commissionGroupId'] !== paymentDetailsForm.get('commissionGroupId').value">Requested Change: {{getValueForDropDownInApprove('commissionType',requestObj['commissionGroupId'],'groupName','id')}}
+              </span>
+            </mat-hint>
+          </ng-container>
+        </div>
+        <div class="col-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Payment Milestone
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <mat-select formControlName="paymentMilestone" [value]="paymentDetailsForm.get('paymentMilestone').value">
+              <mat-option value="Invoiced">Invoiced</mat-option>
+              <mat-option value="Shipped">Shipped</mat-option>
+              <mat-option value="Delivered">Delivered</mat-option>
+            </mat-select>
+
+            <span *ngIf="!paymentDetailsForm.get('paymentMilestone').valid && paymentDetailsForm.get('paymentMilestone').touched && paymentDetailsForm.get('paymentMilestone').hasError('required')"
+              matTooltipClass="downline" matTooltip="This field is Required" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+
+          <ng-container *ngIf="approveMode">
+            <mat-hint align="start" class="request_class" *ngIf="requestObj['paymentMilestone']">
+              <span *ngIf="requestObj['paymentMilestone'] !== paymentDetailsForm.get('paymentMilestone').value">Requested Change: {{requestObj['paymentMilestone']}}</span>
+            </mat-hint>
+          </ng-container>
+        </div>
+        <div class="col-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Payment Due After (In Days)
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input type="text" matInput maxlength="7" formControlName="paymentAfter" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+            />
+            <span *ngIf="!paymentDetailsForm.get('paymentAfter').valid && paymentDetailsForm.get('paymentAfter').touched && paymentDetailsForm.get('paymentAfter').hasError('required')"
+              matTooltipClass="downline" matTooltip="This field is Required" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+
+          <ng-container *ngIf="approveMode">
+            <mat-hint align="start" class="request_class" *ngIf="requestObj['paymentAfter']">
+              <span *ngIf="requestObj['paymentAfter'] !== paymentDetailsForm.get('paymentAfter').value">Requested Change: {{requestObj['paymentAfter']}}</span>
+            </mat-hint>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </form>
+</div> -->

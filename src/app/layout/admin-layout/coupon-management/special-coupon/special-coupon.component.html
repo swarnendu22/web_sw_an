@@ -1,0 +1,101 @@
+<div class="order-filter-container" hasBackdrop="true">
+    <div class="ndh-order-panel">
+        <div class="d-flex align-items-center justify-content-between mt-2">
+            <h3 class="ndh-order-h3">Special Coupons</h3>
+            <button mat-mini-fab color="primary" class="show-mobile mr-2" (click)="orderFilter.toggle()" aria-label="Example icon button with a filter list icon">
+            <mat-icon>filter_list</mat-icon>
+            </button>
+        </div>
+        <div class="ndh-order-body">
+            <div class="ndh-order-filter">
+                <div class="row-container" style="float: left;">
+                    <div class="auto-col">
+                        <mat-form-field class="filters-order-input" appearance="outline">
+                          <input matInput placeholder="Filter Coupon" [(ngModel)]="couponCodeVal">
+                          <mat-icon matSuffix (click)="searchByCode()" style="width: 35px;cursor: pointer;">search</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="form-header-btn" style="float: right; padding-right: 10px;">
+                <button type="button" mat-raised-button
+                    class="top-btn-font drop mr-2" color="primary" (click)="addCoupon()">
+                    <mat-icon>add</mat-icon> Add
+                </button>
+            </div>
+            <div class="ndh-order-table">
+                <table mat-table [dataSource]="rowData" style="border: 0px solid rgba(0, 0, 0, 0.12);">
+                    <ng-container matColumnDef="code">
+                        <th mat-header-cell *matHeaderCellDef> Coupon </th>
+                        <td mat-cell *matCellDef="let element" class="wrapLongtext" style="max-width: 150px;"> {{element.code}} </td>
+                    </ng-container>                        
+
+                    <ng-container matColumnDef="description">
+                        <th mat-header-cell *matHeaderCellDef style="width: 120px;"> Description </th>
+                        <td mat-cell *matCellDef="let element" class="wrapLongtext" style="max-width: 300px;"> {{element.description}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="start_date">
+                        <th mat-header-cell *matHeaderCellDef> Start Date </th>
+                        <td mat-cell *matCellDef="let element"> {{element.start_date | date : 'dd-MM-yyyy'}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="end_date">
+                        <th mat-header-cell *matHeaderCellDef> End date </th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <span *ngIf="checkExpired(element.end_date) == false">{{element.end_date | date : 'dd-MM-yyyy'}}</span>
+                            <span *ngIf="checkExpired(element.end_date) == true">Never Expired</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="coupon_type">
+                        <th mat-header-cell *matHeaderCellDef> Coupon Type </th>
+                        <td mat-cell *matCellDef="let element"> {{element.coupon_type}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="restriction_per_user">
+                        <th mat-header-cell *matHeaderCellDef> Per User </th>
+                        <td mat-cell *matCellDef="let element"> {{element.restriction_per_user}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="coupon_effect_seller_nsp">
+                        <th mat-header-cell *matHeaderCellDef> Bear By Seller </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngIf="element.coupon_effect_seller_nsp == true">Active</span>
+                            <span *ngIf="element.coupon_effect_seller_nsp == false">Inactive</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="active">
+                        <th mat-header-cell *matHeaderCellDef> Status </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngIf="element.active == true">Active</span>
+                            <span *ngIf="element.active == false">Inactive</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="expired">
+                        <th mat-header-cell *matHeaderCellDef> Expired </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span *ngIf="element.expired == false" style="color: #46b920;">No</span>
+                            <span *ngIf="element.expired == true" style="color: red;">Yes</span>
+                        </td>
+                    </ng-container>
+                    
+
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef>Action</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div (click)="editCoupon(element.id)" style="padding: 5px 25px;display: inline-block;line-height: 22px;background: #f2f2f2f2;color: #46b920;border-radius: 3px;margin-right: 10px;">Edit</div>
+                        </td>
+                    </ng-container>
+                
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row style="cursor: pointer;" *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                <mat-paginator style-paginator [length]="totalRecords" pageSize="{{perPage}}" [pageSizeOptions]="[5, 10, 20, 50, 100]" (page)="onPaginateChange($event)" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>

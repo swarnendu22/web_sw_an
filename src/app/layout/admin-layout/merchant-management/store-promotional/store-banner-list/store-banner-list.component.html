@@ -1,0 +1,85 @@
+<mat-tab-group (selectedTabChange)="route($event)" [selectedIndex]="tabIndex">
+    <mat-tab label="Master Banner">
+    </mat-tab>
+    <mat-tab label="Featured Banner">
+    </mat-tab>
+    <mat-tab label="Popular Brand">
+    </mat-tab>
+</mat-tab-group>
+
+<div class="hoz-form">
+
+    <div class="store-promotion-view banner-sort-header bg-white">
+        <div class="row" style="margin: 0px -5px;">
+
+            <div class="col-md-1">
+                <mat-form-field appearance="outline">
+                    <mat-label>Sector</mat-label>
+                    <mat-select [(ngModel)]="searchPayload.sectorId">
+                        <mat-option [value]="item.sectorId" *ngFor="let item of sectors">{{item.sectorName}}</mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-1">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Country</mat-label>
+                    <mat-select [(ngModel)]="searchPayload.countryName">
+                        <mat-option [value]="item.countryCode" *ngFor="let item of countries">{{item.countryName}}</mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-1">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Region</mat-label>
+                    <mat-select [(ngModel)]="searchPayload.regionName">
+                        <mat-option [value]="region.name" *ngFor="let region of regions">{{region.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-1">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Accessibility</mat-label>
+                    <mat-select [(ngModel)]="searchPayload.accessibility">
+                        <mat-option value="LOCAL">LOCAL</mat-option>
+                        <mat-option value="COUNTRY">COUNTRY</mat-option>
+                        <mat-option value="REGION">REGION</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-1">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>COST</mat-label>
+                    <mat-select [(ngModel)]="searchPayload.isFree">
+                        <mat-option [value]="true">FREE</mat-option>
+                        <mat-option [value]="false">PAID</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-checkbox class="mr-3" color="primary" (change)="onChecked($event)">Show only Active Banners</mat-checkbox>
+            </div>
+            <div class="col-md-5">
+                <button mat-stroked-button class="mr-2 mt-2" type="button" color="primary" (click)="onSearch()">
+                    Search</button>
+                <button mat-stroked-button class="mr-4 mt-2" type="button" color="secondary" (click)="onClear()">
+                    Clear</button>
+                <button mat-stroked-button class="mt-2" color="primary" (click)="addNewBanner()">
+                    <mat-icon>add</mat-icon> Add New Banner</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="bg-white single-pagination" style="height: calc(100% - 80px)">
+    <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef" (firstDataRendered)="onFirstDataRendered($event)" (gridReady)="onGridReady($event)"
+        [enableFilter]="true" [floatingFilter]="true" (gridSizeChanged)="onGridSizeChanged($event)">
+    </ag-grid-angular>
+
+</div>

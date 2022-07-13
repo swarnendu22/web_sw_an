@@ -1,0 +1,508 @@
+<mat-accordion>
+    <!-- *ngIf="complianceTypeSelected == 'GST'" -->
+    <mat-expansion-panel [expanded]="true" *ngIf="this.categorySelected==='GST'" (opened)="openedExpansionPanel( 'GST')">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Goods & Service Tax (GST) {{complianceMandatory}} </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="hoz-form mt-3">
+            <form [formGroup]="formDetailsGST">
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>GSTIN Number</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="gstNum" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsGST.get('gstNum').valid }">
+                            <span [tooltip]="gstNumber" *ngIf="!formDetailsGST.get('gstNum').valid && formDetailsGST.get('gstNum').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+
+                        <ng-template #gstNumber>
+                            <div>
+                                <p class="mb-1" *ngIf="formDetailsGST.get('gstNum').errors.required">Required</p>
+                                <p class="mb-1" *ngIf="formDetailsGST.get('gstNum').errors.pattern">Invalid Pattern
+                                </p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <!-- <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Confirm GSTIN Number</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="confirmGstNumber" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsGST.get('confirmGstNumber').valid }">
+                            <span [tooltip]="confirmGstNum" *ngIf="!formDetailsGST.get('confirmGstNumber').valid && formDetailsGST.get('confirmGstNumber').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #confirmGstNum>
+                            <div>
+                                <p class="mb-1" *ngIf="formDetailsGST.get('confirmGstNumber').errors.required">
+                                    Required</p>
+                                <p class="mb-1" *ngIf="formDetailsGST.get('confirmGstNumber').errors.pattern">
+                                    Invalid Pattern</p>
+                            </div>
+                        </ng-template>
+                    </div> -->
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Business/Legal name as per GST Certificate</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="businessName" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsGST.get('businessName').valid }">
+                            <span [tooltip]="businessname" *ngIf="!formDetailsGST.get('businessName').valid && formDetailsGST.get('businessName').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #businessname>
+                            <div>
+                                <p class="mb-1" *ngIf="formDetailsGST.get('businessName').errors.required">Required
+                                </p>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+
+
+                <p>I operate with composit tax structure under GST</p>
+                <mat-radio-group aria-label="Select an option" formControlName="taxStructureConfirm">
+                    <mat-radio-button [value]="1" color="primary" class="mr-3">No</mat-radio-button>
+                    <mat-radio-button [value]="2" color="primary">Yes</mat-radio-button>
+                </mat-radio-group>
+
+                <div class="upload-doc">
+                    <div class="allow-format">Allowed Format : JPS,JPEG,PNG,GIF, PDF
+                        <br>Maximum Size : 10 MB</div>
+                    <div class="upload-file-type d-flex align-center">
+                        <div class="upload-file" *ngIf="formDetailsGST.get('certificateUrl').value">
+                            {{formDetailsGST.get('certificateUrl').value['type'].split('/')[1]}}</div>
+                        <div class="upload-progress d-flex align-center">
+                            <div>
+                                <p style=" cursor: pointer;
+                  text-decoration: underline;" (click)="downloadFile(formDetailsGST.get('certificateUrl').value)">
+                                    {{formDetailsGST.get('certificateUrl').value['name']}}</p>
+                            </div>
+                            <button color="primary" *ngIf="formDetailsGST.get('certificateUrl').value" (click)="deleteFile('formDetailsGST')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="!formDetailsGST.get('certificateUrl').valid && formDetailsGST.get('certificateUrl').touched" class="has-danger form-control-feedback">
+                        <span class="text-danger" *ngIf="formDetailsGST.get('certificateUrl').errors.required">Required</span>
+                    </div>
+
+                    <input accept="image/*,.pdf" id="gst-button-file" type="file" (change)="onSelectFile($event,'formDetailsGST')">
+                    <label for="gst-button-file">
+                        <button mat-raised-button color="primary" class="upload-certificate-btn">Upload Certificate
+                        </button>
+                    </label>
+                </div>
+                <div class="form-submit text-center">
+                    <button mat-button mat-dialog-close>Cancel</button>
+                    <button mat-raised-button color="primary" class="branch-submit-btn" (click)="formSubmitForCompliance('formDetailsGST')">Submit</button>
+                </div>
+            </form>
+        </div>
+
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="true" *ngIf="this.categorySelected==='FSSAI'" (opened)="openedExpansionPanel('FSSAI')">
+        <mat-expansion-panel-header>
+            <mat-panel-title>FSSAI License Details {{complianceMandatory}}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="hoz-form mt-3">
+            <form [formGroup]="formDetailsFSSAI">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>License Number</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="liscense" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('liscense').valid }">
+                            <span [tooltip]="licenseNumber" *ngIf="!formDetailsFSSAI.get('liscense').valid && formDetailsFSSAI.get('liscense').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3">
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Autorised Name</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="name" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('name').valid }">
+                            <span [tooltip]="fssaiName" *ngIf="!formDetailsFSSAI.get('name').valid && formDetailsFSSAI.get('name').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3">
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Authorised Primise Address</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="address1" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('address1').valid }">
+                            <span [tooltip]="fssaiaddress1" *ngIf="!formDetailsFSSAI.get('address1').valid && formDetailsFSSAI.get('address1').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-3">
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Address Line 2</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="address2" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('address2').valid }">
+                            <span [tooltip]="fssaiaddress2" *ngIf="!formDetailsFSSAI.get('address2').valid && formDetailsFSSAI.get('address2').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>City</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="city" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('city').valid }">
+                            <span [tooltip]="fssaicity" *ngIf="!formDetailsFSSAI.get('city').valid && formDetailsFSSAI.get('city').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>State</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="stateName" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('stateName').valid }">
+                            <span [tooltip]="fssaistate" *ngIf="!formDetailsFSSAI.get('stateName').valid && formDetailsFSSAI.get('stateName').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Pincode</mat-label>
+                            <input matInput numbersOnly autocomplete="off" trim="blur" formControlName="pinCode" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('pinCode').valid }">
+                            <span [tooltip]="pincode" *ngIf="!formDetailsFSSAI.get('pinCode').valid && formDetailsFSSAI.get('pinCode').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Owner Name</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="ownerName" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('ownerName').valid }">
+                            <span [tooltip]="ownername" *ngIf="!formDetailsFSSAI.get('ownerName').valid && formDetailsFSSAI.get('ownerName').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Owner Contact</mat-label>
+                            <input matInput numbersOnly autocomplete="off" formControlName="ownerContactNumber" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('ownerContactNumber').valid }">
+                            <span [tooltip]="ownerContact" *ngIf="!formDetailsFSSAI.get('ownerContactNumber').valid && formDetailsFSSAI.get('ownerContactNumber').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Date of Birth</mat-label>
+                            <input matInput [matDatepicker]="pickerfssai" formControlName="validUpto" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('validUpto').valid }">
+                            <span [tooltip]="validupto" *ngIf="!formDetailsFSSAI.get('validUpto').valid && formDetailsFSSAI.get('validUpto').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                            <mat-datepicker-toggle matSuffix [for]="pickerfssai"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerfssai></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="upload-doc">
+                    <div class="allow-format">Allowed Format : JPS,JPEG,PNG,GIF, PDF
+                        <br>Maximum Size : 10 MB</div>
+                    <div class="upload-file-type d-flex align-center">
+                        <div class="upload-file" *ngIf="formDetailsFSSAI.get('certificateUrl').value">
+                            {{formDetailsFSSAI.get('certificateUrl').value['type'].split('/')[1]}}</div>
+                        <div class="upload-progress d-flex align-center">
+                            <div>
+                                <p style=" cursor: pointer;
+                                text-decoration: underline;" (click)="downloadFile(formDetailsFSSAI.get('certificateUrl').value)">
+                                    {{formDetailsFSSAI.get('certificateUrl').value['name']}}</p>
+                            </div>
+                            <button color="primary" *ngIf="formDetailsFSSAI.get('certificateUrl').value" (click)="deleteFile('formDetailsFSSAI')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="!formDetailsFSSAI.get('certificateUrl').valid && formDetailsFSSAI.get('certificateUrl').touched" class="has-danger form-control-feedback">
+                        <span class="text-danger" *ngIf="formDetailsFSSAI.get('certificateUrl').errors.required">Required</span>
+                    </div>
+                    <input accept="image/*,.pdf" id="gst-button-file" type="file" (change)="onSelectFile($event,'formDetailsFSSAI')">
+                    <label for="gst-button-file">
+                        <button mat-raised-button color="primary" class="upload-certificate-btn">Upload Certificate
+                        </button>
+                    </label>
+                </div>
+                <div class="form-submit text-center">
+                    <button mat-button mat-dialog-close>Cancel</button>
+
+                    <button mat-raised-button color="primary" class="branch-submit-btn" (click)="formSubmitForCompliance('formDetailsFSSAI')">Submit</button>
+                </div>
+                <ng-template #fssaicity>
+                    <div>
+                        <p class="mb-1" *ngIf="formDetailsFSSAI.get('city').errors.required">Required</p>
+                    </div>
+                </ng-template>
+                <ng-template #fssaistate>
+                    <div>
+                        <p class="mb-1" *ngIf="formDetailsFSSAI.get('stateName').errors.required">Required</p>
+                    </div>
+                </ng-template>
+                <ng-template #ownername>
+                    <div>
+                        <p class="mb-1" *ngIf="formDetailsFSSAI.get('ownerName').errors.required">Required</p>
+                    </div>
+                </ng-template>
+                <ng-template #ownerContact>
+                    <div>
+                        <p class="mb-1" *ngIf="formDetailsFSSAI.get('ownerContactNumber').errors.required">Required
+                        </p>
+                    </div>
+                </ng-template>
+                <ng-template #validupto>
+                    <div>
+                        <p class="mb-1" *ngIf="formDetailsFSSAI.get('validUpto').errors.required">Required</p>
+                    </div>
+                </ng-template>
+                <ng-template #licenseNumber>
+                    <div>
+                        <p class="mb-1" *ngIf="formDetailsFSSAI.get('liscense').errors.required">Required</p>
+                        <p class="mb-1" *ngIf="formDetailsFSSAI.get('liscense').errors.pattern">Invalid Pattern</p>
+                    </div>
+                </ng-template>
+                <ng-template #pincode>
+                    <div>
+                        <p class="mb-1" *ngIf="formDetailsFSSAI.get('pinCode').errors.required">Required</p>
+                        <p class="mb-1" *ngIf="formDetailsFSSAI.get('pinCode').errors.pattern">Invalid Pattern</p>
+                    </div>
+                </ng-template>
+                <ng-template #fssaiName>
+                    <div>
+                        <p class="mb-1" *ngIf="formDetailsFSSAI.get('name').errors.required">Required</p>
+                    </div>
+                </ng-template>
+                <ng-template #fssaiaddress1>
+                    <div>
+                        <p class="mb-1" *ngIf="formDetailsFSSAI.get('address1').errors.required">Required</p>
+                    </div>
+                </ng-template>
+                <ng-template #fssaiaddress2>
+                    <div>
+                        <p class="mb-1" *ngIf="formDetailsFSSAI.get('address2').errors.required">Required</p>
+                    </div>
+                </ng-template>
+            </form>
+        </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="true" *ngIf="this.categorySelected==='PAN'" (opened)="openedExpansionPanel('PAN')">
+        <mat-expansion-panel-header>
+            <mat-panel-title>PAN Details {{complianceMandatory}}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="hoz-form mt-3">
+            <form [formGroup]="formDetailsPAN">
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>PAN Number {{complianceMandatory}}</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="panNumber" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsPAN.get('panNumber').valid }">
+                            <span [tooltip]="pan" *ngIf="!formDetailsPAN.get('panNumber').valid && formDetailsPAN.get('panNumber').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #pan>
+                            <div>
+                                <p class="mb-1" *ngIf="formDetailsPAN.get('panNumber').errors.required">Required</p>
+                                <p class="mb-1" *ngIf="formDetailsPAN.get('panNumber').errors.pattern">Invalid Pattern
+                                </p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <!-- <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Confirm PAN Number</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="confirmPanNum" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsPAN.get('confirmPanNum').valid }">
+                            <span [tooltip]="confirmpan" *ngIf="!formDetailsPAN.get('confirmPanNum').valid && formDetailsPAN.get('confirmPanNum').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #confirmpan>
+                            <div>
+                                <p class="mb-1" *ngIf="formDetailsPAN.get('confirmPanNum').errors.required">Required
+                                </p>
+                                <p class="mb-1" *ngIf="formDetailsPAN.get('confirmPanNum').errors.pattern">Invalid Pattern
+                                </p>
+                            </div>
+                        </ng-template>
+                    </div> -->
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Business/Legal name as per PAN Card</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="businessName" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsPAN.get('businessName').valid }">
+                            <span [tooltip]="namepan" *ngIf="!formDetailsPAN.get('businessName').valid && formDetailsPAN.get('businessName').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #namepan>
+                            <div>
+                                <p class="mb-1" *ngIf="formDetailsPAN.get('businessName').errors.required">Required
+                                </p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Date of Corporation</mat-label>
+                            <input matInput [matDatepicker]="pickerpan" formControlName="dobOfCorporation" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsPAN.get('dobOfCorporation').valid }">
+                            <span [tooltip]="doc" *ngIf="!formDetailsPAN.get('dobOfCorporation').valid && formDetailsPAN.get('dobOfCorporation').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                            <mat-datepicker-toggle matSuffix [for]="pickerpan"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerpan></mat-datepicker>
+                        </mat-form-field>
+                        <ng-template #doc>
+                            <div>
+                                <p class="mb-1" *ngIf="formDetailsPAN.get('dobOfCorporation').errors.required">
+                                    Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+                <p>Pan number issued to individual of entity</p>
+                <mat-radio-group aria-label="Select an option" formControlName="panType">
+                    <mat-radio-button [value]="'individual'" color="primary">Individual</mat-radio-button>
+                    <mat-radio-button [value]="'entity'" color="primary">Entity</mat-radio-button>
+                </mat-radio-group>
+                <div class="upload-doc">
+                    <div class="allow-format">Allowed Format : JPS,JPEG,PNG,GIF, PDF
+                        <br>Maximum Size : 10 MB</div>
+                    <div class="upload-file-type d-flex align-center">
+                        <div class="upload-file" *ngIf="formDetailsPAN.get('certificateUrl').value">
+                            {{formDetailsPAN.get('certificateUrl').value['type'].split('/')[1]}}</div>
+                        <div class="upload-progress d-flex align-center">
+                            <div>
+                                <p style=" cursor: pointer;
+                                text-decoration: underline;" (click)="downloadFile(formDetailsPAN.get('certificateUrl').value)">
+                                    {{formDetailsPAN.get('certificateUrl').value['name']}}</p>
+                            </div>
+                            <button color="primary" *ngIf="formDetailsPAN.get('certificateUrl').value" (click)="deleteFile('formDetailsPAN')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="!formDetailsPAN.get('certificateUrl').valid && formDetailsPAN.get('certificateUrl').touched" class="has-danger form-control-feedback">
+                        <span class="text-danger" *ngIf="formDetailsPAN.get('certificateUrl').errors.required">Required</span>
+                    </div>
+                    <input accept="image/*,.pdf" id="gst-button-file" type="file" (change)="onSelectFile($event,'formDetailsPAN')">
+                    <label for="gst-button-file">
+                        <button mat-raised-button color="primary" class="upload-certificate-btn">Upload Certificate
+                        </button>
+                    </label>
+                </div>
+                <div class="form-submit text-center">
+                    <button mat-button mat-dialog-close>Cancel</button>
+
+                    <button mat-raised-button color="primary" class="branch-submit-btn" (click)="formSubmitForCompliance('formDetailsPAN')">Submit</button>
+                </div>
+            </form>
+        </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="true" *ngIf="this.categorySelected==='TRADELICENSE'" (opened)="openedExpansionPanel('TRADELICENSE')">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Trade License Details</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="hoz-form mt-3">
+            <form [formGroup]="formDetailsTradeLicense">
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Certifying Authority</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="certifyingAuthority">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Certificate Number</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="certificateNumber">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Business/Legal name as per certificate</mat-label>
+                            <input matInput autocomplete="off" trim="blur" formControlName="businessName">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Date of Birth</mat-label>
+                            <input matInput [matDatepicker]="pickertrade" formControlName="certificateValidity">
+                            <mat-datepicker-toggle matSuffix [for]="pickertrade"></mat-datepicker-toggle>
+                            <mat-datepicker #pickertrade></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <p>Certificate issued to individual of entity</p>
+                <mat-radio-group aria-label="Select an option" formControlName="certificateType">
+                    <mat-radio-button [value]="1" color="primary">Individual</mat-radio-button>
+                    <mat-radio-button [value]="2" color="primary">Entity</mat-radio-button>
+                </mat-radio-group>
+
+                <div class="upload-doc">
+                    <div class="allow-format">Allowed Format : JPS,JPEG,PNG,GIF, PDF
+                        <br>Maximum Size : 10 MB</div>
+                    <div class="upload-file-type d-flex align-center">
+                        <div class="upload-file" *ngIf="formDetailsTradeLicense.get('certificateUrl').value">
+                            {{formDetailsTradeLicense.get('certificateUrl').value['type'].split('/')[1]}}</div>
+                        <div class="upload-progress d-flex align-center">
+                            <div>
+                                <p style=" cursor: pointer;
+                                text-decoration: underline;" (click)="downloadFile(formDetailsTradeLicense.get('certificateUrl').value)">
+                                    {{formDetailsTradeLicense.get('certificateUrl').value['name']}}</p>
+                            </div>
+                            <button color="primary" *ngIf="formDetailsTradeLicense.get('certificateUrl').value" (click)="deleteFile('formDetailsTradeLicense')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="!formDetailsTradeLicense.get('certificateUrl').valid && formDetailsTradeLicense.get('certificateUrl').touched"
+                        class="has-danger form-control-feedback">
+                        <span class="text-danger" *ngIf="formDetailsTradeLicense.get('certificateUrl').errors.required">Required</span>
+                    </div>
+                    <input accept="image/*,.pdf" id="gst-button-file" type="file" (change)="onSelectFile($event,'formDetailsTradeLicense')">
+                    <label for="gst-button-file">
+                        <button mat-raised-button color="primary" class="upload-certificate-btn">Upload Certificate
+                        </button>
+                    </label>
+                </div>
+                <div class="form-submit text-center">
+                    <button mat-button mat-dialog-close>Cancel</button>
+
+                    <button mat-raised-button color="primary" class="branch-submit-btn" (click)="formSubmitForCompliance('formDetailsTradeLicense')">Submit</button>
+                </div>
+            </form>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>

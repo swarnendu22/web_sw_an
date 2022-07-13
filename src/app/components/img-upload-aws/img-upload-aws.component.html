@@ -1,0 +1,4 @@
+<div class="loading" *ngIf="loading">
+    <mat-spinner [diameter]="50"></mat-spinner>
+</div>
+<input type='file' [accept]="accept" (change)="onSelectFile($event)" [class]="className" [id]="id" [disabled]="disable">

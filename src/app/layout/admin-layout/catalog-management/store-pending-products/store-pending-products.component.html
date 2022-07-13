@@ -1,0 +1,90 @@
+<div class="top-bar box-shadow">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title">Store Pending Products</h3>
+    </div>
+    <div class="form-header-btn">
+      <div class="store-approval-btn">
+        <div style="float: left; padding-top: 10px;">
+          <mat-icon (click)="refreshCat()" style="margin-right: 20px; cursor: pointer;">cached</mat-icon>
+        </div>
+        <button type="button" (click)="openProductFilter()" mat-raised-button class="top-btn-font drop mr-2" color="primary">
+          Filter
+          <mat-icon>filter_list</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="pending-product">
+  <div class="row">
+    <div class="col-sm-4 col-12" *ngFor="let item of rowData">
+      <div class="pending-product-card">
+        <div class="pending-product-content">
+          <owl-carousel-o [options]="customOptions">
+            <ng-container *ngFor="let slide of item.productImages; let i = index">
+              <ng-template carouselSlide >
+                <img [src]="slide.imageUrl">
+              </ng-template>
+            </ng-container>
+          </owl-carousel-o>
+          <button type="button" class="open-link">
+            <mat-icon>language</mat-icon>
+          </button>
+        </div>
+        <div class="pending-product-footer">
+          <div class="d-flex">
+            <div class="product-text">
+              <h1 (click)="requestFnctn(item)">{{item.productName}}</h1>
+              <a href="javascript:void(0);">Store ID: {{item.storeProductVariants[0].storeId}}</a>
+            </div>
+            <div class="product-amount">
+              <h5>₹{{getproductMrp(item.storeProductVariants) | number : '1.2-2'}}</h5>
+              <h4>₹{{getproductPrice(item.storeProductVariants) | number : '1.2-2'}}</h4>
+            </div>
+          </div>
+          <div class="d-flex">
+            <p>Category: {{item.category_id}}</p>
+            <div class="product-approve">
+              <button type="button" class="approve" (click)="bulkOperation('APPROVED',item.id, item.storeProductVariants[0].storeId)">
+                Approve
+                <mat-icon>done</mat-icon>
+              </button>
+              <!-- <button type="button" class="reject" (click)="openRejectModal(item.id, item.approvalUserId)">
+                Reject
+                <mat-icon>close</mat-icon>
+              </button> -->
+            </div>
+          </div>
+          <span class="product-type" *ngIf="item.approvalUserId">{{item.approvalUserId}}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<ul style="display: none;">
+  <li *ngFor="let item of pendingProductsList | paginate: { id: 'dataPagination', itemsPerPage: 100, currentPage: pageNo, totalItems: totalRecords }">{{ item.id }}</li>
+</ul>
+<pagination-controls (pageChange)="getPageNoData($event)" id="dataPagination"></pagination-controls>
+
+<ng-template #rejectProductModal>
+  <mat-dialog-content class="mat-typography">
+    <div class="hoz-form">
+      <div class="row">
+        <div class="col-md-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Reject Reason</mat-label>
+            <textarea matInput trim="blur" rows="5" cols="10" [(ngModel)]="rejectReason"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-12 text-right">
+          <button mat-raised-button [disabled]="rejectReason==null" class="btn-primary" (click)="bulkOperation('REJECTED')" cdkFocusInitial>Reject</button>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+</ng-template>

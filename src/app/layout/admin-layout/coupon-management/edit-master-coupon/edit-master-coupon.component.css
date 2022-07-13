@@ -1,0 +1,26 @@
+::ng-deep .ck-editor__editable {
+  min-height: 200px !important;
+}
+.coupon-bottom-border {
+  border-bottom: 10px solid #f2f3f8;
+  padding-top: 15px;
+  margin: 0px -10px;
+}
+.store-coupon-select {
+  border: 1px solid #f2f3f8 !important;
+}
+.field_title {
+  font-weight: bold;
+  font-size: 14px;
+  width: 100%;
+  padding: 5px 15px;
+}
+.never_expired_text {
+  position: absolute;
+  width: 200px;
+  left: 23px;
+  background: #fff;
+  padding: 4px 10px;
+  top: 15px;
+  font-weight: bold;
+}

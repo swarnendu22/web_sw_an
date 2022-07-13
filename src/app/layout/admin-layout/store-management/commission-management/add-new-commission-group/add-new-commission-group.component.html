@@ -1,0 +1,196 @@
+<form [formGroup]="newCommissionForm" (keydown.enter)="$event.preventDefault()" autocomplete="off">
+
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">Add New Commission Group</h3>
+      </div>
+      <div class="form-header-btn">
+        <button routerLink="/store/commission-management" mat-raised-button class="noshadow top-btn-font white-btn">
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+        <button mat-raised-button class="noshadow top-btn-font" color="primary" (click)="onSubmit($event)"
+          [disabled]="!newCommissionForm.valid" (keydown.enter)="$event.preventDefault()">
+          <mat-icon>save</mat-icon> Save
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="box-shadow bg-white padding-10">
+    <div class="hoz-form">
+      <div class="row">
+
+
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-6">
+
+              <div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Group Name <span class="mandatory">*</span></mat-label>
+                  <input matInput formControlName="groupName"
+                    [ngClass]="{ 'is-invalid': submitted && f.groupName.errors }" />
+                  <span *ngIf="f.groupName.touched && f.groupName.errors" class="mandatory-alert"
+                    [tooltip]="groupNametool" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+                <ng-template #groupNametool>
+                  <div>
+                    <p class="mb-1">Required </p>
+                  </div>
+                </ng-template>
+
+              </div>
+              <div class="row">
+                <div class="col-8">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Value <span class="mandatory">*</span></mat-label>
+                    <input matInput formControlName="value" [ngClass]="{ 'is-invalid': submitted && f.value.errors }"
+                      (change)="makeDecimal($event)" />
+                    <span *ngIf="!f.value.valid && f.value.touched" class="mandatory-alert" [tooltip]="valuetool"
+                      content-type="template">
+                      <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                    </span>
+                  </mat-form-field>
+                  <ng-template #valuetool>
+                    <div>
+                      <p *ngIf="f.value.errors.required" class="mb-1">Required </p>
+                      <p *ngIf="f.value.errors.pattern" class="mb-1">Should be Number </p>
+                    </div>
+                  </ng-template>
+
+                </div>
+                <div class="col-4">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Value Type <span class="mandatory">*</span></mat-label>
+                    <mat-select formControlName="type" [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
+                      <mat-option value="f">Fixed</mat-option>
+                      <mat-option value="p">%</mat-option>
+                    </mat-select>
+                    <span *ngIf="f.type.touched && f.type.errors" class="mandatory-alert" [tooltip]="valueTypetool"
+                      content-type="template">
+
+                      <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                    </span>
+                  </mat-form-field>
+                  <ng-template #valueTypetool>
+                    <div>
+                      <p class="mb-1">Required </p>
+                    </div>
+                  </ng-template>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Class <span class="mandatory">*</span></mat-label>
+                  <mat-select formControlName="groupClass"
+                    [ngClass]="{ 'is-invalid': submitted && f.groupClass.errors }">
+                    <mat-option value="GENERAL">GENERAL</mat-option>
+                    <mat-option value="HYPERLOCAL">HYPERLOCAL</mat-option>
+                    <mat-option value="SPECIAL">SPECIAL</mat-option>
+                  </mat-select>
+                  <span *ngIf="f.groupClass.touched && f.groupClass.errors" class="mandatory-alert"
+                    [tooltip]="classtool" content-type="template">
+
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+                <ng-template #classtool>
+                  <div>
+                    <p class="mb-1">Required </p>
+                  </div>
+                </ng-template>
+
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="box-relative">
+                    <mat-form-field class="datefield" appearance="outline">
+                      <mat-label>Affect From</mat-label>
+                      <input matInput [matDatepicker]="fpicker" [min]="minDate" formControlName="affectFrom"
+                        [ngClass]="{ 'is-invalid': submitted && f.affectFrom.errors }" (dateInput)="changeStartDate()">
+                      <mat-datepicker-toggle matSuffix [for]="fpicker"></mat-datepicker-toggle>
+                      <mat-datepicker #fpicker></mat-datepicker>
+                    </mat-form-field>
+                    <span *ngIf="f.affectFrom.touched && f.affectFrom.errors" class="mandatory-alert"
+                      [tooltip]="affectfromtool" content-type="template">
+
+                      <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                    </span>
+                  </div>
+                  <ng-template #affectfromtool>
+                    <div>
+                      <p class="mb-1">Required </p>
+                    </div>
+                  </ng-template>
+                </div>
+                <div class="col-6">
+                  <div class="box-relative">
+                    <mat-form-field class="datefield" appearance="outline">
+                      <mat-label>Affect Upto</mat-label>
+                      <input matInput [matDatepicker]="upicker" [min]="maxDate" formControlName="expiryDate"
+                        [ngClass]="{ 'is-invalid': submitted && f.expiryDate.errors }">
+                      <mat-datepicker-toggle matSuffix [for]="upicker"></mat-datepicker-toggle>
+                      <mat-datepicker #upicker></mat-datepicker>
+                    </mat-form-field>
+                    <span *ngIf="f.expiryDate.touched && f.expiryDate.errors" class="mandatory-alert"
+                      [tooltip]="affectuptotool" content-type="template">
+
+                      <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                    </span>
+                  </div>
+                  <ng-template #affectuptotool>
+                    <div>
+                      <p class="mb-1">Required </p>
+                    </div>
+                  </ng-template>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Remarks</mat-label>
+                <textarea matInput formControlName="remarks"
+                  [ngClass]="{ 'is-invalid': submitted && f.remarks.errors }"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row  mt-2">
+            <div class="col-sm-3">
+              <mat-slide-toggle color="primary" formControlName="addLogistic">Add Logistic Charge</mat-slide-toggle>
+            </div>
+            <div class="col-sm-3">
+              <mat-slide-toggle color="primary" formControlName="addPaymentHandling">Add Payment Handling Charge
+              </mat-slide-toggle>
+            </div>
+            <div class="col-sm-3">
+              <mat-slide-toggle color="primary" formControlName="addClosingFee">Add Closing Fee</mat-slide-toggle>
+            </div>
+            <div class="col-sm-3">
+              <mat-slide-toggle color="primary" formControlName="addFullfillmentFee">Add Fullfillment Fees
+              </mat-slide-toggle>
+            </div>
+            <!-- <div class="col-sm-3">
+              <mat-slide-toggle color="primary" formControlName="addPaymentHandling" (click)="f.addPaymentHandling.value =!f.addPaymentHandling.value">Add Payment Handling Charge</mat-slide-toggle>
+            </div>
+            <div class="col-sm-3">
+              <mat-slide-toggle color="primary" formControlName="addClosingFee" (click)="f.addClosingFee.value =!f.addClosingFee.value">Add Closing Fee</mat-slide-toggle>
+            </div>
+            <div class="col-sm-3">
+              <mat-slide-toggle color="primary" formControlName="addFullfillmentFee" (click)="f.addFullfillmentFee.value =!f.addFullfillmentFee.value">Add Fullfillment Fees</mat-slide-toggle>
+            </div> -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+</form>

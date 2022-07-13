@@ -1,0 +1,19 @@
+.changeSubs{
+    font-size: 16px;
+    text-decoration: underline;
+    cursor: pointer;
+    color: blue;
+}
+.changeSubs:hover{
+    color: black;
+}
+.subs-heading {
+    font-size: 14px; 
+    margin-bottom: 20px;
+}
+.edit-address{
+    position: relative;
+    top: 5px; 
+    font-size: 22px; 
+    cursor: pointer;
+}

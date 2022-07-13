@@ -1,0 +1,163 @@
+<form [formGroup]="addZipZoneUserForm" autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">
+          {{ isEdit ? 'Update' : 'Add New' }} Zip Zone User
+        </h3>
+      </div>
+      <div class="form-header-btn">
+        <ng-container>
+          <ng-container *ngIf="getFormDisableStats('addZipZoneUserForm')">
+            <button typr="button" routerLink="/store/zip-code-management/zip-zone-user" mat-raised-button
+              class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+              (click)="toggleFormDisable('addZipZoneUserForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('addZipZoneUserForm')">
+            <button *ngIf="isEdit" type="button" mat-raised-button class="noshadow top-btn-font" color="defalt"
+              (click)="toggleFormDisable('addZipZoneUserForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button type="button" *ngIf="!isEdit" routerLink="/store/zip-code-management/zip-zone-user"
+              mat-raised-button class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <ng-container *ngIf="isEdit || !_id">
+              <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary"
+                (click)="submitZipZoneUser($event)" (keydown.enter)="$event.preventDefault()" [disabled]="
+                  !(addZipZoneUserForm.valid && addZipZoneUserForm.dirty)
+                ">
+                <mat-icon>save</mat-icon> Save
+              </button>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+        <!-- <button
+          routerLink="/store/zip-code-management/zip-zone-user"
+          mat-raised-button
+          class="noshadow top-btn-font white-btn"
+        >
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+        <button mat-raised-button class="noshadow top-btn-font" color="primary">
+          <mat-icon>save</mat-icon> Save
+        </button> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="box-shadow bg-white padding-10 hoz-form">
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field appearance="outline" formGroupName="zoneId">
+          <mat-label>Select Zone</mat-label>
+          <mat-select formControlName="id">
+            <mat-option>
+              <ngx-mat-select-search #zone [formControl]="zoneControl" [placeholderLabel]="'Find Zone ..'"
+                [noEntriesFoundLabel]="'no matches  found'"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option [value]="zoneSingle.id" *ngFor="
+                let zoneSingle of zoneList$
+                  | dropdownfilter: zone.value:'zoneName'
+              ">{{ zoneSingle.zoneName }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <ng-container *ngIf="
+            !addZipZoneUserForm.get('zoneId').valid &&
+            addZipZoneUserForm.get('zoneId').touched
+          ">
+          <mat-hint align="start" class="error" *ngIf="addZipZoneUserForm.get('zoneId.id').hasError('required')">
+            Required Field</mat-hint>
+        </ng-container>
+        <mat-form-field appearance="outline">
+          <mat-label>COD Available</mat-label>
+          <mat-select formControlName="isCodAvailable">
+            <mat-option [value]="true">Yes</mat-option>
+            <mat-option [value]="false">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <ng-container *ngIf="
+            !addZipZoneUserForm.get('isCodAvailable').valid &&
+            addZipZoneUserForm.get('isCodAvailable').touched
+          ">
+          <mat-hint align="start" class="error" *ngIf="
+              addZipZoneUserForm.get('isCodAvailable').hasError('required')
+            ">Required Field</mat-hint>
+        </ng-container>
+        <mat-form-field appearance="outline" formGroupName="userGroupId">
+          <mat-label>Select User</mat-label>
+          <mat-select formControlName="id">
+            <mat-option>
+              <ngx-mat-select-search #userGroup [formControl]="userGroupControl"
+                [placeholderLabel]="'Find User Group ..'" [noEntriesFoundLabel]="'no matches  found'">
+              </ngx-mat-select-search>
+            </mat-option>
+            <mat-option [value]="userGroupSingle.id" *ngFor="
+                let userGroupSingle of userGroupList$
+                  | dropdownfilter: userGroup.value:'name'
+              ">{{ userGroupSingle.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <ng-container *ngIf="
+            !addZipZoneUserForm.get('userGroupId').valid &&
+            addZipZoneUserForm.get('userGroupId').touched
+          ">
+          <mat-hint align="start" class="error" *ngIf="
+              addZipZoneUserForm.get('userGroupId.id').hasError('required')
+            ">Required Field</mat-hint>
+        </ng-container>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Deliver TAT</mat-label>
+          <input matInput formControlName="deliveryTat" />
+        </mat-form-field>
+        <ng-container *ngIf="
+            !addZipZoneUserForm.get('deliveryTat').valid &&
+            addZipZoneUserForm.get('deliveryTat').touched
+          ">
+          <mat-hint align="start" class="error" *ngIf="addZipZoneUserForm.get('deliveryTat').hasError('required')">
+            Required Field</mat-hint>
+          <mat-hint align="start" class="error" *ngIf="
+              addZipZoneUserForm.get('deliveryTat').hasError('maxlength')
+            ">Invalid Delivery TAT</mat-hint>
+
+          <mat-hint align="start" class="error" *ngIf="addZipZoneUserForm.get('deliveryTat').hasError('pattern')">
+            Delivery TAT must be a number</mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Additional Delivery Charge</mat-label>
+          <input matInput formControlName="additionalDelivery" />
+        </mat-form-field>
+        <ng-container *ngIf="
+            !addZipZoneUserForm.get('additionalDelivery').valid &&
+            addZipZoneUserForm.get('additionalDelivery').touched
+          ">
+          <mat-hint align="start" class="error" *ngIf="
+              addZipZoneUserForm.get('additionalDelivery').hasError('required')
+            ">Required Field</mat-hint>
+          <mat-hint align="start" class="error" *ngIf="
+              addZipZoneUserForm.get('additionalDelivery').hasError('maxlength')
+            ">Invalid Additional Delivery Charges</mat-hint>
+          <mat-hint align="start" class="error" *ngIf="
+              addZipZoneUserForm.get('additionalDelivery').hasError('pattern')
+            ">Additional Delivery Charges must be a number</mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline" *ngIf="_id">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            <mat-option [value]="1">Active</mat-option>
+            <mat-option [value]="0">In Active</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</form>

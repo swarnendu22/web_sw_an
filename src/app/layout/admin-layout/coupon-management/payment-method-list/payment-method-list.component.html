@@ -1,0 +1,23 @@
+<div style="position: relative;">
+    <div style="position: absolute;right: -15px;top: -15px;">
+        <button type="button" mat-raised-button class="top-btn-font" color="primary"
+        (click)="onBtnExport()" style="margin-right: 20px;">
+            <mat-icon>save</mat-icon> Download CSV
+        </button>
+        <button type="button" mat-raised-button class="top-btn-font" color="primary"
+        (click)="onBtnExportExcel()" style="margin-right: 20px;">
+            <mat-icon>save</mat-icon> Download xls
+        </button>
+        <button mat-mini-fab color="warn" mat-dialog-close style="float: right;">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div style="padding-bottom: 10px; font-weight: bold;
+    font-size: 18px;">
+        <span style="margin-right: 10px">Payment Method List</span>
+    </div>
+    <div class="bg-white" style="height: calc(70vh - 140px)">
+        <ag-grid-angular style="width:100%; height: 100%" class="ag-theme-balham" [rowData]="rowData" [defaultColDef]="defaultColDef" [columnDefs]="columnDefs" (firstDataRendered)="onFirstDataRendered($event)" [pagination]="false" (gridReady)="onGridReady($event)" (gridSizeChanged)="onGridSizeChanged($event)">
+        </ag-grid-angular>
+    </div>
+</div>

@@ -1,0 +1,172 @@
+<div class="top-bar box-shadow">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title">
+        {{ _id ? 'Update' : 'Add New' }} Attribute Set
+      </h3>
+    </div>
+    <div class="form-header-btn">
+      <ng-container *ngIf="!isEdit">
+        <button [routerLink]="['/store/product-attribute/attribute-set']" mat-raised-button
+          class="noshadow top-btn-font white-btn">
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+      </ng-container>
+      <ng-container *ngIf="isEdit">
+        <button mat-raised-button class="noshadow top-btn-font white-btn" (click)="cancelEdit()">
+          <mat-icon>cancel</mat-icon> Cancel
+        </button>
+      </ng-container>
+      <button *ngIf="!isNew" mat-raised-button class="noshadow top-btn-font" color="primary" (click)="editAttribute()"
+        [disabled]="isEdit">
+        <mat-icon>edit</mat-icon> Edit
+      </button>
+      <button mat-raised-button class="noshadow top-btn-font" color="primary" (keydown.enter)="$event.preventDefault()"
+        (click)="submitAttributeSet($event)" [disabled]="
+        isEditSave
+            ? true
+            : !(addAttributeForm.valid && addAttributeForm.dirty)
+        ">
+        <mat-icon>save</mat-icon> Save
+      </button>
+    </div>
+  </div>
+</div>
+<div class="box-shadow bg-white padding-10">
+  <form [formGroup]="addAttributeForm" autocomplete="off">
+    <div class="hoz-form">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col">
+              <mat-form-field appearance="outline">
+                <mat-label>Attribute Set Name <span class="mandatory">*</span></mat-label>
+                <input matInput #label formControlName="label" trim="blur" autocomplete="off"
+                  (input)="getLabelValue(label)" />
+              </mat-form-field>
+              <ng-template #attributeSetname>
+                <p align="start" class="mb-1" *ngIf="addAttributeForm.get('label').hasError('required')">Required Field
+                </p>
+                <p align="start" class="mb-1" *ngIf="addAttributeForm.get('label').hasError('maxlength')">Invalid Value
+                </p>
+              </ng-template>
+            </div>
+            <div class="col">
+              <mat-form-field appearance="outline">
+                <mat-label>Keyword</mat-label>
+                <input matInput value="{{ keyword | lowercase | formatString }}"
+                  placeholder="{{ keyword | lowercase | formatString }}" disabled="true" />
+                <mat-hint align="start">
+                  <strong style="color: green">{{ keywordStatus }}</strong>
+                </mat-hint>
+                <button *ngIf="isEdit" [disabled]="!addAttributeForm.get('label').dirty && isEdit" mat-button matSuffix
+                  color="primary" (click)="checkAvailibility()">
+                  Check Availibility
+                </button>
+                <a *ngIf="isNew" [disabled]="
+                    isSubmitAttribute
+                      ? true
+                      : !(
+                          addAttributeForm.get('label').value &&
+                          addAttributeForm.get('label').dirty
+                        )
+                  " mat-button matSuffix class="matSuffix-text" color="primary" (click)="checkAvailibility()">
+                  Check Availibility
+                </a>
+              </mat-form-field>
+            </div>
+            <div class="col" *ngIf="!isNew && _id">
+              <mat-form-field appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="status" [disabled]="true">
+                  <mat-option value="1">Active</mat-option>
+                  <mat-option value="0">In Active</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Description <span class="mandatory">*</span></mat-label>
+                <textarea matInput formControlName="description" trim="blur" autocomplete="off"></textarea>
+                <span
+                  *ngIf="!(addAttributeForm.get('description').valid && addAttributeForm.get('description').dirty) && addAttributeForm.get('description').touched"
+                  class="mandatory-alert" [tooltip]="description" content-type="template">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </span>
+              </mat-form-field>
+              <ng-template #description>
+                <p align="start" class="mb-1" *ngIf="addAttributeForm.get('description').hasError('required')">
+                  Required Field</p>
+                <p align="start" class="mb-1" *ngIf="addAttributeForm.get('description').hasError('maxlength')">
+                  Invalid Value </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div *ngIf="isSubmitFinal" class="box-shadow bg-white padding-10 mt-3">
+  <div class="content-head">
+    <div class="content-head-caption flex-grow-1">
+      <h3>Attribute</h3>
+    </div>
+    <div class="content-head-action action-form" *ngIf="isSubmitAttribute">
+      <div class="d-flex">
+        <mat-form-field appearance="outline" class="mr-2">
+          <mat-label>Select Group Name</mat-label>
+          <mat-select [disabled]="!isEdit && !isNew" [formControl]="groupResetControl">
+            <mat-option>
+              <ngx-mat-select-search #group [formControl]="groupControl" [placeholderLabel]="'Find Group Name ..'"
+                [noEntriesFoundLabel]="'no matches  found'"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option [value]="groupSingle.id" (click)="selectGroup(groupSingle['id'])" *ngFor="
+                        let groupSingle of groupList
+                          | dropdownfilter: group.value:'groupName'
+                      ">{{ groupSingle.groupName }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="mr-2">
+          <mat-label>Select Attributes</mat-label>
+
+          <mat-select [disabled]="!isEdit && !isNew || !isGroupSelected" [formControl]="attributeResetControl">
+            <mat-option>
+              <ngx-mat-select-search #attribute [formControl]="attributeControl"
+                [placeholderLabel]="'Find Attribute Name ..'" [noEntriesFoundLabel]="'no matches  found'">
+              </ngx-mat-select-search>
+            </mat-option>
+            <mat-option [value]="attributeSingle.id" (click)="selectAttribute(attributeSingle['id'], attributeSingle)"
+              *ngFor="
+                          let attributeSingle of attributeList
+                            | dropdownfilter: attribute.value:'name'
+                        ">
+              {{attributeSingle.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="m-2">
+          <button mat-flat-button matSuffix color="default" (click)="viewAttributeDetails()" [disabled]="!attributeID">
+            <mat-icon>visibility</mat-icon>View
+          </button>
+        </div>
+        <div class="mt-2">
+          <button mat-flat-button matSuffix color="primary" (click)="submitFinalAttributeSetRel()"
+            [disabled]="!attributeID">
+            <mat-icon>save</mat-icon>Add
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-content-body" disable="true">
+    <div class="mt-2" style="height: 80vh">
+      <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData"
+        [columnDefs]="columnDefs" [animateRows]="true" (cellValueChanged)="onCellValueChanged($event)"
+        (rowDragEnd)="onRowDragEnd($event)" [frameworkComponents]="frameworkComponents"
+        [loadingOverlayComponent]="loadingOverlayComponent" [loadingCellRendererParams]="loadingCellRendererParams"
+        (firstDataRendered)="onFirstDataRendered($event)" (gridReady)="onGridReady($event)"
+        (gridSizeChanged)="onGridSizeChanged($event)" [rowDragManaged]="true">
+      </ag-grid-angular>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<mat-dialog-content class="mat-typography">
+	<ul style="padding: 0px">
+		<li class="mb-3 row align-items-center" *ngFor="let item of delivery_boy_traning_details">
+			<p class="col-2 mb-0">{{item.schedule_date | date:'dd/MM/yyyy'}}</p>
+			<mat-form-field appearance="outline" class="col">
+				<mat-label>Attendance</mat-label>
+				<mat-select [(ngModel)]="item.attendance">
+					<mat-option value="present">Present</mat-option>
+					<mat-option value="absent">Absent</mat-option>
+				</mat-select>
+			</mat-form-field>
+			<mat-form-field appearance="outline" class="col">
+				<mat-label>Score</mat-label>
+				<input matInput [(ngModel)]="item.score">
+			</mat-form-field>
+			<!-- <mat-form-field appearance="outline" class="col">
+				<mat-label>Result</mat-label>
+				<mat-select [(ngModel)]="item.score_details">
+					<mat-option value="pass">Pass</mat-option>
+					<mat-option value="fail">Fail</mat-option>
+				</mat-select>
+			</mat-form-field> -->
+		</li>
+
+	</ul>
+	<div>
+		<mat-form-field appearance="outline" row="10" style="width: 100%;">
+			<mat-label>Remarks</mat-label>
+			<textarea matInput [(ngModel)]="remarks"></textarea>
+		</mat-form-field>
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+	<button mat-button mat-dialog-close>Cancel</button>
+	<button mat-raised-button color="primary" (click)="updateSchedule()">Update</button>
+	<!-- <button mat-raised-button color="primary" *ngIf="re_schedule_count < 3">Reschedule</button> -->
+</mat-dialog-actions>

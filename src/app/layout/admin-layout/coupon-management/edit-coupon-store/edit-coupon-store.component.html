@@ -1,0 +1,63 @@
+<div mat-dialog-title>
+    <div>
+        <div style="font-size: 16px;">Coupon: {{coupon_code}}</div>
+        <div style="font-size: 12px;" *ngIf="expiryFrom !='' && expiryTo!=''">Expiry date of this coupon {{expiryFrom | date : 'dd-MM-yyyy'}} to {{expiryTo | date : 'dd-MM-yyyy'}}</div>
+        <div style="font-size: 16px;">{{store_name}}</div>
+        <div style="font-size: 12px;">{{address}}</div>
+    </div>
+    <button mat-icon-button aria-label="Close Store" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="couponAssignForm" autocomplete="off" novalidate>
+        <div class="row">
+            <div class="col-sm-6 mb-2">
+                <mat-form-field appearance="outline">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput [matDatepicker]="start_date" formControlName="start_date" [readonly]="true" (dateChange)="addEvent('change', $event)">
+                    <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
+                    <mat-datepicker #start_date></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-6 mb-2">
+                <mat-form-field appearance="outline">
+                    <mat-label>End Date</mat-label>
+                    <input matInput [matDatepicker]="end_date" formControlName="end_date" [readonly]="true" [min]="minDate" [max]="maxDate">
+                    <mat-datepicker-toggle matSuffix [for]="end_date"></mat-datepicker-toggle>
+                    <mat-datepicker #end_date></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-6 mb-2">
+                <mat-form-field appearance="outline">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="is_active">
+                        <mat-option [value]="1">Active</mat-option>
+                        <mat-option [value]="0">Inactive</mat-option>
+                    </mat-select>
+                    <mat-icon fontSet="material-icons-outlined" matPrefix>local_activity</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-6 mb-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>Max Order Count</mat-label>
+                    <input type="number" min="1" step="1" matInput formControlName="max_order_count" onkeypress="return event.charCode >= 48 && event.charCode <= 57" appTwoDigitDecimaNumber  minValue="1" maxValue="100000">
+                </mat-form-field>
+                <ng-container *ngIf="!couponAssignForm.get('max_order_count').valid && couponAssignForm.get('max_order_count').touched">
+                    <mat-hint align="start" class="error" *ngIf="couponAssignForm.get('max_order_count').hasError('min') || couponAssignForm.get('max_order_count').hasError('max')">
+                        Max Order Count should be 1 to 100000</mat-hint>
+                </ng-container>
+            </div>
+
+            <div class="col-sm-3 mb-3" style="padding-top: 10px;">
+                <mat-slide-toggle color="primary" formControlName="allow_store_update" *ngIf="false">Allow Store Update
+                </mat-slide-toggle>
+            </div>
+            <div class="col-sm-6">
+                <button mat-raised-button class="save-store-coupon" color="primary" (keydown.enter)="$event.preventDefault()"
+                (click)="onFormSubmit($event)">Update</button>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>

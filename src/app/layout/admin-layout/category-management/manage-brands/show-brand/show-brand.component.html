@@ -1,0 +1,153 @@
+<form [formGroup]="newBrandForm" (ngSubmit)="onSubmit()" autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">Edit Brand</h3>
+      </div>
+      <div class="form-header-btn">
+        <input type="hidden" formControlName="createdAt">
+        <input type="hidden" formControlName="createdBy">
+
+        <ng-container *ngIf="getFormDisableStats('newBrandForm')">
+          <button (click)="goBack()" mat-raised-button class="noshadow top-btn-font white-btn">
+            <mat-icon>arrow_back</mat-icon> Back
+          </button>
+          <button type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+            (click)="toggleFormDisable('newBrandForm', 'edit')">
+            <mat-icon>edit</mat-icon> Edit
+          </button>
+        </ng-container>
+        <ng-container *ngIf="!getFormDisableStats('newBrandForm')">
+          <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" color="defalt"
+            (click)="toggleFormDisable('newBrandForm', 'cancel')">
+            <mat-icon>cancel</mat-icon> Cancel
+          </button>
+          <button mat-raised-button class="noshadow top-btn-font" color="primary" [disabled]="isSubmit">
+            <mat-icon>save</mat-icon> Save
+          </button>
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+  <div class="box-shadow bg-white padding-10">
+    <div class="row">
+      <div class="{{brandLogoUrl != ''?'col-8':'col-10'}}">
+        <div class="hoz-form">
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Select Brand Owner
+                </mat-label>
+                <mat-select formControlName="brandOwner">
+                    <div class="custom-panel" style="position: relative;overflow-x: hidden;">
+                        <mat-option>
+                            <ngx-mat-select-search #searchOwner placeholderLabel="Find Brand Owner .."></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option [value]="item.id" *ngFor="let item of brandOwnerList">{{item.masterBrandName}}</mat-option>
+                    </div>
+                    <footer style="height: 40px;text-align: right;">
+                        <button mat-button (click)="createNewBandOwner()">Add New Band Owner</button>
+                    </footer>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Brand Name</mat-label>
+                <input matInput formControlName="brandName" trim=blur
+                  [ngClass]="{ 'is-invalid': submitted && f.brandName.errors }" />
+                <button class="matSuffix-text" type="button" matSuffix mat-button color="primary"
+                  (click)="checkAvailability($event);"
+                  [disabled]="brandDetails && brandDetails['brandName'] == this.newBrandForm.value['brandName']">
+                  Check Availability
+                </button>
+              </mat-form-field>
+              <div *ngIf="!f.brandName.valid && f.brandName.touched" class="error">
+
+                <span class="text-danger" *ngIf="f.brandName.errors.required">Required</span>
+                <span class="text-danger" *ngIf="f.brandName.errors.maxlength">Max Length 100</span>
+
+
+              </div>
+              <mat-hint align="start" *ngIf="statusChange()">
+                <span
+                  style="color: green;font-size: 12px;margin-top: -7px;display: block;margin-bottom: 7px;">{{ brandNameAvailibilityCheckText }}</span>
+              </mat-hint>
+          </div>
+         </div>
+          <div class="row">
+            <!-- <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Short Name</mat-label>
+                <input matInput formControlName="brandShortName" trim=blur />
+              </mat-form-field>
+              <div *ngIf="!f.brandShortName.valid && f.brandShortName.touched && f.brandShortName.errors" class="error">
+
+                <span class="text-danger" *ngIf="f.brandShortName.errors.required">Required</span>
+                <span class="text-danger" *ngIf="f.brandShortName.errors.maxlength">Max Length 30</span>
+
+              </div>
+            </div> -->
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="active">
+                  <mat-option [value]="1">Active</mat-option>
+                  <mat-option [value]="2">Hold</mat-option>
+                  <mat-option [value]="3">Blocked</mat-option>
+                  <mat-option [value]="0">Discontinued</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *ngIf="!f.active.valid && f.active.touched && f.active.errors" class="error">
+
+                <span class="text-danger" *ngIf="f.active.errors.required">Required</span>
+
+              </div>
+            </div>
+          </div>
+
+
+          <div class="mt-2">
+            <mat-slide-toggle color="primary" formControlName="isRequiredAuthorisation">Brand Authorisation Required
+            </mat-slide-toggle>
+          </div>
+          <div class="mt-3">
+            <mat-slide-toggle color="primary" formControlName="isPrimiumBrand">Premium Brand</mat-slide-toggle>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="upload-image-view">
+          <img [src]="brandLogoUrl" *ngIf="brandLogoUrl" height="200">
+          <br />
+        </div>
+        <div class="alt-text">
+          <div class="row no-gutters">
+            <div class="col-2 text-center">
+              P
+            </div>
+            <div class="col-10">
+              <input type="text" placeholder="Alternative Text ">
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-upload-image">
+          <input type='file' [disabled]="getFormDisableStats('newBrandForm')" accept="image/jpeg, image/png"
+            (change)="onSelectFile($event)" class="custom-input">
+        </div>
+      </div>
+      <div class="col-2" *ngIf="brandLogoUrl && editBrandLogoUrl">
+        <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="3 / 3"
+          format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
+          (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+        <button type="button" matTooltip="Crop Image" aria-label="Crop Image" class="btn btn-crop"
+          (click)="imageCroppedDone()">
+          <mat-icon>crop</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

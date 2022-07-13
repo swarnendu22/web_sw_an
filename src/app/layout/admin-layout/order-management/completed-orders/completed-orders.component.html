@@ -1,0 +1,257 @@
+<mat-drawer-container class="order-filter-container" hasBackdrop="true">
+  <mat-drawer #orderFilter position="end" mode="over">
+    <div class="more-filter-header">
+      <h3>More Filters</h3>
+      <button (click)="orderFilter.close()" mat-mini-fab aria-label="Example icon button with a close icon">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="more-filter-body">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Delivery Method
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <mat-radio-group class="order-radio-group"
+            style="display: flex;flex-direction: column;padding: 10px 15px;padding-bottom: 0px;" color="primary"
+            (click)="$event.stopPropagation();" [(ngModel)]="selectedDeliveryMethod" aria-label="Select an option">
+            <ng-container *ngFor="let deliveryOption of deliveryOptions; let i = index">
+              <mat-radio-button value="{{ deliveryOption.value }}" (change)="onDMethodChange( deliveryOption.value )">
+                {{deliveryOption.name}} </mat-radio-button>
+            </ng-container>
+          </mat-radio-group>
+          <button mat-button (click)="clearDeliveryMethod();">Clear</button>
+
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Date
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-radio-group style="display: flex;flex-direction: column;" color="primary" aria-label="Select an option"
+            [(ngModel)]="selectedDate">
+            <mat-radio-button *ngFor="let list of dateList" [value]="list.value" (change)="orderDateChanged($event)">
+              {{list.name}}</mat-radio-button>
+          </mat-radio-group>
+          <div class="form-header-btn" *ngIf="isCustomDate">
+            <mat-form-field appearance="fill">
+                <mat-label>From Date</mat-label>
+                <input matInput [matDatepicker]="startDate" [(ngModel)]="start_date" (ngModelChange)="changeDate()">
+                <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                <mat-datepicker #startDate></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>To Date</mat-label>
+                <input matInput [matDatepicker]="endDate" [(ngModel)]="end_date" (ngModelChange)="changeDate()">
+                <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                <mat-datepicker #endDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <button (click)="clearOrderDate();" mat-button>Clear</button>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div class="more-filter-footer">
+      <button mat-stroked-button style="border: solid 1px rgba(0,0,0,.12);height: 45px;"
+        (click)="clearOrderAll();orderFilter.close();">Clear all filters</button>
+      <!-- <button mat-raised-button color="primary" style="height: 40px;">Done</button> -->
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="ndh-order-panel">
+      <h3 class="ndh-order-h3">Completed Orders</h3>
+      <div class="ndh-order-body">
+        <div class="ndh-order-filter">
+          <div class="row-container" style="flex-grow: 1;margin-right: 10px;">
+            <div class="auto-col">
+              <mat-form-field class="filters-order-input" style="width: auto;" appearance="outline">
+                <input matInput placeholder="Filter Orders" [(ngModel)]="orderid" (keyup.enter)="searchById()" (ngModelChange)="onsearchById($event)">
+                <mat-icon matSuffix (click)="searchById()" style="width: 35px;cursor: pointer;">search</mat-icon>
+              </mat-form-field>
+            </div>
+            <div class="auto-col">
+              <mat-form-field appearance="outline">
+                <mat-label>Store</mat-label>
+                <mat-select (selectionChange)="storeChange();" [(ngModel)]="selectedStore">
+                  <ng-container>
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Find Store ..'" (keyup)="findStore($event)">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]="">--Select Store--</mat-option>
+                    <mat-option *ngFor="let store of allStore" [value]="store.id">{{store.storeName}}
+                    </mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="auto-col">
+              <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+                <mat-button-toggle [matMenuTriggerFor]="menuPayment" value="payment">Payment Status <mat-icon>
+                    arrow_drop_down</mat-icon>
+                </mat-button-toggle>
+                <!-- <mat-button-toggle [matMenuTriggerFor]="menuFulfillment" value="fulfillment">Fulfillment Status <mat-icon>arrow_drop_down</mat-icon></mat-button-toggle> -->
+                <mat-button-toggle value="filters" (click)="orderFilter.toggle()">More Filters</mat-button-toggle>
+              </mat-button-toggle-group>
+
+              <mat-menu #menuPayment="matMenu">
+                <mat-radio-group class="order-radio-group"
+                  style="display: flex;flex-direction: column;padding: 10px 15px;padding-bottom: 0px;" color="primary"
+                  (click)="$event.stopPropagation();" [(ngModel)]="selectedPaymentMode" aria-label="Select an option">
+                  <mat-radio-button value="PREPAID" (change)="onPaymentChange('PREPAID')">PREPAID
+                  </mat-radio-button>
+                  <mat-radio-button value="COD" (change)="onPaymentChange('COD')">COD
+                  </mat-radio-button>
+                </mat-radio-group>
+                <button (click)="clearPaymentMode();" mat-button>Clear</button>
+              </mat-menu>
+
+              <!-- <mat-menu #menuFulfillment="matMenu">
+                                <div style="padding: 10px 15px;padding-bottom: 0px;">
+                                    <mat-checkbox  style="display: block;" color="primary" (click)="$event.stopPropagation();">Fulfilled</mat-checkbox>
+                                    <mat-checkbox  style="display: block;" color="primary" (click)="$event.stopPropagation();">Unfulfilled</mat-checkbox>
+                                    <mat-checkbox  style="display: block;" color="primary" (click)="$event.stopPropagation();">Partially Fulfilled</mat-checkbox>
+                                    <mat-checkbox  style="display: block;" color="primary" (click)="$event.stopPropagation();">Scheduled</mat-checkbox>
+                                    </div>
+                                <button (click)="$event.stopPropagation();" mat-button>Clear</button>
+                            </mat-menu> -->
+            </div>
+            <div class="auto-col">
+              <button mat-stroked-button [matMenuTriggerFor]="menuSort"
+                style="border: solid 1px rgba(0,0,0,.12);height: 45px;">
+                <mat-icon>import_export</mat-icon> Sort
+              </button>
+              <mat-menu #menuSort="matMenu">
+                <h6 style="padding: 0px 15px;
+                                font-size: 13px;
+                                color: gray;
+                                font-weight: 400 !important;
+                                margin-bottom: 0px;">Sort by</h6>
+                <mat-radio-group class="order-radio-group"
+                  style="display: flex;flex-direction: column;padding: 10px 15px;padding-bottom: 0px;" color="primary"
+                  (click)="$event.stopPropagation();" aria-label="Select an option" [(ngModel)]="selectedSort1">
+                  <mat-radio-button value="id_asc" (change)="orderSortingChanged('id', 'asc')">Order Number (ascending)
+                  </mat-radio-button>
+
+                  <mat-radio-button value="id_desc" (change)="orderSortingChanged('id', 'desc')">Order Number
+                    (descending)</mat-radio-button>
+
+                  <mat-radio-button value="created_at_desc" (change)="orderSortingChanged('created_at', 'asc')">Date
+                    (oldest first)</mat-radio-button>
+
+                  <mat-radio-button value="created_at_asc" (change)="orderSortingChanged('created_at', 'desc')">Date
+                    (newest first)</mat-radio-button>
+                </mat-radio-group>
+                <button (click)="clearorderSorting();" mat-button>Clear</button>
+              </mat-menu>
+            </div>
+          </div>
+          <div class="form-header-btn">
+            <mat-icon (click)="searchPendingOrder()" style="margin-right: 20px; cursor: pointer; margin-top: 5px;">
+              cached</mat-icon>
+          </div>
+        </div>
+        <div class="ndh-order-table">
+          <table mat-table [dataSource]="rowData" style="border: 0px solid rgba(0, 0, 0, 0.12);">
+            <ng-container matColumnDef="sub_order_no">
+              <th mat-header-cell *matHeaderCellDef> Order No. </th>
+              <td mat-cell *matCellDef="let element">
+                <p>{{element.display_order_number}}</p>
+                <!-- <label class="order-status-xs">{{element.status}}</label> -->
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="createdAt">
+              <th mat-header-cell *matHeaderCellDef> Date </th>
+              <td mat-cell *matCellDef="let element"> {{element.placed_at| date:'dd/MM/yy, h:mm a'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="store_name">
+              <th mat-header-cell *matHeaderCellDef> Store Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.store.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="store_city">
+              <th mat-header-cell *matHeaderCellDef> City </th>
+              <td mat-cell *matCellDef="let element"> {{element.customer.city}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="payment_mode">
+              <th mat-header-cell *matHeaderCellDef> Payment Mode </th>
+              <td mat-cell *matCellDef="let element"> {{element.payment_method}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="delivery_type">
+              <th mat-header-cell *matHeaderCellDef> Delivery Method </th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.type==='STORE_PICKUP'">PICKUP</span>
+                <span *ngIf="element.type==='HOME_DELIVERY'">DELIVERY</span>
+              </td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="is_sla_breach">
+                          <th mat-header-cell *matHeaderCellDef> SLA </th>
+                          <td mat-cell *matCellDef="let element"> {{element.is_sla_breach}} </td>
+                        </ng-container> -->
+
+            <ng-container matColumnDef="total_item">
+              <th mat-header-cell *matHeaderCellDef> Items </th>
+              <td mat-cell *matCellDef="let element"> {{element.cart.items.length}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="final_total">
+              <th mat-header-cell *matHeaderCellDef> Total Amount </th>
+              <td mat-cell *matCellDef="let element"> ₹{{element.bag.charges.net_amount | number : '1.2-2'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td mat-cell *matCellDef="let element">
+                <div style="height: 22px;
+                                  padding: 0px 15px;
+                                  display: inline-block;
+                                  line-height: 22px;
+                                  font-size: 12px;
+                                  font-weight: 600;
+                                  background: #46b920;
+                                  color: white;
+                                  border-radius: 30px;">{{element.status}}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="review">
+              <th mat-header-cell *matHeaderCellDef> Review </th>
+              <td mat-cell *matCellDef="let element">
+                <div *ngIf="element.order_reviews && element.order_reviews.length > 0">
+                  <div *ngIf="element.order_reviews[0]" style="padding: 10px 0px;;font-size: 13px;">
+                    <span class="material-icons"
+                      *ngFor="let item of createRange(element.order_reviews[0]['user_rating']);">
+                      star
+                    </span>
+                    <span class="material-icons"
+                      *ngFor="let item of createRange(5 - element.order_reviews[0]['user_rating']);">
+                      star_border
+                    </span>
+                    <div>{{element.order_reviews[0]['user_review_message']}}</div>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row style="cursor: pointer;" (click)="onActionBtnClick(row)"
+              *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <mat-paginator style-paginator [length]="totalRecords" pageSize="{{perPage}}"
+            [pageSizeOptions]="[5, 10, 20, 50, 100]" (page)="onPaginateChange($event)" showFirstLastButtons>
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

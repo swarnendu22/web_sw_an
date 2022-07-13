@@ -1,0 +1,11 @@
+<a mat-flat-button color="primary" matTooltip="View" aria-label="View" class="btn-data btn-sm-data" (click)="invokeParentMethod('VIEW')">
+    <mat-icon>visibility</mat-icon>
+</a>
+<a *ngIf="false && params && params.data && params.data.status && (params.data.status === 'APPROVED-NO-PRODUCT' || params.data.status === 'APPROVED')"
+    mat-flat-button color="primary" matTooltip="Reject" aria-label="View" class="btn-data btn-sm-data" (click)="rejectApproveOperation('REJECTED')">
+    <mat-icon>highlight_off</mat-icon>
+</a>
+<a *ngIf="params && params.data && params.data.status && (params.data.status === 'PENDING' || params.data.status === 'REJECTED' || params.data.status === 'DELETED' )"
+    mat-flat-button color="primary" matTooltip="Approve" aria-label="View" class="btn-data btn-sm-data" (click)="rejectApproveOperation('APPROVED')">
+    <mat-icon>check</mat-icon>
+</a>

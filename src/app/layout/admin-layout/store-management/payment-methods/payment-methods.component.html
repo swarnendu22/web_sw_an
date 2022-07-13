@@ -1,0 +1,33 @@
+<div class="top-bar box-shadow">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title">Payment Methods</h3>
+    </div>
+    <div class="form-header-btn">
+      <button
+        routerLink="add-new-payment-method"
+        mat-raised-button
+        class="noshadow top-btn-font"
+        color="primary"
+      >
+        <mat-icon>add</mat-icon> Add New Payment Methods
+      </button>
+    </div>
+  </div>
+</div>
+<div class="bg-white grid-box-area" style="height: calc(100% - 80px)">
+  <ag-grid-angular
+    style="width: 100%; height: 100%;"
+    class="ag-theme-balham"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    (firstDataRendered)="onFirstDataRendered($event)"
+    [pagination]="true"
+    [enableFilter]="true"
+    [animateRows]="true"
+    [enableSorting]="true"
+    [floatingFilter]="true"
+    (gridReady)="onGridReady($event)" (gridSizeChanged)="onGridSizeChanged($event)"
+  >
+  </ag-grid-angular>
+</div>

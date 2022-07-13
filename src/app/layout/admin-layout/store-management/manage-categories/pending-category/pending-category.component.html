@@ -1,0 +1,21 @@
+<div class="top-bar box-shadow">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title">Pending Categories Main</h3>
+    </div>
+  </div>
+</div>
+
+<div class="box-shadow bg-white padding-10" style="height: calc(100% - 80px)">
+    <ag-grid-angular
+      style="width: 100%; height: 100%;"
+      class="ag-theme-balham"
+      [rowData]="rowData"
+      [columnDefs]="columnDefs"
+      (firstDataRendered)="onFirstDataRendered($event)"
+      (gridReady)="onGridReady($event)"
+      [pagination]="true"
+      (gridSizeChanged)="onGridSizeChanged($event)"
+    >
+    </ag-grid-angular>
+</div>

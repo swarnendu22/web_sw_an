@@ -1,0 +1,80 @@
+<div style="padding: 30px;" class="tab-area-content">
+    
+    <h2>Add Delivery Partner</h2>
+    <div style="display: flex; align-items: center; margin-right: 5%;">
+        <img style="width: 15%;"
+            src="../../../../../assets/img/deliveryPartner.png" />
+    
+        <div style="display: flex; flex-direction: column; margin-left: 3%; width: 25%;">
+            <!-- <mat-form-field appearance="outline">
+                <mat-label>Delivery partner</mat-label>
+                <input #DeliveryPartner style="text-transform: uppercase;" matInput trim="blur">
+            </mat-form-field> -->
+
+            <mat-form-field appearance="outline">
+                <mat-label>Delivery partner</mat-label>
+                <mat-select [(ngModel)]="deliveryPartner" name="food">
+                  <mat-option *ngFor="let Delivery of deliveryComapnyLists" [value]="Delivery">
+                    {{Delivery}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+            <button style="margin-top: 20px;" mat-flat-button color="accent" (click)="addDeliveryPartner()" >Add
+                <mat-icon style="font-size: 20px;">add</mat-icon>
+            </button>
+    
+        </div>
+    
+    </div>
+</div>
+
+<div *ngIf="deliveryPartnerListData.length > 0" style="padding: 30px; margin-top: 35px;" class="tab-area-content">  
+
+    <h2>Delivery Partner List</h2>
+
+    <mat-form-field style="width: 99%; margin-left: 0.5%;" appearance="standard">
+        <mat-label>Filter</mat-label>
+        <input matInput autocomplete="off" (keyup)="applyFilter($event)" placeholder="Dunzo" #input>
+      </mat-form-field>
+      
+    <div class="master-product-table heights-1">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef style="width: 30%;"> ID </th>
+          <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
+        </ng-container>
+      
+        <!-- Name Column -->
+        <ng-container matColumnDef="delivery_partner">
+          <th mat-header-cell *matHeaderCellDef style="width: 30%;"> Delivery Partner </th>
+          <td mat-cell *matCellDef="let element"> {{ element.delivery_partner }} </td>
+        </ng-container>
+      
+        <!-- Weight Column -->
+        <ng-container matColumnDef="Actions">
+          <th mat-header-cell *matHeaderCellDef style="padding-left: 45px;"> Actions </th>
+          <td mat-cell *matCellDef="let element; let i = index;"> 
+                <div class="example-button-row">
+                    <button mat-flat-button style="border: 1px solid green; margin-right: 10px;" (click)="editDeliveryPartner( element )" >Edit
+                        <mat-icon style="color: green;">edit</mat-icon>
+                    </button>
+                    <button mat-flat-button style="border: 1px solid red; margin-right: 10px;" (click)="deleteDeliveryPartner( element )" >Delete
+                        <mat-icon style="color: red;">delete_outline</mat-icon>
+                    </button>
+              </div>
+          </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+      </table>
+      </div>
+
+</div>

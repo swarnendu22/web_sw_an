@@ -1,0 +1,21 @@
+<div class="tab-area-content ml-0 py-0">
+    <div class="store-promotion-section">
+        <div class="store-promotion-tab">
+            <mat-tab-group (selectedTabChange)="route($event)" [selectedIndex]="tabIndex">
+                <mat-tab label="Product Attribute">
+                    <!-- <app-product-attribute *ngIf="tabIndex==2"></app-product-attribute> -->
+                </mat-tab>
+                <mat-tab label="Attribute Group">
+                    <!-- <app-attribute-group *ngIf="tabIndex==0"></app-attribute-group> -->
+                </mat-tab>
+                <mat-tab label="Attribute Set">
+                    <!-- <app-attribute-set *ngIf="tabIndex==1"></app-attribute-set> -->
+                </mat-tab>
+
+            </mat-tab-group>
+            <div>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

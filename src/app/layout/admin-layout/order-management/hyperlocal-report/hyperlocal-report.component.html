@@ -1,0 +1,415 @@
+<div style="position: relative;">
+    <div style="position: absolute;right: -15px;top: -15px;">
+        <button mat-mini-fab color="warn" mat-dialog-close style="float: right;" (click)="closeDialog()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div *ngIf="customer_info" style="padding-bottom: 8px; font-weight: bold; font-size: 18px; display: flex; align-items: center;">
+        <span style="margin-right: 10px">Order No.</span>
+        <span>#{{ storeShipmentDetails.order_number }}</span>
+        <span class="deliveryType">
+            <img src="{{delivery_icon}}" style="height: 30px;">
+            {{delivery_type}}
+        </span>
+
+        <div class="flexRow">            
+            <div style="display: flex; align-items: center;" class="form-header-btn">
+                <span class="paymentMode">{{payment_mode}}</span>
+                <div
+                    *ngIf=" statusDropdown !='completed' && statusDropdown != 'cancelled' && statusDropdown != 'canceled_by_customer' && statusDropdown != 'canceled_by_admin' && statusDropdown != 'canceled_by_seller' ">                    
+                    <mat-form-field style="font-size: 10px;" class="ml-2 mr-4" appearance="outline">
+                        <mat-label>Awaiting Process:</mat-label>
+                        <mat-select [(ngModel)]="selectedStatus" (ngModelChange)="onStatusChange($event)">
+                            <mat-option value="accept">ACCEPT</mat-option>
+                            <mat-option value="reject">REJECT</mat-option>
+                            <mat-option value="ready">READY</mat-option>
+                            <mat-option value="picked_up">PICKED UP</mat-option>
+                            <mat-option value="shipped">SHIPPED</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="form-header-btn" style="align-self: center;flex:1">
+                <button type="button" mat-raised-button class="top-btn-font drop mr-2" color="primary" (click)="orderStatusSubmit()"*ngIf=" statusSUbmit && selectedStatus != 'cancelled' && selectedStatus != 'canceled_by_customer' && selectedStatus != 'canceled_by_admin' && selectedStatus != 'canceled_by_seller' ">
+                    Submit
+                </button>
+            </div>
+            <mat-divider></mat-divider>
+        </div>
+
+    </div>
+
+    <p class="shipment-date">{{ placed_at | date : 'medium' }}</p>
+
+    <mat-divider></mat-divider>
+    <div style="border-width: 1px; border-color: gray; border-radius: 4px;margin-top: 10px;">
+        <!-- <div class="flexRow">
+            
+            <div style="display: flex; align-items: center;" class="form-header-btn mb-3">
+                <span class="paymentMode">{{payment_mode}}</span>
+                <div
+                    *ngIf=" statusDropdown !='completed' && statusDropdown != 'cancelled' && statusDropdown != 'canceled_by_customer' && statusDropdown != 'canceled_by_admin' && statusDropdown != 'canceled_by_seller' ">                    
+                    <mat-form-field style="font-size: 10px;" class="ml-2 mr-4" appearance="outline">
+                        <mat-label>Awaiting Process:</mat-label>
+                        <mat-select [(ngModel)]="selectedStatus" (ngModelChange)="onStatusChange($event)">
+                            <mat-option value="accept">ACCEPT</mat-option>
+                            <mat-option value="reject">REJECT</mat-option>
+                            <mat-option value="ready">READY</mat-option>
+                            <mat-option value="picked_up">PICKED UP</mat-option>
+                            <mat-option value="shipped">SHIPPED</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="form-header-btn mb-3" style="align-self: center;flex:1">
+                <button type="button" mat-raised-button class="top-btn-font drop mr-2" color="primary" (click)="orderStatusSubmit()"*ngIf=" statusSUbmit && selectedStatus != 'cancelled' && selectedStatus != 'canceled_by_customer' && selectedStatus != 'canceled_by_admin' && selectedStatus != 'canceled_by_seller' ">
+                    Submit
+                </button>
+            </div>
+            <mat-divider></mat-divider>
+        </div> -->
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="fullfillment-order-info">
+                    <div class="seller-panel-header">
+                        <h4>Item Details</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="product-fullfillment-table price-order-table">
+                                <table class="">
+                                    <tbody>
+                                        <tr *ngFor="let item of order_items">
+                                            <td style="width: 15%;text-align: left;">
+                                                <img *ngIf="item.base_image != null; else noImage" src="{{item.base_image}}"
+                                                />
+                                                <ng-template #noImage>
+                                                    <img src="https://ndh.imgix.net/ndh-stores/stores_img/1613116764366.jpeg" />
+                                                </ng-template>
+                                            </td>
+                                            <td style="width: 45%;">
+                                                <h4 class="order_menu_name">{{item.title}}</h4>
+                                            </td>
+                                            <td style="width: 20%;text-align: right;">
+                                                <p>₹{{item.price.unit_display_price | number : '1.2-2'}} × {{item.quantity}}</p>
+                                            </td>
+                                            <td style="width: 20%;text-align: right;">
+                                                <p>₹{{item.price.total_price | number : '1.2-2'}}</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fullfillment-order-info">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="product-fullfillment-table">
+                                <table *ngIf="commercial_summary">
+                                    <tbody>
+                                        <tr *ngIf="commercial_summary.charges.bag_total_amount > 0">
+                                            <td style="width: 40%;text-align: left;">
+                                                <p>Item Total</p>
+                                            </td>
+                                            <td style="width: 20%;">
+                                                <p></p>
+                                            </td>
+                                            <td style="width: 40%;text-align: right;">
+                                                <p>₹{{commercial_summary.charges.bag_total_amount | number : '1.2-2'}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="commercial_summary.charges.total_discount > 0">
+                                            <td style="width: 20%;text-align: left;">
+                                                <p>Special Discount</p>
+                                            </td>
+                                            <td style="width: 60%;">
+                                                <p></p>
+                                            </td>
+                                            <td style="width: 20%;text-align: right;">
+                                                <p>-₹{{commercial_summary.charges.total_discount | number : '1.2-2'}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="commercial_summary.charges.total_promo_discount_charge > 0">
+                                            <td style="width: 20%;text-align: left;">
+                                                <p>Promo Discount</p>
+                                            </td>
+                                            <td style="width: 60%;">
+                                                <p></p>
+                                            </td>
+                                            <td style="width: 20%;text-align: right;">
+                                                <p>-₹{{commercial_summary.charges.total_promo_discount_charge | number : '1.2-2'}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 20%;text-align: left;">
+                                                <p>Sub Total</p>
+                                            </td>
+                                            <td style="width: 60%;">
+                                                <p></p>
+                                            </td>
+                                            <td style="width: 20%;text-align: right;">
+                                                <p>₹{{commercial_summary.charges.sub_total_amount | number : '1.2-2'}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="commercial_summary.total_tips > 0">
+                                            <td style="width: 20%;text-align: left;">
+                                                <p>Tips</p>
+                                            </td>
+                                            <td style="width: 60%;">
+                                                <p></p>
+                                            </td>
+                                            <td style="width: 20%;text-align: right;">
+                                                <p>₹{{commercial_summary.total_tips | number : '1.2-2'}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="commercial_summary.charges.delivery_charge > 0">
+                                            <td style="width: 20%;text-align: left;">
+                                                <p style="float: left;margin-right: 10px;">Delivery</p>
+                                                <span class="material-icons" (click)="openDeliveryChargeDetails()" style="font-size: 18px;"> 
+                                                    info
+                                                </span>
+                                            </td>
+                                            <td style="width: 60%;">
+                                                <p></p>
+                                            </td>
+                                            <td style="width: 20%;text-align: right;">
+                                                <p>₹{{commercial_summary.charges.delivery_charge | number : '1.2-2'}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="taxCharges > 0">
+                                            <td style="width: 20%;text-align: left;">
+                                                <p style="float: left;margin-right: 10px;">Tax and Charges</p>
+                                                <span class="material-icons" (click)="openTaxChargeDetails()" style="font-size: 18px;"> 
+                                                    info
+                                                </span>
+                                            </td>
+                                            <td style="width: 60%;">
+                                                <p></p>
+                                            </td>
+                                            <td style="width: 20%;text-align: right;">
+                                                <p>₹{{taxCharges | number : '1.2-2'}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 20%;text-align: left;">
+                                                <p style="font-weight: 700;">Order Total</p>
+                                            </td>
+                                            <td style="width: 60%;">
+                                            </td>
+                                            <td style="width: 20%;text-align: right;">
+                                                <p style="font-weight: 700;">₹{{ commercial_summary.charges.sub_total_amount }}</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fullfillment-order-info">
+                    <div class="delivery-info">
+                        <h4 style="margin: 0px;">Delivery Info</h4>
+                        <!-- <button mat-raised-button color="warn" (click)="cancelOrderSipment()" >Cancel Order</button> -->
+                        <button mat-raised-button color="warn" >Cancel Order</button>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div style="display: flex; align-items: center;">
+                            <div style="margin-right: 25px;" class="fullfillment-user-info-img">
+                                <img src="https://ndh.imgix.net/ndh-assets/img/avatar.png?h=110">
+                            </div>
+                            <div>
+                                <p style="margin: 0px"><b>Driver: </b> Santosh Shah</p>
+                                <p style="margin: 0px"><b>Conatct No.: </b> +91-8789967084</p>
+                                <p style="margin: 0px"><b>Vehicle: </b> Car</p>
+                            </div>
+                        </div>
+                        <div class="delivery-details">
+                            <div>
+                                <p style="margin: 0px"><b>Pick-up Estimated Time</b></p>
+                                <p>30 mins</p>
+                            </div>
+                            <div>
+                                <p style="margin: 0px"><b>Drop Estimated Time</b></p>
+                                <p>30 mins</p>
+                            </div>
+                            <div>
+                                <p style="margin: 0px"><b>City</b></p>
+                                <p>Kolkata</p>
+                            </div>
+                            <div>
+                                <p style="margin: 0px"><b>Region</b></p>
+                                <p>West Bengal</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fullfillment-order-info">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h4>Order History</h4>
+                        <!-- <button mat-raised-button color="warn" (click)="manifestlink( storeShipmentDetails.manifestLink )">Download Bill Image</button> -->
+                    </div>
+                    
+
+                    <!-- <mat-vertical-stepper #stepper [linear]="true">
+                        <ng-template matStepperIcon="edit">
+                            <mat-icon>done</mat-icon>
+                        </ng-template>
+                        <mat-step  disableRipple="true" [completed]="true" label="{{item.status}}" *ngFor="let item of order_histories;let i = index">
+                            {{item.created_at | date: 'medium'}}
+                        </mat-step>
+                    </mat-vertical-stepper> --> 
+
+                    <!-- previous it was done like this -->
+
+                    <div class="delivery-logo">
+                        <div style="display: flex; align-items: center;">
+                            <img style="width: 100px; margin-right: 15px; border-radius: 5px;" src="https://www.thebestmistri.com/images/mechanic/delhivery.png">
+                            <p style="font-size: 23px; font-weight: 700;">{{ storeShipmentDetails.partner_name }}</p>
+                        </div>
+                        <div style="display: flex; flex-direction: column;">
+                            <p style="margin: 0px; color: blue;"><b>Tracking Id: </b></p>
+                            <p style="margin: 0px; font-weight: 700;">{{ storeShipmentDetails.vendor_shipment_id }}</p>
+                        </div>                        
+                    </div>
+
+                    <div style="display: flex; flex-direction: column;">
+                        <ng-container  *ngFor="let item of order_histories; let i = index">
+                            <div *ngIf="i !== (order_histories.length-1)" style="display: flex; margin-bottom: 3px;">
+                                <div class="DeliveryDate">
+                                    <p style="margin: 0px; font-weight: 700;">{{item.created_at | date: 'mediumDate'}}</p>
+                                    <p style="margin: 0px;">{{item.created_at | date: 'shortTime'}}</p>
+                                </div>
+                                <div class="DeliveryActivity">
+                                    <div class="bigger-circle">
+                                        <div class="smaller-circle"></div>
+                                    </div>
+                                    <p style="margin: 0px;"><b>Message: </b>{{ item.message }}</p>
+                                    <p style="margin: 0px;"><b>Status: </b>{{ item.status }}</p>
+                                </div>
+                            </div>
+                            <div *ngIf="i === (order_histories.length-1)" style="display: flex; margin-bottom: 3px;">
+                                <div class="DeliveryDate">
+                                    <p style="margin: 0px; font-weight: 700;">{{item.created_at | date: 'mediumDate'}}</p>
+                                    <p style="margin: 0px;">{{item.created_at | date: 'shortTime'}}</p>
+                                </div>
+                                <div style="border-left: 2.8px dashed white" class="DeliveryActivity">
+                                    <div class="bigger-circle">
+                                        <div class="smaller-circle"></div>
+                                    </div>
+                                    <p style="margin: 0px;"><b>Message: </b>{{ item.message }}</p>
+                                    <p style="margin: 0px;"><b>Status: </b>{{ item.status }}</p>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <!-- <div style="display: flex; margin-bottom: 5px;">
+                            <div class="DeliveryDate">
+                                <p style="margin: 0px; font-weight: 700;">27 Oct.</p>
+                                <p style="margin: 0px;">12:00 AM</p>
+                            </div>
+                            <div class="DeliveryActivity">
+                                <div class="bigger-circle">
+                                    <div class="smaller-circle"></div>
+                                </div>
+                                <p style="margin: 0px;"><b>Activity: </b>In Transit - Added to Trip</p>
+                                <p style="margin: 0px;"><b>Location: </b>Gurgaon (Haryana) </p>
+                            </div>
+                        </div> -->
+
+                    </div>
+
+                </div>
+                
+            </div>
+            <div class="col-md-4">
+                <div class="fullfillment-user-info">
+                    <div class="all-order-div">
+                        <h4 style="margin-bottom: 0px; padding-bottom: 0px;">Seller Details</h4>
+                        <button mat-button color="primary">All Orders</button>
+                    </div>
+                    <div class="fullfillment-user-box" *ngIf="storeInfo && storeInfo.name">
+                        <div class="fullfillment-user-info-img">
+                            <img *ngIf="storeInfo.store_log_url" src="{{storeInfo.store_log_url}}">
+                            <img *ngIf="!storeInfo.store_log_url" src="https://ndh.imgix.net/ndh-stores/stores_img/1613116764366.jpeg">
+                        </div>
+                        <div class="fullfillment-user-info-text">
+                            <p class="block">{{storeInfo.name}}</p>
+                            <p>{{storeInfo.store_address}}</p>
+                            <p>{{storeInfo.store_sector}}</p>
+                            <p>
+                                <span class="callto">
+                                    <mat-icon>call</mat-icon>
+                                </span>
+                                {{storeInfo.store_contact}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="fullfillment-user-box" *ngIf="!(customer_info && customer_info.name)">
+                        NA
+                    </div>
+                </div>
+                <div class="fullfillment-user-info">
+                    <div class="all-order-div">
+                        <h4 style="margin-bottom: 0px; padding-bottom: 0px;">Customer Details</h4>
+                        <button mat-button color="primary">All Orders</button>
+                    </div>
+                    
+                    <div class="fullfillment-user-box" *ngIf="customer_info && customer_info.name">
+                        <div class="fullfillment-user-info-img">
+                            <img src="https://ndh.imgix.net/ndh-assets/img/avatar.png?h=110">
+                        </div>
+                        <div class="fullfillment-user-info-text">
+                            <p class="block">{{customer_info.name}}</p>
+                            <p>{{customer_info.address1}}</p>
+                            <p>{{customer_info.address2}}</p>
+                            <p>
+                                <span class="callto">
+                                    <mat-icon>call</mat-icon>
+                                </span>
+                                {{customer_info.phone}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="fullfillment-user-box" *ngIf="!(customer_info && customer_info.name)">
+                        NA
+                    </div>
+                </div>
+
+                <div class="fullfillment-order-info transaction-history" *ngIf="transaction_details">
+                    <div class="seller-panel-header">
+                        <h4>Transaction History</h4>
+                    </div>
+                    <table class="table ndh-order-tran">
+                        <tbody>
+                            <tr>
+                                <th style="font-weight: 800;">REF.NO</th>
+                                <td>{{transaction_details[ transaction_details.length-1 ].txn_reference}}</td>
+                            </tr>
+                            <tr>
+                                <th style="font-weight: 800;">Payment Method</th>
+                                <td>{{transaction_details[ transaction_details.length-1 ].payment_method}}</td>
+                            </tr>
+                            <tr>
+                                <th style="font-weight: 800;">Date</th>
+                                <td>{{transaction_details[ transaction_details.length-1 ].txn_date | date:'medium'}}</td>
+                            </tr>
+                            <tr>
+                                <th style="font-weight: 800;">Amount</th>
+                                <td>₹{{transaction_details[ transaction_details.length-1 ].txn_amount | number : '1.2-2'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

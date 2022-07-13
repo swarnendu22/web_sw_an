@@ -1,0 +1,12 @@
+<app-attributes-page></app-attributes-page>
+<div class="form-header-btn">
+  <button [routerLink]="['../new-attribute-group']" mat-raised-button class="noshadow btn-ontab-attribute top-btn-font" color="primary">
+    <mat-icon>add</mat-icon> Add New Group Name
+  </button>
+</div>
+<div class="bg-white grid-box-area" style="height: calc(100vh - 80px)">
+  <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs"
+    (firstDataRendered)="onFirstDataRendered($event)" [pagination]="true" [enableFilter]="true" [floatingFilter]="true" [paginationPageSize]="50"
+    [animateRows]="true" (gridReady)="onGridReady($event)" (gridSizeChanged)="onGridSizeChanged($event)">
+  </ag-grid-angular>
+</div>

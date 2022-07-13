@@ -1,0 +1,7 @@
+<mat-form-field appearance="outline" style="width: 100px;">
+    <mat-label>Store Type</mat-label>
+    <mat-select [(ngModel)]="storeType" (selectionChange)="onStoreTypeChange()">
+      <mat-option value="PRIVATE">PRIVATE</mat-option>
+      <mat-option value="PUBLIC">PUBLIC</mat-option>
+    </mat-select>
+</mat-form-field>

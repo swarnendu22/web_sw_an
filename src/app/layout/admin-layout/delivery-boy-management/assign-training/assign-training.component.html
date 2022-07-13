@@ -1,0 +1,77 @@
+<div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title">Assigned for Training</h3>
+        </div>
+
+        <div class="form-header-btn">
+            <mat-form-field class="min-form" appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select [(value)]="status" (selectionChange)="selectStatus($event)">
+                    <mat-option value="PENDING">Pending</mat-option>
+                    <mat-option value="HOLD">Hold</mat-option>
+                    <mat-option value="REJECTED">Reject</mat-option>
+                    <mat-option value="VERIFIED">Verified</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="min-form" appearance="outline">
+                <mat-label>Vehicle Type</mat-label>
+                <mat-select [(value)]="vehicleType">
+                    <mat-option value="bicycle">Bicycle</mat-option>
+                    <mat-option value="two_wheeler">Two Wheeler</mat-option>
+                    <mat-option value="four_wheeler">Four Wheeler</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="min-form" appearance="outline">
+                <mat-label>Region</mat-label>
+                <mat-select [(value)]="state_name" (selectionChange)="selectRegion($event)">
+                    <mat-option *ngFor="let region of regionList" [value]="region">
+                        {{region.regionName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="min-form" appearance="outline">
+                <mat-label>Zone</mat-label>
+                <mat-select [(value)]="area">
+                    <mat-option *ngFor="let zone of zoneList" [value]="zone.zoneName">
+                        {{zone.zoneName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="form-header-btn">
+            <div class="input-group mr-2" style="width: 290px;">
+                <input type="text" style="height: 45px;" [(ngModel)]="searchTerm" class="form-control"
+                    placeholder="Search by Registration/Mobile No.">
+                <div class="input-group-append">
+                    <button class="btn btn-info d-flex align-items-center" style="height: 45px;" type="button"
+                        (click)="search()">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="form-header-btn">
+        	<div class="store-approval-btn">
+                <button (click)="openDate()" mat-raised-button type="button" color="primary" class="mr-2"><i class="fa fa-calendar mr-1"></i> Filter by Date</button>
+            </div>
+            <div class="store-approval-btn">
+                <button (click)="openMerchandise()" mat-raised-button type="button" class="btn btn-success">Merchandise</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white single-pagination" style="height: calc(100% - 110px)">
+    <ag-grid-angular style="width:100%; height: 100%" class="ag-theme-balham" [rowData]="rowData"
+        [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" (firstDataRendered)="onFirstDataRendered($event)"
+        (gridReady)="onGridReady($event)" [enableFilter]="true" [floatingFilter]="true"
+        (gridSizeChanged)="onGridSizeChanged($event)">
+    </ag-grid-angular>
+
+    <ul style="display: none;">
+        <li
+            *ngFor="let item of rowData | paginate: { id: 'dataPagination', itemsPerPage: 9999, currentPage: pageNo, totalItems: totalRecords }">
+            {{ item.id }}</li>
+    </ul>
+    <pagination-controls (pageChange)="getPageNoData($event)" id="dataPagination"></pagination-controls>
+
+</div>

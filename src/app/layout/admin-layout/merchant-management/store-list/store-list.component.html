@@ -1,0 +1,28 @@
+<div class="tab-area-content py-0">
+    <div class="top-bar box-shadow">
+        <div class="d-flex align-items-center">
+          <div class="mr-auto">
+            <h3 class="m-subheader__title">Stores: {{totalRecords}}</h3>
+          </div>
+          <div class="form-header-btn">
+            <button type="button" (click)="openAddStore()" mat-raised-button class="top-btn-font drop mr-2" color="primary">
+              <mat-icon>add</mat-icon> Add
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white single-pagination" style="height: calc(100vh - 240px)">
+        <ag-grid-angular style="width:100%; height: 100%" class="ag-theme-balham merchant-store-check merchatntAll" [rowData]="rowData"
+          [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" (firstDataRendered)="onFirstDataRendered($event)"
+          (gridReady)="onGridReady($event)" [rowSelection]="rowSelection" [enableFilter]="true" [floatingFilter]="true"
+          (gridSizeChanged)="onGridSizeChanged($event)" (cellClicked)='onCellClicked($event)' [rowHeight]="rowHeight">
+        </ag-grid-angular>
+        <ul style="display: none;">
+          <li
+            *ngFor="let item of rowData | paginate: { id: 'dataPagination', itemsPerPage: pageSize, currentPage: pageNo, totalItems: totalRecords }">
+            {{ item.id }}</li>
+        </ul>
+        <pagination-controls (pageChange)="getPageNoData($event)" id="dataPagination"></pagination-controls>
+      </div>
+</div>

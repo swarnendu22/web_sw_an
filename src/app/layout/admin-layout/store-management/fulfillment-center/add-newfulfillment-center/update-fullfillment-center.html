@@ -1,0 +1,61 @@
+<form [formGroup]="updateFCForm" autocomplete="off">
+  <h2 mat-dialog-title>Update Zone</h2>
+  <mat-dialog-content>
+    <div class="hoz-form">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Select Zone</mat-label>
+                <input matInput type="text" placeholder="Zone Name" formControlName="zoneName" trim="blur"
+                  autocomplete="off" />
+                <!-- formControlName="zoneId" -->
+                <!-- <mat-select
+                  required
+                  (selectionChange)="onZoneValueChange($event)"
+                  aria-disabled="true"
+                >
+                  <mat-option>
+                    <ngx-mat-select-search
+                      #zone
+                      [formControl]="zoneControl"
+                      [clearSearchInput]="false"
+                      [disableInitialFocus]="true"
+                      [placeholderLabel]="'Find Zone ..'"
+                      [noEntriesFoundLabel]="'no matches  found'"
+                    >
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option
+                    [value]="zoneSingle"
+                    *ngFor="
+                      let zoneSingle of zoneList$
+                        | dropdownfilter: zone.value:'zoneName'
+                    "
+                    >{{ zoneSingle.zoneName }}</mat-option
+                  >
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+              <mat-form-field appearance="outline">
+                <mat-label>TAT (In Hours)</mat-label>
+                <input matInput type="text" placeholder="Enter TAT" formControlName="tat" trim="blur"
+                  autocomplete="off" />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-flat-button color="primary" (click)="submitUpdateAttribute($event)"
+      (keydown.enter)="$event.preventDefault()" [disabled]="!(updateFCForm.valid && updateFCForm.dirty)"
+      mat-dialog-close="true">
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

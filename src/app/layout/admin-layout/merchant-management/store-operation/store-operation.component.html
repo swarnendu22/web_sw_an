@@ -1,0 +1,96 @@
+<div class="tab-area-content">
+	<div class="col-md-12">
+		<div class="store-header">
+			<h5>Weekly Store Timing</h5>
+			<button mat-raised-button color="primary" (click)="onSubmit()">Save</button>
+		</div>
+		<div class="row justify-content-between">
+			<div class="col-md-5">
+				<div class="store-operation-header">
+					<mat-form-field appearance="outline">
+						<mat-label>Order when closed</mat-label>
+						<mat-select [(ngModel)]="wo_order_when_closed">
+							<mat-option value="ALLOW">Allow</mat-option>
+							<mat-option value="RESTRICT">Restrict</mat-option>
+							<mat-option value="NEXT-DAY">Process Next-day</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+
+				<div class="operation-day-list" *ngFor="let storeItem of operation_timings;let i=index">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>{{storeItem.dayName}}</h5>
+							<mat-slide-toggle color="primary" [checked]="storeItem.isOpen==1 ?true:false" (change)="storeItem.isOpen=storeItem.isOpen==1?0:1">{{storeItem.isOpen==1?'Open':'Close'}}</mat-slide-toggle>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 ngx-timepicker-field-example">
+							<h5>Opening Time</h5>
+							<ngx-timepicker-field [buttonAlign]="'left'" [defaultTime]="formatAMPM(storeItem.openTime)" (timeChanged)="getOpeningAndClosingTime($event,i,'openTime')"></ngx-timepicker-field>
+						</div>
+						<div class="col-md-6 ngx-timepicker-field-example">
+							<h5>Closing Time</h5>
+							<ngx-timepicker-field [buttonAlign]="'left'" [defaultTime]="formatAMPM(storeItem.closeTime)" (timeChanged)="getOpeningAndClosingTime($event,i,'closeTime')"></ngx-timepicker-field>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="store-operation-header">
+					<h5>Planned Holiday</h5>
+					<!-- <mat-form-field appearance="outline">
+						<mat-label>Allow</mat-label>
+						<mat-select [(ngModel)]="planned_close">
+							<mat-option value="YES">Yes</mat-option>
+							<mat-option value="NO">No</mat-option>
+						</mat-select>
+					</mat-form-field> -->
+				</div>
+				<div class="hoz-form mt-3">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row" *ngFor="let plannedItem of planned_close_timing;let i=index;">
+								<div class="col-md-4">
+									<mat-form-field appearance="outline">
+										<input matInput [matDatepicker]="upicker" [value]="formatDate(plannedItem.start_date)" (dateChange)="onDateSelect($event,i,'start_date')"/>
+										<mat-datepicker-toggle matSuffix [for]="upicker"></mat-datepicker-toggle>
+										<mat-datepicker #upicker></mat-datepicker>
+									  </mat-form-field>
+								</div>
+								<div class="col-md-4">
+									<mat-form-field appearance="outline">
+										<input matInput [matDatepicker]="fpicker" [value]="formatDate(plannedItem.end_date)" (dateChange)="onDateSelect($event,i,'end_date')"/>
+										<mat-datepicker-toggle matSuffix [for]="fpicker"></mat-datepicker-toggle>
+										<mat-datepicker #fpicker></mat-datepicker>
+									  </mat-form-field>
+								</div>
+								<div class="col-md-4 d-flex align-items-center">
+									<mat-form-field appearance="outline" style="width: 85%">
+										<mat-label>Order when closed</mat-label>
+										<mat-select [(ngModel)]="plannedItem.add_order_when_closed">
+											<mat-option selected value="RESTRICT">Restrict</mat-option>
+											<mat-option value="AFTER-OPENING">After-opening</mat-option>
+										</mat-select>
+									</mat-form-field>
+									<!-- <button class="full-width" mat-raised-button color="warn" (click)="onDeletePlannedHoliday(i)"> -->
+									<mat-icon style="margin-left: 10px;cursor: pointer;" color="warn" (click)="onDeletePlannedHoliday(i)">delete</mat-icon>
+									<!-- </button> -->
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+				<div class="col-md-12 mt-2 p-0">
+					<button mat-stroked-button color="primary" (click)="addHoliday()"> Add New Holiday</button>
+				</div>
+			</div>
+
+			<div class="col-md-2 mt-3">
+				<button class="full-width" mat-raised-button color="primary" (click)="onSubmit()">Save</button>
+			</div>
+		</div>
+	</div>
+</div>

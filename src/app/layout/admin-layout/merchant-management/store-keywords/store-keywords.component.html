@@ -1,0 +1,103 @@
+<form [formGroup]="storeKeywordsForm" autocomplete="off">
+    <div class="tab-area-content">
+        <div class="hoz-form">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Store URL</mat-label>
+                            <span matPrefix>{{value}}/</span>
+                            <input matInput formControlName="storeUrl" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeKeywordsForm.get('storeUrl').valid }">
+                            <span [tooltip]="storeURL" *ngIf="!storeKeywordsForm.get('storeUrl').valid && storeKeywordsForm.get('storeUrl').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+
+                    </div>
+                    <ng-template #storeURL>
+                        <div>
+                            <p class="mb-1" *ngIf="storeKeywordsForm.get('storeUrl').errors.required">Required</p>
+                        </div>
+                    </ng-template>
+                    <div class="col-md-12">
+                        <mat-form-field appearance="outline">
+                            <mat-label>SEO Title</mat-label>
+                            <input matInput formControlName="seoTitle" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeKeywordsForm.get('seoTitle').valid }">
+                            <span [tooltip]="storetitle" *ngIf="!storeKeywordsForm.get('seoTitle').valid && storeKeywordsForm.get('seoTitle').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+
+                    </div>
+                    <ng-template #storetitle>
+                        <div>
+                            <p class="mb-1" *ngIf="storeKeywordsForm.get('seoTitle').errors.required">Required</p>
+                            <p class="mb-1" *ngIf="storeKeywordsForm.get('seoTitle').errors.maxlength">Max Length 250</p>
+                        </div>
+                    </ng-template>
+                    <div class="col-md-12 keyword-align">
+                        <mat-form-field class="example-chip-list">
+                            <mat-label>SEO Keyword</mat-label>
+                            <mat-chip-list #chipList aria-label="Keywords">
+                                <mat-chip *ngFor="let keyword of storeKeywords" [selectable]="true" [removable]="true" (removed)="remove(keyword)">
+                                    {{keyword}}
+                                    <mat-icon matChipRemove>cancel</mat-icon>
+                                </mat-chip>
+                                <input placeholder="New Keword..." [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+                                    (matChipInputTokenEnd)="add($event)">
+                            </mat-chip-list>
+                            <!-- <input matInput formControlName="seoKeyWords" [ngClass]="{ 'ng-invalid ng-touched': !storeKeywordsForm.get('seoKeyWords').valid }"> -->
+                            <span [tooltip]="seokeywords" *ngIf="!storeKeywordsForm.get('seoKeyWords').valid && storeKeywordsForm.get('seoKeyWords').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+
+                    </div>
+                    <ng-template #seokeywords>
+                        <div>
+                            <p class="mb-1" *ngIf="storeKeywordsForm.get('seoKeyWords').errors.required">Required</p>
+                        </div>
+                    </ng-template>
+                    <div class="col-md-12">
+                        <mat-form-field appearance="outline">
+                            <mat-label>SEO Description</mat-label>
+                            <textarea rows="4" matInput formControlName="seoDescription" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeKeywordsForm.get('seoDescription').valid }"></textarea>
+                            <span [tooltip]="seodescription" *ngIf="!storeKeywordsForm.get('seoDescription').valid && storeKeywordsForm.get('seoDescription').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+
+                    </div>
+                    <ng-template #seodescription>
+                        <div>
+                            <p class="mb-1" *ngIf="storeKeywordsForm.get('seoDescription').errors.required">Required</p>
+                        </div>
+                    </ng-template>
+                    <!-- <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Store Tag Line</mat-label>
+                            <textarea matInput formControlName="storeTagLine" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeKeywordsForm.get('storeTagLine').valid }"></textarea>
+                            <span [tooltip]="storetagline" *ngIf="!storeKeywordsForm.get('storeTagLine').valid && storeKeywordsForm.get('storeTagLine').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+
+                    </div>
+                    <ng-template #storetagline>
+                        <div>
+                            <p class="mb-1" *ngIf="storeKeywordsForm.get('storeTagLine').errors.required">Required</p>
+                        </div>
+                    </ng-template> -->
+                    <div class="col-md-2">
+                        <button class="full-width" mat-raised-button color="primary" (click)="onSave()" type="button">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

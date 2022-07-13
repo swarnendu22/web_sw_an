@@ -1,0 +1,179 @@
+<form [formGroup]="addLogisticPartnerForm" autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">Add New Logistic Partner</h3>
+      </div>
+      <div class="form-header-btn">
+        <ng-container>
+          <ng-container *ngIf="getFormDisableStats('addLogisticPartnerForm')">
+            <button routerLink="/store/logistic-partner" mat-raised-button class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+              (click)="toggleFormDisable('addLogisticPartnerForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('addLogisticPartnerForm')">
+            <button *ngIf="isEdit" type="button" mat-raised-button class="noshadow top-btn-font" color="defalt"
+              (click)="toggleFormDisable('addLogisticPartnerForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+
+            <button *ngIf="!isEdit" routerLink="/store/logistic-partner" mat-raised-button
+              class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+
+            <button mat-raised-button class="noshadow top-btn-font" color="primary"
+              (keydown.enter)="$event.preventDefault()" (click)="submitLogisticPartner($event)">
+              <mat-icon>save</mat-icon> Save
+            </button>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="box-shadow bg-white padding-10 hoz-form">
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Company Code</mat-label>
+          <input matInput type="text" formControlName="logisticCode" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addLogisticPartnerForm.get('logisticCode').valid && addLogisticPartnerForm.get('logisticCode').touched">
+          <mat-hint class="error" align="start" *ngIf="addLogisticPartnerForm.get('logisticCode').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Priority</mat-label>
+          <input matInput type="number" formControlName="priority" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addLogisticPartnerForm.get('priority').valid && addLogisticPartnerForm.get('priority').touched">
+          <mat-hint class="error" align="start" *ngIf="addLogisticPartnerForm.get('priority').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>User Name</mat-label>
+          <input matInput type="text" formControlName="apiUserName" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addLogisticPartnerForm.get('apiUserName').valid && addLogisticPartnerForm.get('apiUserName').touched">
+          <mat-hint class="error" align="start" *ngIf="addLogisticPartnerForm.get('apiUserName').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Sandbox API Key</mat-label>
+          <input matInput type="text" formControlName="sandboxApiKey" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addLogisticPartnerForm.get('sandboxApiKey').valid && addLogisticPartnerForm.get('sandboxApiKey').touched">
+          <mat-hint class="error" align="start"
+            *ngIf="addLogisticPartnerForm.get('sandboxApiKey').hasError('required')">Required
+            Field
+          </mat-hint>
+        </ng-container>
+        <mat-form-field appearance="outline">
+          <mat-label>Account Code</mat-label>
+          <input matInput type="text" formControlName="accountCode" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addLogisticPartnerForm.get('accountCode').valid && addLogisticPartnerForm.get('accountCode').touched">
+          <mat-hint class="error" align="start" *ngIf="addLogisticPartnerForm.get('accountCode').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Company Name</mat-label>
+          <input matInput type="text" formControlName="logisticCompany" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addLogisticPartnerForm.get('logisticCompany').valid && addLogisticPartnerForm.get('logisticCompany').touched">
+          <mat-hint class="error" align="start"
+            *ngIf="addLogisticPartnerForm.get('logisticCompany').hasError('required')">Required
+            Field
+          </mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="apiActive">
+            <mat-option [value]="1">Active</mat-option>
+            <mat-option [value]="0">In Active</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addLogisticPartnerForm.get('apiActive').valid && addLogisticPartnerForm.get('apiActive').touched">
+          <mat-hint class="error" align="start" *ngIf="addLogisticPartnerForm.get('apiActive').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="apiPassword" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addLogisticPartnerForm.get('apiPassword').valid && addLogisticPartnerForm.get('apiPassword').touched">
+          <mat-hint class="error" align="start" *ngIf="addLogisticPartnerForm.get('apiPassword').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Production API Key</mat-label>
+          <input matInput type="text" formControlName="productionApiKey" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addLogisticPartnerForm.get('productionApiKey').valid && addLogisticPartnerForm.get('productionApiKey').touched">
+          <mat-hint class="error" align="start"
+            *ngIf="addLogisticPartnerForm.get('productionApiKey').hasError('required')">Required
+            Field
+          </mat-hint>
+        </ng-container>
+        <mat-form-field appearance="outline">
+          <mat-label>Licence Information</mat-label>
+          <input matInput type="text" formControlName="licenceinfo" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addLogisticPartnerForm.get('licenceinfo').valid && addLogisticPartnerForm.get('licenceinfo').touched">
+          <mat-hint class="error" align="start" *ngIf="addLogisticPartnerForm.get('licenceinfo').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="outline">
+          <mat-label>Other API Details</mat-label>
+          <textarea matInput type="text" formControlName="otherApiDetails"></textarea>
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addLogisticPartnerForm.get('otherApiDetails').valid && addLogisticPartnerForm.get('otherApiDetails').touched">
+          <mat-hint class="error" align="start"
+            *ngIf="addLogisticPartnerForm.get('otherApiDetails').hasError('required')">Required
+            Field
+          </mat-hint>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</form>

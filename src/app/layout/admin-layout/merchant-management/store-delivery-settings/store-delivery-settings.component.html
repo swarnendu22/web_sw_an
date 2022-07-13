@@ -1,0 +1,322 @@
+<form [formGroup]="storeDeliverySettingsForm" autocomplete="off">
+	<div class="tab-area-content">
+		<div class="hoz-form">
+			<div class="col-md-12">
+				<h4 class="mb-4">Delivery & Operation</h4>
+
+				<div class="row">
+					<div class="d-flex col align-items-center mb-3">
+						<h6 class="mr-3 mb-0">Allow store to change operation timming</h6>
+						<mat-slide-toggle (change)="toggle('isStoreOperationTimingChange')"
+							[checked]="storeDeliverySettingsForm.get('isStoreOperationTimingChange').value==true?true:false"
+							style="text-align: right" color="primary"></mat-slide-toggle>
+					</div>
+
+					<div class="d-flex col align-items-center mb-3">
+						<h6 class="mr-3 mb-0">Allow Cart with Others</h6>
+						<mat-slide-toggle style="text-align: right"
+							[checked]="storeDeliverySettingsForm.get('allowCartWithOthers').value==true?true:false"
+							color="primary" (change)="toggle('allowCartWithOthers')"></mat-slide-toggle>
+					</div>
+					<div class="d-flex col align-items-center mb-3">
+						<h6 class="mr-3 mb-0"  matTooltip="This will enable e-com shipping for your store" [matTooltipPosition]=" 'above' " >Allow MarketPlace</h6>
+						<mat-slide-toggle style="text-align: right"
+							[checked]="storeDeliverySettingsForm.get('allowMarketplace').value==true?true:false"
+							color="primary" (change)="toggle('allowMarketplace')"  matTooltip="This will enable e-com shipping for your store" [matTooltipPosition]=" 'above' " ></mat-slide-toggle>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="inline-formx">
+							<h5>Order Processing Time</h5>
+							<mat-form-field class="text" appearance="outline">
+								<!-- <input numbersOnly type="text" trim="blur" matInput formControlName="order_processing_time">
+								<span [tooltip]="orderProccessingTime" *ngIf="!storeDeliverySettingsForm.get('order_processing_time').valid && storeDeliverySettingsForm.get('order_processing_time').touched"
+								 class="mandatory-alert" content-type="template">
+									<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+								</span> -->
+
+								<mat-select formControlName="order_processing_time">
+									<mat-option [value]="item.order_processing_time"
+										*ngFor="let item of orderProcessingArr">{{item.caption}}</mat-option>
+								</mat-select>
+
+
+							</mat-form-field>
+							<ng-template #orderProccessingTime>
+								<div>
+									<p class="mb-1"
+										*ngIf="storeDeliverySettingsForm.get('order_processing_time').errors.required">
+										Required</p>
+								</div>
+							</ng-template>
+							<!-- <mat-form-field class="select" appearance="outline">
+								<mat-select formControlName="order_processing_time_unit">
+									<mat-option value="MINUTE">minutes</mat-option>
+									<mat-option value="HOUR">hour</mat-option>
+								</mat-select>
+							</mat-form-field> -->
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex align-items-center mb-3">
+					<h6 class="mr-3 mb-0">Store Pickup</h6>
+					<mat-slide-toggle style="text-align: right"
+						[checked]="storeDeliverySettingsForm.get('store_pickup').value==true?true:false" color="primary"
+						(change)="toggle('store_pickup')"></mat-slide-toggle>
+				</div>
+
+				<div class="form mb-3" *ngIf="storeDeliverySettingsForm.get('store_pickup').value==true && false">
+					<div class="row">
+
+						<div class="col-md-8">
+							<!-- <mat-form-field appearance="outline">
+								<mat-label>Pickup Time Note</mat-label>
+								<textarea matInput trim="blur" placeholder="Some note if seller wants" formControlName="store_pickup_time" rows="5" cols="35"></textarea>
+							</mat-form-field> -->
+
+							<div class="operation-day-list" style="border-bottom: 0px solid #edf1f2;">
+								<button mat-mini-fab color="primary" class="mr-3" *ngIf="storePickUpTimes.length==0"
+									(click)="addSlot()">
+									<mat-icon>add</mat-icon>
+								</button>
+								<div class="row" *ngFor="let slotItem of storePickUpTimes;let i=index;">
+									<div class="col-4">
+										<mat-form-field appearance="outline">
+											<mat-label>Slot Name</mat-label>
+											<input matInput [(ngModel)]="slotItem.slot_name"
+												[ngModelOptions]="{standalone: true}">
+
+										</mat-form-field>
+									</div>
+									<div class="col-4">
+										<mat-form-field appearance="outline">
+											<mat-label>Slot Remarks</mat-label>
+											<input matInput [(ngModel)]="slotItem.slot_remarks"
+												[ngModelOptions]="{standalone: true}">
+
+										</mat-form-field>
+									</div>
+									<div class="col-4">
+										<button mat-mini-fab color="primary" class="mr-3"
+											*ngIf="i==storePickUpTimes.length-1" (click)="addSlot()">
+											<mat-icon>add</mat-icon>
+										</button>
+										<button mat-mini-fab color="warn" (click)="deleteSlot(i)">
+											<mat-icon>delete</mat-icon>
+										</button>
+									</div>
+									<div class="col-6 ngx-timepicker-field-example">
+										<h5>Opening Time</h5>
+										<ngx-timepicker-field [buttonAlign]="'left'"
+											[defaultTime]="formatAMPM(slotItem.slot_start_time)"
+											(timeChanged)="getOpeningAndClosingTime($event,i,'slot_start_time')">
+										</ngx-timepicker-field>
+									</div>
+									<div class="col-6 ngx-timepicker-field-example">
+										<h5>Closing Time</h5>
+										<ngx-timepicker-field [buttonAlign]="'left'"
+											[defaultTime]="formatAMPM(slotItem.slot_end_time)"
+											(timeChanged)="getOpeningAndClosingTime($event,i,'slot_end_time')">
+										</ngx-timepicker-field>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<mat-form-field appearance="outline">
+								<mat-label>Note</mat-label>
+								<textarea matInput trim="blur" placeholder="Some note here" rows="5"
+									formControlName="store_pickup_note"></textarea>
+							</mat-form-field>
+							<mat-form-field appearance="outline">
+								<mat-label>Payment terms</mat-label>
+								<textarea matInput trim="blur" placeholder="Some note here" rows="5"
+									formControlName="store_pickup_payment_terms"></textarea>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex align-items-center mb-3">
+					<h6 class="mr-3 mb-0">Self Delivery</h6>
+					<mat-slide-toggle style="text-align: right"
+						[checked]="storeDeliverySettingsForm.get('self_delivery').value==true?true:false"
+						color="primary" (change)="toggle('self_delivery')"></mat-slide-toggle>
+				</div>
+
+				<div class="form-separator mb-3" *ngIf="storeDeliverySettingsForm.get('self_delivery').value==true">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="inline-form-field">
+								<p>Max Delivery Range</p>
+								<mat-form-field appearance="outline">
+									<input numbersOnly matInput formControlName="sd_max_delivery_range">
+									<span matSuffix>km</span>
+								</mat-form-field>
+							</div>
+							<!-- <div class="col">
+								<mat-form-field appearance="outline">
+									<mat-label>Store Delivery Radius</mat-label>
+									<input numbersOnly matInput formControlName="sd_store_delivery_radius">
+									<span matSuffix>km</span>
+								</mat-form-field>
+							</div> -->
+							<div class="inline-form-field">
+								<p>Free Delivery Range</p>
+								<mat-form-field appearance="outline">
+									<input numbersOnly matInput formControlName="sd_free_range">
+									<span matSuffix>km</span>
+								</mat-form-field>
+							</div>
+							<div class="inline-form-field">
+								<p>Fixed Delivery Charge</p>
+								<mat-form-field appearance="outline">
+									<input numbersOnly matInput formControlName="sd_fixed_delivery_charge">
+									<span matSuffix>₹</span>
+								</mat-form-field>
+							</div>
+							<div class="inline-form-field">
+								<p>Free Delivery Cart Value</p>
+								<mat-form-field appearance="outline">
+									<input numbersOnly matInput formControlName="sd_free_cart_value">
+									<span matSuffix>₹</span>
+								</mat-form-field>
+							</div>
+							<div class="inline-form-field">
+								<p>Additional Delivery Cost</p>
+								<mat-form-field appearance="outline">
+									<input numbersOnly matInput formControlName="sd_additional_cost_unit">
+									<span matSuffix>/km</span>
+								</mat-form-field>
+							</div>
+						</div>
+						<div class="col-md-9">
+							<mat-form-field appearance="outline">
+								<mat-label>Note</mat-label>
+								<textarea matInput rows="6" trim="blur" placeholder="Some note here"
+									formControlName="self_delivery_note"></textarea>
+							</mat-form-field>
+							<mat-form-field appearance="outline">
+								<mat-label>Payment terms</mat-label>
+								<textarea matInput rows="6" trim="blur" placeholder="Some note here"
+									formControlName="self_delivery_payment_terms"></textarea>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex align-items-center mb-3">
+					<div class="col-md-2 chip-div">
+						<h6 class="mr-3 mb-0">Partner Delivery</h6>
+						<mat-slide-toggle style="text-align: right" [disabled]="!allowMarketPlace_toogle && deliveryPartnerLength === 0"
+							[checked]="storeDeliverySettingsForm.get('partner_delivery').value==true?true:false" color="primary"
+							(change)="toggle('partner_delivery')">
+						</mat-slide-toggle>					
+					</div>
+					<div *ngIf="deliveryPartnerLength" class="col-md-10 chip-div">
+						<h6 class="mr-3 mb-0">Delivery Company</h6>
+						<mat-chip-list aria-label="Fish selection">	
+							<mat-chip color="accent" selected *ngFor="let deliveryPartner of deliveryPartnerList; let i = index;">{{ deliveryPartner.delivery_partner }}</mat-chip>
+						</mat-chip-list>
+					</div>
+					
+				</div>
+				<p *ngIf="!allowMarketPlace_toogle && deliveryPartnerLength === 0"
+					style="margin-top: -5px;	margin-bottom: 5px;; color: red;">* Please select your delivery partner for
+					partner delivery. <b style="color: blue; cursor: pointer;" (click)="assignDeliveryTab()" >Click Here</b></p>
+
+				<div class="form-separator" *ngIf="storeDeliverySettingsForm.get('partner_delivery').value==true">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="row">
+								<!-- <div class="col">
+									<mat-form-field appearance="outline">
+										<mat-label>Max Delivery Range</mat-label>
+										<input numbersOnly matInput formControlName="pd_max_delivery_range">
+										<span matSuffix>m</span>
+									</mat-form-field>
+								</div> -->
+								<div class="col-7 mb-3">
+									<div class="d-flex align-items-center" style="height: 40px;">
+										<p class="mb-0 mr-1" style="font-size: 12px;">Seller bear delivery charge</p>
+										<mat-slide-toggle color="primary"
+											[checked]="storeDeliverySettingsForm.get('pd_seller_bear_delivery_charge').value=='YES'"
+											(change)="toggleCharge('pd_seller_bear_delivery_charge')">
+										</mat-slide-toggle>
+									</div>
+									<!-- <p>Seller bear delivery charge </p>
+									<mat-form-field appearance="outline">
+										<mat-label>Seller bear delivery charge</mat-label>
+										<mat-select formControlName="pd_seller_bear_delivery_charge">
+											<mat-option value="YES">Yes</mat-option>
+											<mat-option value="NO">No</mat-option>
+										</mat-select>
+									</mat-form-field> -->
+								</div>
+								<div class="col-5 p-0 mb-3">
+									<div class="d-flex align-items-center" style="height: 40px;">
+										<p class="mb-0 mr-1" style="font-size: 12px;">Charge Sharing</p>
+										<mat-slide-toggle color="primary"
+											[checked]="storeDeliverySettingsForm.get('pd_charge_sharing').value=='YES'"
+											(change)="toggleCharge('pd_charge_sharing')"></mat-slide-toggle>
+									</div>
+									<!-- <mat-form-field appearance="outline">
+										<mat-label>Charge Sharing</mat-label>
+										<mat-select formControlName="pd_charge_sharing">
+											<mat-option value="YES">Yes</mat-option>
+											<mat-option value="NO">No</mat-option>
+										</mat-select>
+									</mat-form-field> -->
+								</div>
+								<div class="col-12 inline-form-field">
+									<p>Seller bear for maximum cart value</p>
+									<mat-form-field appearance="outline">
+										<input numbersOnly matInput formControlName="pd_seller_bear_max">
+										<span matSuffix>₹</span>
+									</mat-form-field>
+								</div>
+								<div class="col-12 inline-form-field">
+									<p>Charge sharing max value (in case of partial)</p>
+									<mat-form-field appearance="outline">
+										<input numbersOnly matInput formControlName="pd_charge_share_max">
+										<span matSuffix>₹</span>
+									</mat-form-field>
+								</div>
+								<div class="col-12 inline-form-field">
+									<p>Seller bear max cart percentage</p>
+									<mat-form-field appearance="outline">
+										<input numbersOnly matInput
+											formControlName="pd_seller_bear_max_cart_percentage">
+										<span matSuffix>%</span>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<mat-form-field appearance="outline">
+								<mat-label>Note</mat-label>
+								<textarea rows="5" matInput trim="blur" placeholder="Some note here"
+									formControlName="partner_delivery_note"></textarea>
+							</mat-form-field>
+							<mat-form-field appearance="outline">
+								<mat-label>Payment terms</mat-label>
+								<textarea rows="5" matInput trim="blur" placeholder="Some note here"
+									formControlName="partner_delivery_payment_terms"></textarea>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2 mt-3">
+				<button class="" mat-raised-button color="primary" (click)="submit()">Save</button>
+			</div>
+		</div>
+	</div>
+</form>
+
+<!-- <h1>{{ allowMarketPlace_toogle }} {{ deliveryPartnerLength }}</h1> -->

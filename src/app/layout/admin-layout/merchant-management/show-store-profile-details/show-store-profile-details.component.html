@@ -1,0 +1,782 @@
+<div class="store-profile-manage">
+  <!-- <div class="uploader-wrapper">
+    <ngx-file-picker
+      [adapter]="adapter"  
+      [enableCropper]="true"
+    >
+    </ngx-file-picker>
+  </div> -->
+  <div class="profile-view">
+    <div class="cover-image">
+      <div class="store-bakground-img" *ngIf="store_cover_image">
+        <img [src]="store_cover_image">
+      </div>
+      <div class="upload-cover">
+        <input accept="image/*" id="upload-cover-img" type="file" (change)="onSelectFile($event,'store_cover_image')">
+        <label for="upload-cover-img">
+          <button type="button" class="camera-btn">
+            <mat-icon>camera_alt</mat-icon>
+          </button>
+        </label>
+      </div>
+    </div>
+
+    <div class="store-profile-details">
+      <div class="profile-picture">
+        <img [src]="store_logo_url" alt="profile">
+        <div class="upload-profile">
+          <input accept="image/*" id="upload-profile-img" type="file" (change)="onSelectFile($event,'store_logo_url')">
+          <label for="upload-profile-img">
+            <button type="button" class="camera-btn">
+              <mat-icon>camera_alt</mat-icon>
+            </button>
+          </label>
+        </div>
+      </div>
+      <div class="profile-details-name" *ngIf="storeProfileDetails">
+        <h1>{{storeProfileDetails[0].sourceAsMap.store_display_name}}</h1>
+        <!-- <p>Hey there! My store is live on Nextdoorhub.</p> -->
+      </div>
+      <div class="store-status">
+        <p>Accepting orders </p>
+        <mat-slide-toggle color="primary" [checked]="is_live" (change)="onSubmit('accepting_orders')"></mat-slide-toggle>
+      </div>
+    </div>
+  </div>
+
+  <div class="store-manage-content">
+    <div class="store-manage-box">
+      <ul>
+        <li>
+          <mat-form-field appearance="outline">
+            <mat-label>Store Name</mat-label>
+            <input matInput autocomplete="off" [(ngModel)]="store_display_name">
+            <button mat-raised-button color="primary" [disabled]="store_display_name==''" matSuffix (click)="onSubmit('store_name')">Submit</button>
+          </mat-form-field>
+        </li>
+        <li>
+          <mat-form-field class="mb-0" appearance="outline">
+            <mat-label>Tag Line</mat-label>
+            <input matInput autocomplete="off" [(ngModel)]="tagLine">
+            <button mat-raised-button color="primary" matSuffix (click)="onSubmit('store_tagline')">Submit</button>
+          </mat-form-field>
+        </li>
+      </ul>
+
+      <mat-accordion>
+        <mat-expansion-panel class="business-category-list">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Business Category</mat-panel-title>
+            <mat-panel-description>
+              {{businessCategoryName}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="Search Business Category">
+            <mat-icon matPrefix>search</mat-icon>
+          </mat-form-field>
+          <mat-selection-list [(ngModel)]="businessCategoryId">
+
+            <mat-list-option [value]="item.id" *ngFor="let item of businessCategoryList">
+              <mat-icon>next_week</mat-icon>{{item.businessCategoryName}}
+            </mat-list-option>
+          </mat-selection-list>
+          <div class="form-submit">
+            <button mat-raised-button color="primary" [disabled]="businessCategoryId && businessCategoryId.length==0" class="branch-submit-btn"
+              (click)="onSubmit('business_category')">Submit</button>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel class="store-location-address">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Store Address</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Enter Address</mat-label>
+            <input matInput autocomplete="off" matGoogleMapsAutocomplete [country]="in" (onAutocompleteSelected)="onAutocompleteSelected($event)"
+              (onLocationSelected)="onLocationSelected($event)">
+          </mat-form-field>
+          <div class="address-relative">
+            <agm-map [scrollwheel]="true" [zoom]="13" [latitude]="map.lat" [longitude]="map.lng" style="height: 200px">
+              <agm-marker [latitude]="map.lat" [longitude]="map.lng" [markerDraggable]="true" (dragEnd)="markerDragEnd(map, $event)"></agm-marker>
+            </agm-map>
+            <div class="current-location">
+              <button mat-raised-button color="primary" class="" (click)="setCurrentPosition()">
+                <mat-icon>my_location</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="show-current-address mt-2">
+            <!-- <p> -->
+            <mat-form-field appearance="outline">
+              <mat-icon matPrefix>location_on</mat-icon>
+              <input matInput type="text" [(ngModel)]="store_address">
+            </mat-form-field>
+            <!-- {{store_address}}</p> -->
+          </div>
+          <div class="form-submit ">
+            <button mat-raised-button color="primary" class="branch-submit-btn mt-0" [disabled]="store_address==''" (click)="onSubmit('store_addresss')">Submit</button>
+          </div>
+        </mat-expansion-panel>
+
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Store Operation</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="store-operation-manage">
+            <div class="operation-day-list" *ngFor="let storeItem of store_operation;let i=index">
+              <div class="row">
+                <div class="col-md-4">
+                  <h5>{{storeItem.dayName}}</h5>
+                  <mat-slide-toggle color="primary" [checked]="storeItem.isOpen==1 ?true:false">Close</mat-slide-toggle>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 ngx-timepicker-field-example">
+                  <h5>Opening Time</h5>
+                  <ngx-timepicker-field [buttonAlign]="'left'" [defaultTime]="formatAMPM(storeItem.openTime)" (timeChanged)="getOpeningAndClosingTime($event,i,'openTime')"></ngx-timepicker-field>
+                </div>
+                <div class="col-md-6 ngx-timepicker-field-example">
+                  <h5>Closing Time</h5>
+                  <ngx-timepicker-field [buttonAlign]="'left'" [defaultTime]="formatAMPM(storeItem.closeTime)" (timeChanged)="getOpeningAndClosingTime($event,i,'closeTime')"></ngx-timepicker-field>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="form-submit text-center">
+            <button mat-raised-button color="primary" class="branch-submit-btn mb-0" type="button" (click)="onSubmit('store_operation')">Submit</button>
+          </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel [disabled]="enable_delivery_requestStr!='ENABLED'">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Delivery Settings</mat-panel-title>
+            <mat-panel-description>
+              {{enable_delivery_requestStr == 'ENABLED'?'':enable_delivery_requestStr=='HOLD'?'Pending For Approval':'Disabled'}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <form [formGroup]="formDeliverySettings">
+            <div class="row">
+              <div class="col-md-6">
+                <div>
+                  <p>Pick-up from store</p>
+                  <mat-slide-toggle color="primary" formControlName="store_pickup"></mat-slide-toggle>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div>
+                  <p>Self Delivery</p>
+                  <mat-slide-toggle color="primary" formControlName="self_delivery"></mat-slide-toggle>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="formDeliverySettings.get('self_delivery').value==true">
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field appearance="outline" class="mt-2">
+                    <mat-label>Delivery Range (km)</mat-label>
+                    <input matInput numbersOnly autocomplete="off" formControlName="delivery_radius" [ngClass]="{ 'ng-invalid ng-touched': !formDeliverySettings.get('delivery_radius').valid }">
+                    <span [tooltip]="deliveryRange" *ngIf="!formDeliverySettings.get('delivery_radius').valid && formDeliverySettings.get('delivery_radius').touched"
+                      class="mandatory-alert" content-type="template">
+                      <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                    </span>
+                  </mat-form-field>
+                  <ng-template #deliveryRange>
+                    <div>
+                      <p class="mb-1" *ngIf="formDeliverySettings.get('delivery_radius').errors.required">Required</p>
+                    </div>
+                  </ng-template>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field appearance="outline" class="mt-2">
+                    <mat-label>Free Delivery Range (km)</mat-label>
+                    <input matInput numbersOnly autocomplete="off" formControlName="free_delivery_radius" [ngClass]="{ 'ng-invalid ng-touched': !formDeliverySettings.get('free_delivery_radius').valid }">
+                    <span [tooltip]="freedeliveryRange" *ngIf="!formDeliverySettings.get('free_delivery_radius').valid && formDeliverySettings.get('free_delivery_radius').touched"
+                      class="mandatory-alert" content-type="template">
+                      <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                    </span>
+                  </mat-form-field>
+                  <ng-template #freedeliveryRange>
+                    <div>
+                      <p class="mb-1" *ngIf="formDeliverySettings.get('free_delivery_radius').errors.required">Required</p>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Additional Delivery Charge</mat-label>
+                    <input matInput numbersOnly autocomplete="off" formControlName="additional_delivery_charge" [ngClass]="{ 'ng-invalid ng-touched': !formDeliverySettings.get('additional_delivery_charge').valid }">
+                    <span [tooltip]="addtionalDeliveryRange" *ngIf="!formDeliverySettings.get('additional_delivery_charge').valid && formDeliverySettings.get('additional_delivery_charge').touched"
+                      class="mandatory-alert" content-type="template">
+                      <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                    </span>
+                  </mat-form-field>
+                  <ng-template #addtionalDeliveryRange>
+                    <div>
+                      <p class="mb-1" *ngIf="formDeliverySettings.get('additional_delivery_charge').errors.required">Required</p>
+                    </div>
+                  </ng-template>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Order Processing Time (Minutes)</mat-label>
+                    <input matInput numbersOnly autocomplete="off" formControlName="order_processing_time" [ngClass]="{ 'ng-invalid ng-touched': !formDeliverySettings.get('order_processing_time').valid }">
+                    <span [tooltip]="orderProcessingTime" *ngIf="!formDeliverySettings.get('order_processing_time').valid && formDeliverySettings.get('order_processing_time').touched"
+                      class="mandatory-alert" content-type="template">
+                      <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                    </span>
+                  </mat-form-field>
+                  <ng-template #orderProcessingTime>
+                    <div>
+                      <p class="mb-1" *ngIf="formDeliverySettings.get('order_processing_time').errors.required">Required</p>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="formDeliverySettings.get('self_delivery').value==false">
+              <mat-form-field appearance="outline" class="mt-2">
+                <mat-label>Order Processing Time (Minutes)</mat-label>
+                <input matInput numbersOnly autocomplete="off" formControlName="order_processing_time" [ngClass]="{ 'ng-invalid ng-touched': !formDeliverySettings.get('order_processing_time').valid }">
+                <span [tooltip]="orderProcessingTime" *ngIf="!formDeliverySettings.get('order_processing_time').valid && formDeliverySettings.get('order_processing_time').touched"
+                  class="mandatory-alert" content-type="template">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </span>
+              </mat-form-field>
+              <ng-template #orderProcessingTime>
+                <div>
+                  <p class="mb-1" *ngIf="formDeliverySettings.get('order_processing_time').errors.required">Required</p>
+                </div>
+              </ng-template>
+            </div>
+            <div class="form-submit text-center">
+              <button mat-raised-button color="primary" class="branch-submit-btn" (click)="onSubmit('formDeliverySettings')">Submit</button>
+            </div>
+          </form>
+        </mat-expansion-panel>
+
+      </mat-accordion>
+
+    </div>
+    <!-- <h4>STORE SETTINGS</h4> -->
+    <!-- <div class="store-manage-box">
+     
+    </div> -->
+    <h4>COMPLIANCE</h4>
+    <div class="store-manage-box">
+      <mat-accordion>
+        <mat-expansion-panel (opened)="openedExpansionPanel( 'GST')">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Goods & Service Tax (GST)</mat-panel-title>
+          </mat-expansion-panel-header>
+          <form [formGroup]="formDetailsGST">
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>GSTIN Number</mat-label>
+                  <input matInput autocomplete="off" formControlName="gstNum" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsGST.get('gstNum').valid }">
+                  <span [tooltip]="gstNumber" *ngIf="!formDetailsGST.get('gstNum').valid && formDetailsGST.get('gstNum').touched" class="mandatory-alert"
+                    content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+
+                <ng-template #gstNumber>
+                  <div>
+                    <p class="mb-1" *ngIf="formDetailsGST.get('gstNum').errors.required">Required</p>
+                    <p class="mb-1" *ngIf="formDetailsGST.get('gstNum').errors.pattern">Invalid Pattern</p>
+                  </div>
+                </ng-template>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Confirm GSTIN Number</mat-label>
+                  <input matInput autocomplete="off" formControlName="confirmGstNumber" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsGST.get('confirmGstNumber').valid }">
+                  <span [tooltip]="confirmGstNum" *ngIf="!formDetailsGST.get('confirmGstNumber').valid && formDetailsGST.get('confirmGstNumber').touched"
+                    class="mandatory-alert" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+                <ng-template #confirmGstNum>
+                  <div>
+                    <p class="mb-1" *ngIf="formDetailsGST.get('confirmGstNumber').errors.required">Required</p>
+                    <p class="mb-1" *ngIf="formDetailsGST.get('confirmGstNumber').errors.pattern">Invalid Pattern</p>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Business/Legal name as per GST Certificate</mat-label>
+              <input matInput autocomplete="off" formControlName="businessName" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsGST.get('businessName').valid }">
+              <span [tooltip]="businessname" *ngIf="!formDetailsGST.get('businessName').valid && formDetailsGST.get('businessName').touched"
+                class="mandatory-alert" content-type="template">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+            </mat-form-field>
+            <ng-template #businessname>
+              <div>
+                <p class="mb-1" *ngIf="formDetailsGST.get('businessName').errors.required">Required</p>
+              </div>
+            </ng-template>
+            <p>I operate with composit tax structure under GST</p>
+            <mat-radio-group aria-label="Select an option" formControlName="taxStructureConfirm">
+              <mat-radio-button [value]="1" color="primary">No</mat-radio-button>
+              <mat-radio-button [value]="2" color="primary">Yes</mat-radio-button>
+            </mat-radio-group>
+
+            <div class="upload-doc">
+              <div class="allow-format">Allowed Format : JPS,JPEG,PNG,GIF, PDF
+                <br>Maximum Size : 10 MB</div>
+              <div class="upload-file-type d-flex align-center">
+                <div class="upload-file" *ngIf="formDetailsGST.get('certificateUrl').value">{{formDetailsGST.get('certificateUrl').value['type'].split('/')[1]}}</div>
+                <div class="upload-progress d-flex align-center">
+                  <div>
+                    <p style=" cursor: pointer;
+                    text-decoration: underline;" (click)="downloadFile(formDetailsGST.get('certificateUrl').value)">{{formDetailsGST.get('certificateUrl').value['name']}}</p>
+                  </div>
+                  <button color="primary" *ngIf="formDetailsGST.get('certificateUrl').value" (click)="deleteFile('formDetailsGST')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="!formDetailsGST.get('certificateUrl').valid && formDetailsGST.get('certificateUrl').touched" class="has-danger form-control-feedback">
+                <span class="text-danger" *ngIf="formDetailsGST.get('certificateUrl').errors.required">Required</span>
+              </div>
+
+              <input accept="image/*,.pdf" id="gst-button-file" type="file" (change)="onSelectFile($event,'formDetailsGST')">
+              <label for="gst-button-file">
+                <button mat-raised-button color="primary" class="upload-certificate-btn">Upload Certificate</button>
+              </label>
+            </div>
+            <div class="form-submit text-center">
+              <button mat-raised-button color="primary" class="branch-submit-btn" (click)="formSubmitForCompliance('formDetailsGST')">Submit</button>
+            </div>
+          </form>
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="openedExpansionPanel('FSSAI')">
+          <mat-expansion-panel-header>
+            <mat-panel-title>FSSAI License Details</mat-panel-title>
+          </mat-expansion-panel-header>
+          <form [formGroup]="formDetailsFSSAI">
+            <mat-form-field appearance="outline">
+              <mat-label>License Number</mat-label>
+              <input matInput autocomplete="off" formControlName="liscense" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('liscense').valid }">
+              <span [tooltip]="licenseNumber" *ngIf="!formDetailsFSSAI.get('liscense').valid && formDetailsFSSAI.get('liscense').touched"
+                class="mandatory-alert" content-type="template">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Autorised Name</mat-label>
+              <input matInput autocomplete="off" formControlName="name" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('name').valid }">
+              <span [tooltip]="fssaiName" *ngIf="!formDetailsFSSAI.get('name').valid && formDetailsFSSAI.get('name').touched" class="mandatory-alert"
+                content-type="template">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Authorised Primise Address</mat-label>
+              <input matInput autocomplete="off" formControlName="address1" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('address1').valid }">
+              <span [tooltip]="fssaiaddress1" *ngIf="!formDetailsFSSAI.get('address1').valid && formDetailsFSSAI.get('address1').touched"
+                class="mandatory-alert" content-type="template">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Address Line 2</mat-label>
+              <input matInput autocomplete="off" formControlName="address2" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('address2').valid }">
+              <span [tooltip]="fssaiaddress2" *ngIf="!formDetailsFSSAI.get('address2').valid && formDetailsFSSAI.get('address2').touched"
+                class="mandatory-alert" content-type="template">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+            </mat-form-field>
+            <div class="row">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>City</mat-label>
+                  <input matInput autocomplete="off" formControlName="city" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('city').valid }">
+                  <span [tooltip]="fssaicity" *ngIf="!formDetailsFSSAI.get('city').valid && formDetailsFSSAI.get('city').touched" class="mandatory-alert"
+                    content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>State</mat-label>
+                  <input matInput autocomplete="off" formControlName="stateName" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('stateName').valid }">
+                  <span [tooltip]="fssaistate" *ngIf="!formDetailsFSSAI.get('stateName').valid && formDetailsFSSAI.get('stateName').touched"
+                    class="mandatory-alert" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>Pincode</mat-label>
+                  <input matInput numbersOnly autocomplete="off" formControlName="pinCode" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('pinCode').valid }">
+                  <span [tooltip]="pincode" *ngIf="!formDetailsFSSAI.get('pinCode').valid && formDetailsFSSAI.get('pinCode').touched" class="mandatory-alert"
+                    content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>Owner Name</mat-label>
+                  <input matInput autocomplete="off" formControlName="ownerName" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('ownerName').valid }">
+                  <span [tooltip]="ownername" *ngIf="!formDetailsFSSAI.get('ownerName').valid && formDetailsFSSAI.get('ownerName').touched"
+                    class="mandatory-alert" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>Owner Contact</mat-label>
+                  <input matInput numbersOnly autocomplete="off" formControlName="ownerContactNumber" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('ownerContactNumber').valid }">
+                  <span [tooltip]="ownerContact" *ngIf="!formDetailsFSSAI.get('ownerContactNumber').valid && formDetailsFSSAI.get('ownerContactNumber').touched"
+                    class="mandatory-alert" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>Date of Birth</mat-label>
+                  <input matInput [matDatepicker]="pickerfssai" formControlName="validUpto" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsFSSAI.get('validUpto').valid }">
+                  <span [tooltip]="validupto" *ngIf="!formDetailsFSSAI.get('validUpto').valid && formDetailsFSSAI.get('validUpto').touched"
+                    class="mandatory-alert" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                  <mat-datepicker-toggle matSuffix [for]="pickerfssai"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerfssai></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="upload-doc">
+              <div class="allow-format">Allowed Format : JPS,JPEG,PNG,GIF, PDF
+                <br>Maximum Size : 10 MB</div>
+              <div class="upload-file-type d-flex align-center">
+                <div class="upload-file" *ngIf="formDetailsFSSAI.get('certificateUrl').value">{{formDetailsFSSAI.get('certificateUrl').value['type'].split('/')[1]}}</div>
+                <div class="upload-progress d-flex align-center">
+                  <div>
+                    <p style=" cursor: pointer;
+                    text-decoration: underline;" (click)="downloadFile(formDetailsFSSAI.get('certificateUrl').value)">{{formDetailsFSSAI.get('certificateUrl').value['name']}}</p>
+                  </div>
+                  <button color="primary" *ngIf="formDetailsFSSAI.get('certificateUrl').value" (click)="deleteFile('formDetailsFSSAI')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="!formDetailsFSSAI.get('certificateUrl').valid && formDetailsFSSAI.get('certificateUrl').touched" class="has-danger form-control-feedback">
+                <span class="text-danger" *ngIf="formDetailsFSSAI.get('certificateUrl').errors.required">Required</span>
+              </div>
+              <input accept="image/*,.pdf" id="gst-button-file" type="file" (change)="onSelectFile($event,'formDetailsFSSAI')">
+              <label for="gst-button-file">
+                <button mat-raised-button color="primary" class="upload-certificate-btn">Upload Certificate</button>
+              </label>
+            </div>
+            <div class="form-submit text-center">
+              <button mat-raised-button color="primary" class="branch-submit-btn" (click)="formSubmitForCompliance('formDetailsFSSAI')">Submit</button>
+            </div>
+            <ng-template #fssaicity>
+              <div>
+                <p class="mb-1" *ngIf="formDetailsFSSAI.get('city').errors.required">Required</p>
+              </div>
+            </ng-template>
+            <ng-template #fssaistate>
+              <div>
+                <p class="mb-1" *ngIf="formDetailsFSSAI.get('stateName').errors.required">Required</p>
+              </div>
+            </ng-template>
+            <ng-template #ownername>
+              <div>
+                <p class="mb-1" *ngIf="formDetailsFSSAI.get('ownerName').errors.required">Required</p>
+              </div>
+            </ng-template>
+            <ng-template #ownerContact>
+              <div>
+                <p class="mb-1" *ngIf="formDetailsFSSAI.get('ownerContactNumber').errors.required">Required</p>
+              </div>
+            </ng-template>
+            <ng-template #validupto>
+              <div>
+                <p class="mb-1" *ngIf="formDetailsFSSAI.get('validUpto').errors.required">Required</p>
+              </div>
+            </ng-template>
+            <ng-template #licenseNumber>
+              <div>
+                <p class="mb-1" *ngIf="formDetailsFSSAI.get('liscense').errors.required">Required</p>
+                <p class="mb-1" *ngIf="formDetailsFSSAI.get('liscense').errors.pattern">Invalid Pattern</p>
+              </div>
+            </ng-template>
+            <ng-template #pincode>
+              <div>
+                <p class="mb-1" *ngIf="formDetailsFSSAI.get('pinCode').errors.required">Required</p>
+                <p class="mb-1" *ngIf="formDetailsFSSAI.get('pinCode').errors.pattern">Invalid Pattern</p>
+              </div>
+            </ng-template>
+            <ng-template #fssaiName>
+              <div>
+                <p class="mb-1" *ngIf="formDetailsFSSAI.get('name').errors.required">Required</p>
+              </div>
+            </ng-template>
+            <ng-template #fssaiaddress1>
+              <div>
+                <p class="mb-1" *ngIf="formDetailsFSSAI.get('address1').errors.required">Required</p>
+              </div>
+            </ng-template>
+            <ng-template #fssaiaddress2>
+              <div>
+                <p class="mb-1" *ngIf="formDetailsFSSAI.get('address2').errors.required">Required</p>
+              </div>
+            </ng-template>
+          </form>
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="openedExpansionPanel('PAN')">
+          <mat-expansion-panel-header>
+            <mat-panel-title>PAN Details</mat-panel-title>
+          </mat-expansion-panel-header>
+          <form [formGroup]="formDetailsPAN">
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>PAN Number</mat-label>
+                  <input matInput autocomplete="off" formControlName="panNumber" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsPAN.get('panNumber').valid }">
+                  <span [tooltip]="pan" *ngIf="!formDetailsPAN.get('panNumber').valid && formDetailsPAN.get('panNumber').touched" class="mandatory-alert"
+                    content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+                <ng-template #pan>
+                  <div>
+                    <p class="mb-1" *ngIf="formDetailsPAN.get('panNumber').errors.required">Required</p>
+                    <p class="mb-1" *ngIf="formDetailsPAN.get('panNumber').errors.pattern">Invalid Pattern</p>
+                  </div>
+                </ng-template>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Confirm PAN Number</mat-label>
+                  <input matInput autocomplete="off" formControlName="confirmPanNum" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsPAN.get('confirmPanNum').valid }">
+                  <span [tooltip]="confirmpan" *ngIf="!formDetailsPAN.get('confirmPanNum').valid && formDetailsPAN.get('confirmPanNum').touched"
+                    class="mandatory-alert" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+                <ng-template #confirmpan>
+                  <div>
+                    <p class="mb-1" *ngIf="formDetailsPAN.get('confirmPanNum').errors.required">Required</p>
+                    <p class="mb-1" *ngIf="formDetailsPAN.get('confirmPanNum').errors.pattern">Invalid Pattern</p>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Business/Legal name as per PAN Card</mat-label>
+                  <input matInput autocomplete="off" formControlName="businessName" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsPAN.get('businessName').valid }">
+                  <span [tooltip]="namepan" *ngIf="!formDetailsPAN.get('businessName').valid && formDetailsPAN.get('businessName').touched"
+                    class="mandatory-alert" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+                <ng-template #namepan>
+                  <div>
+                    <p class="mb-1" *ngIf="formDetailsPAN.get('businessName').errors.required">Required</p>
+                  </div>
+                </ng-template>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Date of Corporation</mat-label>
+                  <input matInput [matDatepicker]="pickerpan" formControlName="dobOfCorporation" [ngClass]="{ 'ng-invalid ng-touched': !formDetailsPAN.get('dobOfCorporation').valid }">
+                  <span [tooltip]="doc" *ngIf="!formDetailsPAN.get('dobOfCorporation').valid && formDetailsPAN.get('dobOfCorporation').touched"
+                    class="mandatory-alert" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                  <mat-datepicker-toggle matSuffix [for]="pickerpan"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerpan></mat-datepicker>
+                </mat-form-field>
+                <ng-template #doc>
+                  <div>
+                    <p class="mb-1" *ngIf="formDetailsPAN.get('dobOfCorporation').errors.required">Required</p>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            <p>Pan number issued to individual of entity</p>
+            <mat-radio-group aria-label="Select an option" formControlName="panType">
+              <mat-radio-button [value]="'individual'" color="primary">Individual</mat-radio-button>
+              <mat-radio-button [value]="'entity'" color="primary">Entity</mat-radio-button>
+            </mat-radio-group>
+            <div class="upload-doc">
+              <div class="allow-format">Allowed Format : JPS,JPEG,PNG,GIF, PDF
+                <br>Maximum Size : 10 MB</div>
+              <div class="upload-file-type d-flex align-center">
+                <div class="upload-file" *ngIf="formDetailsPAN.get('certificateUrl').value">{{formDetailsPAN.get('certificateUrl').value['type'].split('/')[1]}}</div>
+                <div class="upload-progress d-flex align-center">
+                  <div>
+                    <p style=" cursor: pointer;
+                    text-decoration: underline;" (click)="downloadFile(formDetailsPAN.get('certificateUrl').value)">{{formDetailsPAN.get('certificateUrl').value['name']}}</p>
+                  </div>
+                  <button color="primary" *ngIf="formDetailsPAN.get('certificateUrl').value" (click)="deleteFile('formDetailsPAN')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="!formDetailsPAN.get('certificateUrl').valid && formDetailsPAN.get('certificateUrl').touched" class="has-danger form-control-feedback">
+                <span class="text-danger" *ngIf="formDetailsPAN.get('certificateUrl').errors.required">Required</span>
+              </div>
+              <input accept="image/*,.pdf" id="gst-button-file" type="file" (change)="onSelectFile($event,'formDetailsPAN')">
+              <label for="gst-button-file">
+                <button mat-raised-button color="primary" class="upload-certificate-btn">Upload Certificate</button>
+              </label>
+            </div>
+            <div class="form-submit text-center">
+              <button mat-raised-button color="primary" class="branch-submit-btn" (click)="formSubmitForCompliance('formDetailsPAN')">Submit</button>
+            </div>
+          </form>
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="openedExpansionPanel('TRADELICENSE')">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Trade License Details</mat-panel-title>
+          </mat-expansion-panel-header>
+          <form [formGroup]="formDetailsTradeLicense">
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Certifying Authority</mat-label>
+                  <input matInput autocomplete="off" formControlName="certifyingAuthority">
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Certificate Number</mat-label>
+                  <input matInput autocomplete="off" formControlName="certificateNumber">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Business/Legal name as per certificate</mat-label>
+                  <input matInput autocomplete="off" formControlName="businessName">
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Date of Birth</mat-label>
+                  <input matInput [matDatepicker]="pickertrade" formControlName="certificateValidity">
+                  <mat-datepicker-toggle matSuffix [for]="pickertrade"></mat-datepicker-toggle>
+                  <mat-datepicker #pickertrade></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <p>Certificate issued to individual of entity</p>
+            <mat-radio-group aria-label="Select an option" formControlName="certificateType">
+              <mat-radio-button [value]="1" color="primary">Individual</mat-radio-button>
+              <mat-radio-button [value]="2" color="primary">Entity</mat-radio-button>
+            </mat-radio-group>
+
+            <div class="upload-doc">
+              <div class="allow-format">Allowed Format : JPS,JPEG,PNG,GIF, PDF
+                <br>Maximum Size : 10 MB</div>
+              <div class="upload-file-type d-flex align-center">
+                <div class="upload-file" *ngIf="formDetailsTradeLicense.get('certificateUrl').value">{{formDetailsTradeLicense.get('certificateUrl').value['type'].split('/')[1]}}</div>
+                <div class="upload-progress d-flex align-center">
+                  <div>
+                    <p style=" cursor: pointer;
+                    text-decoration: underline;" (click)="downloadFile(formDetailsTradeLicense.get('certificateUrl').value)">{{formDetailsTradeLicense.get('certificateUrl').value['name']}}</p>
+                  </div>
+                  <button color="primary" *ngIf="formDetailsTradeLicense.get('certificateUrl').value" (click)="deleteFile('formDetailsTradeLicense')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="!formDetailsTradeLicense.get('certificateUrl').valid && formDetailsTradeLicense.get('certificateUrl').touched"
+                class="has-danger form-control-feedback">
+                <span class="text-danger" *ngIf="formDetailsTradeLicense.get('certificateUrl').errors.required">Required</span>
+              </div>
+              <input accept="image/*,.pdf" id="gst-button-file" type="file" (change)="onSelectFile($event,'formDetailsTradeLicense')">
+              <label for="gst-button-file">
+                <button mat-raised-button color="primary" class="upload-certificate-btn">Upload Certificate</button>
+              </label>
+            </div>
+            <div class="form-submit text-center">
+              <button mat-raised-button color="primary" class="branch-submit-btn" (click)="formSubmitForCompliance('formDetailsTradeLicense')">Submit</button>
+            </div>
+          </form>
+        </mat-expansion-panel>
+        <!-- <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Feedback</mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="store-feedback">
+            <ul>
+              <li>
+                <img src="../../../../../assets/img/user.jpg" class="store-owner-img">
+                <h4>Store Owner</h4>
+                <h5>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s</h5>
+                <p>
+                  <span>
+                    <mat-icon>assignment_late</mat-icon> June 01, 2020</span>
+                  <span>
+                    <mat-icon>access_time</mat-icon> 04:45 PM</span>
+                </p>
+              </li>
+              <li>
+                <img src="../../../../../assets/img/user.jpg" class="store-owner-img">
+                <h4>Store Owner</h4>
+                <h5>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s</h5>
+                <p>
+                  <span>
+                    <mat-icon>assignment_late</mat-icon> June 01, 2020</span>
+                  <span>
+                    <mat-icon>access_time</mat-icon> 04:45 PM</span>
+                </p>
+              </li>
+              <li>
+                <img src="../../../../../assets/img/user.jpg" class="store-owner-img">
+                <h4>Store Owner</h4>
+                <h5>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s</h5>
+                <p>
+                  <span>
+                    <mat-icon>assignment_late</mat-icon> June 01, 2020</span>
+                  <span>
+                    <mat-icon>access_time</mat-icon> 04:45 PM</span>
+                </p>
+              </li>
+              <li>
+                <img src="../../../../../assets/img/user.jpg" class="store-owner-img">
+                <h4>Store Owner</h4>
+                <h5>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s</h5>
+                <p>
+                  <span>
+                    <mat-icon>assignment_late</mat-icon> June 01, 2020</span>
+                  <span>
+                    <mat-icon>access_time</mat-icon> 04:45 PM</span>
+                </p>
+              </li>
+            </ul>
+          </div>
+        </mat-expansion-panel> -->
+      </mat-accordion>
+    </div>
+  </div>
+</div>

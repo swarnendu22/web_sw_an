@@ -1,0 +1,119 @@
+<form [formGroup]="flashSaleForm" autocomplete="off">
+    <div class="top-bar box-shadow">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title">Show Flash Sale</h3>
+            </div>
+            <!-- <div class="form-header-btn">
+
+                <button routerLink="/affiliate/master-distributors" mat-raised-button class="noshadow top-btn-font white-btn">
+                    <mat-icon>arrow_back</mat-icon> Back
+                </button>
+                <button mat-raised-button class="noshadow top-btn-font" color="primary" [disabled]="!flashSaleForm.valid" (click)="onSubmit()">
+                    <mat-icon>save</mat-icon> Save
+                </button>
+            </div> -->
+        </div>
+    </div>
+
+    <div class="box-shadow bg-white padding-10 hoz-form">
+        <div class="col-md-12">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Title</mat-label>
+                        <input matInput formControlName="title" [ngClass]="{ 'ng-invalid ng-touched': !f.title.valid }" />
+                    </mat-form-field>
+                    <div *ngIf="!f.title.valid && f.title.touched" class="has-danger form-control-feedback">
+
+                        <span class="text-danger" *ngIf="f.title.errors.required">Required</span>
+
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput formControlName="description" [ngClass]="{ 'ng-invalid ng-touched': !f.description.valid }"></textarea>
+                    </mat-form-field>
+                    <div *ngIf="!f.description.valid && f.description.touched" class="has-danger form-control-feedback">
+
+                        <span class="text-danger" *ngIf="f.description.errors.required">Required</span>
+
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <mat-label>Start Time</mat-label>
+                    <mat-form-field appearance="outline">
+                        <input matInput [matDatepicker]="upicker"[(ngModel)]="start_timeText" [ngModelOptions]="{standalone:true}" (dateInput)="onDateSelect($event,'start_timeText')"/>
+                        <mat-datepicker-toggle matSuffix [for]="upicker"></mat-datepicker-toggle>
+                        <mat-datepicker #upicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="date-outer">
+                        <input matInput [readonly]="true" formControlName="start_time" />
+                        <span matPrefix>&nbsp;</span>
+                    </mat-form-field>
+                    <button style="float: right; top: -33px; left: -7px;color: red" mat-raised-button class="noshadow top-btn-font" color="danger"
+                        (click)="delete('start_time')">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+
+                    <div *ngIf="!f.start_time.valid && f.start_time.touched" class="has-danger form-control-feedback">
+                        <span class="text-danger" *ngIf="f.start_time.errors.required">Required</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <mat-label>End Time</mat-label>
+                    <mat-form-field appearance="outline">
+                        <input matInput [matDatepicker]="fpicker" [(ngModel)]="end_timeText" [ngModelOptions]="{standalone:true}" (dateInput)="onDateSelect($event,'end_timeText')"/>
+                        <mat-datepicker-toggle matSuffix [for]="fpicker"></mat-datepicker-toggle>
+                        <mat-datepicker #fpicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="date-outer">
+                        <input matInput [readonly]="true" formControlName="end_time" />
+                        <span matPrefix>&nbsp;</span>
+                    </mat-form-field>
+                    <button style="float: right; top: -33px; left: -7px;color: red" mat-raised-button class="noshadow top-btn-font" color="danger"
+                        (click)="delete('end_time')">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+
+                    <div *ngIf="!f.end_time.valid && f.end_time.touched" class="has-danger form-control-feedback">
+                        <span class="text-danger" *ngIf="f.end_time.errors.required">Required</span>
+                        <div class="error" *ngIf="f.end_time.errors.cannotbegreater" class="error">Cannot be Greater</div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-6">
+                    <mat-label>Scheduled At</mat-label>
+                    <mat-form-field appearance="outline">
+                        <input matInput [matDatepicker]="spicker" [(ngModel)]="schedule_atText" [ngModelOptions]="{standalone:true}" (dateInput)="onDateSelect($event,'schedule_atText')"/>
+                        <mat-datepicker-toggle matSuffix [for]="spicker"></mat-datepicker-toggle>
+                        <mat-datepicker #spicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="date-outer">
+                        <input matInput [readonly]="true" formControlName="schedule_at" />
+                        <span matPrefix>&nbsp;</span>
+                    </mat-form-field>
+                    <button style="float: right; top: -33px; left: -7px;color: red" mat-raised-button class="noshadow top-btn-font" color="danger"
+                        (click)="delete('schedule_at')">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+
+                    <div *ngIf="!f.schedule_at.valid && f.schedule_at.touched" class="has-danger form-control-feedback">
+                        <span class="text-danger" *ngIf="f.schedule_at.errors.required">Required</span>
+                    </div>
+
+                </div>
+
+                <ace-editor #editor style="height:150px;" mode="json" [options]="editorOptions" [(text)]="actionText" (textChange)="editoChange($event)"></ace-editor>
+
+            </div>
+        </div>
+    </div>
+</form>

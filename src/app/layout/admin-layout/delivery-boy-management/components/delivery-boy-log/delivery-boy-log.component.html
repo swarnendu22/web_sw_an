@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Delivery Logs</h2>
+<mat-dialog-content class="mat-typography">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th style="font-size: 15px;">Time</th>
+        <th style="font-size: 15px;text-align: center;">Operation</th>
+        <th style="font-size: 15px;">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of deliveryLogs">
+        <td>{{item.created_at | date: 'medium'}}</td>
+        <td class="text-center">{{item.message}}</td>
+        <td>{{item.status}}</td>
+      </tr>
+    </tbody>
+  </table>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>{{data.text.toUpperCase()}}</h2>
+<mat-dialog-content>
+  <p>Do you want to {{data.text}}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <!-- [mat-dialog-close]="true" -->
+  <button mat-button (click)="onCancelClick()">No</button>
+  <button mat-flat-button color="primary" cdkFocusInitial (click)="requestProcess()">Yes</button>
+</mat-dialog-actions>

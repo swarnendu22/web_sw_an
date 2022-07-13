@@ -1,0 +1,25 @@
+<mat-tab-group (selectedTabChange)="route($event)" [selectedIndex]="tabIndex">
+    <mat-tab label="Driver Details">
+    </mat-tab>
+    <mat-tab label="Shift Details">
+    </mat-tab>
+    <mat-tab label="Orders">
+    </mat-tab>
+    <mat-tab label="Commission">
+    </mat-tab>
+</mat-tab-group>
+
+<div class="flex-auto" *ngIf="tabIndex==0">
+    <!-- <app-driver-details></app-driver-details> -->
+    <app-driver-details-update></app-driver-details-update>
+</div>
+<div class="flex-auto" *ngIf="tabIndex==1">
+    <app-driver-shift-details></app-driver-shift-details>
+</div>
+<div class="flex-auto" *ngIf="tabIndex==2">
+    <app-driver-order-details></app-driver-order-details>
+    <!-- <app-delivery-boy-orders></app-delivery-boy-orders> -->
+</div>
+<div class="flex-auto" *ngIf="tabIndex==3">
+    <app-driver-earning-details></app-driver-earning-details>
+</div>

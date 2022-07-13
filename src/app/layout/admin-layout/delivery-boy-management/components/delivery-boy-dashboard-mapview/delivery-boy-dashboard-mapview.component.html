@@ -1,0 +1,54 @@
+<div class="bg-white p-2" style="height: calc(100vh - 80px)">
+
+	<agm-map [formGroup]="deMapForm" [scrollwheel]="true" [zoom]="13" [latitude]="map.lat" [longitude]="map.lng"
+		style="height: 100%;width: 100%;">
+		<agm-marker formArrayName="mapArr" *ngFor="let data of deMapForm.get('mapArr').controls; let i = index"
+			[latitude]="data.get('lat').value" [longitude]="data.get('long').value" [markerDraggable]="false"
+			title="Delivery Boy" (mouseOver)="showInfo($event)" [iconUrl]="data.get('vehicle_type_icon').value"
+			(dragEnd)="markerDragEnd(map, $event)">
+
+			<agm-info-window [disableAutoPan]="false" [isOpen]="false" #infoWindow>
+
+				<div style="padding: 12px;">
+					<h4 style="text-align: center;margin-bottom: 15px;font-size: 18px;display: flex;
+						align-items: center;">
+						<span *ngIf="data.get('is_live').value"
+							style="font-size: 14px;width: 14px;height: 14px;margin-right: 10px;margin-top: 0;margin-left: 0;"
+							class="status-circle-green"></span>
+						<span *ngIf="!data.get('is_live').value"
+							style="font-size: 14px;width: 14px;height: 14px;margin-right: 10px;margin-top: 0;margin-left: 0;"
+							class="status-circle-red"></span>
+						{{data.get('name').value}}</h4>
+					<p style="display: flex;margin-bottom: 10px;">
+						<mat-icon style="font-size: 14px;width: 14px;height: 14px;margin-right: 10px;">phone
+						</mat-icon>
+						{{data.get('phone').value}}
+					</p>
+					<p style="display: flex;margin-bottom: 10px;">
+						<mat-icon style="font-size: 14px;width: 14px;height: 14px;margin-right: 10px;">
+							verified_user</mat-icon>
+						{{data.get('registration_number').value}}
+					</p>
+					<p style="display: flex;margin-bottom: 15px;">
+						<mat-icon style="font-size: 14px;width: 14px;height: 14px;margin-right: 10px;">
+							directions_bike
+						</mat-icon> {{data.get('vehicleType').value}}
+					</p>
+				</div>
+
+
+			</agm-info-window>
+		</agm-marker>
+	</agm-map>
+
+</div>
+
+<!-- <div class="bg-white p-2" style="height: calc(100vh - 80px)">
+	<agm-map [scrollwheel]="true" [zoom]="13" [latitude]="map.lat" [longitude]="map.lng"
+		style="height: 100%;width: 100%;">
+		<agm-marker [latitude]="map.lat" [longitude]="map.long" [markerDraggable]="true" title="Delivery Boy"
+			(mouseOver)="showInfo($event)" [iconUrl]="'assets/img/motorcycle64.png'"
+			(dragEnd)="markerDragEnd(map, $event)">
+		</agm-marker>
+	</agm-map>
+</div> -->

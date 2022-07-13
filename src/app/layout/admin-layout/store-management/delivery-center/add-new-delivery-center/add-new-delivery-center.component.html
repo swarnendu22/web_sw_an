@@ -1,0 +1,305 @@
+<form [formGroup]="addDeliveryCenterForm" novalidate autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">{{isEdit ? 'Update': 'Add New'}}Delivery Center </h3>
+      </div>
+      <div class="form-header-btn">
+        <ng-container>
+          <ng-container *ngIf="getFormDisableStats('addDeliveryCenterForm')">
+            <button type="button" routerLink="/store/delivery-center" mat-raised-button
+              class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+              (click)="toggleFormDisable('addDeliveryCenterForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('addDeliveryCenterForm')">
+            <button type="button" *ngIf="isEdit" type="button" mat-raised-button class="noshadow top-btn-font"
+              color="defalt" (click)="toggleFormDisable('addDeliveryCenterForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button type="button" *ngIf="!isEdit" routerLink="/store/delivery-center" mat-raised-button
+              class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <ng-container *ngIf="isEdit || !_id">
+              <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary"
+                (keydown.enter)="$event.preventDefault()" (click)="submitDelivery($event)">
+                <mat-icon>save</mat-icon> Save
+              </button>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="box-shadow bg-white padding-10 hoz-form">
+    <div class="row">
+      <div class="col-12">
+        <mat-form-field appearance="outline">
+          <mat-label>Delivery Center Name <span class="mandatory">*</span></mat-label>
+          <input matInput type="text" formControlName="name" appBlockCopyPaste trim="blur" autocomplete="off" />
+          <span *ngIf="!addDeliveryCenterForm.get('name').valid && addDeliveryCenterForm.get('name').touched"
+            class="mandatory-alert" [tooltip]="centerNametool" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #centerNametool>
+          <p class="mb-1" align="start" *ngIf="addDeliveryCenterForm.get('name').hasError('required')">Required Field
+          </p>
+        </ng-template>
+      </div>
+      <div class="col-6">
+        <!-- <mat-form-field appearanceautocomplete="off"="outline">
+          <mat-label>Delivery Center Coautocomplete="off"de</mat-label>
+          <input matInput type="text" formControlName="dcCode" />
+          <mat-error *ngIf="
+              formControl['dcCode'].errors &&
+              formControl['dcCode'].touched &&
+              formControl['dcCode'].invalid
+            ">Delivery Center Code is Required</mat-error>
+        </mat-form-field> -->
+
+        <mat-form-field appearance="outline">
+          <mat-label>Address <span class="mandatory">*</span></mat-label>
+          <input matInput type="text" formControlName="address1" appBlockCopyPaste trim="blur" autocomplete="off" />
+          <span *ngIf="!addDeliveryCenterForm.get('address1').valid && addDeliveryCenterForm.get('address1').touched"
+            class="mandatory-alert" [tooltip]="addresstool" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #addresstool>
+          <p class="mb-1" align="start" *ngIf="addDeliveryCenterForm.get('address1').hasError('required')">
+            Required Field
+          </p>
+        </ng-template>
+        <mat-form-field appearance="outline">
+          <mat-label>City <span class="mandatory">*</span></mat-label>
+          <input matInput type="text" formControlName="city" appBlockCopyPaste trim="blur" autocomplete="off" />
+          <span *ngIf="!addDeliveryCenterForm.get('city').valid && addDeliveryCenterForm.get('city').touched"
+            class="mandatory-alert" [tooltip]="citytool" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #citytool>
+          <p class="mb-1" align="start" *ngIf="addDeliveryCenterForm.get('city').hasError('required')">Required Field
+          </p>
+        </ng-template>
+        <mat-form-field *ngIf="!regions$" appearance="outline">
+          <mat-label>State (Select a country to continue)</mat-label>
+          <input type="text" matInput placeholder="Select Country to continue" disabled=true />
+        </mat-form-field>
+        <mat-form-field appearance="outline" formGroupName="regionId" *ngIf="regions$">
+          <mat-label>State</mat-label>
+          <mat-select formControlName="id">
+            <mat-option>
+              <ngx-mat-select-search #region [formControl]="regionControl" [placeholderLabel]="'Find State ..'"
+                [noEntriesFoundLabel]="'no matches  found'"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option [value]="regionSingle.id" *ngFor="
+                            let regionSingle of regions$
+                              | dropdownfilter: region.value:'name'
+                          ">{{ regionSingle.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>GSTIN</mat-label>
+          <input matInput type="text" formControlName="vatId" appBlockCopyPaste trim="blur" autocomplete="off" />
+          <span *ngIf="!addDeliveryCenterForm.get('vatId').valid && addDeliveryCenterForm.get('vatId').touched"
+            class="mandatory-alert" [tooltip]="gstintool" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #gstintool>
+          <p class="mb-1" align="start" *ngIf="addDeliveryCenterForm.get('vatId').hasError('pattern')">Invalid GST
+            Number Field
+          </p>
+        </ng-template>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Telephone <span class="mandatory">*</span></mat-label>
+          <input matInput type="tel" formControlName="telephone" appBlockCopyPaste trim="blur" autocomplete="off" />
+          <span *ngIf="!addDeliveryCenterForm.get('telephone').valid && addDeliveryCenterForm.get('telephone').touched"
+            class="mandatory-alert" [tooltip]="telephonetool" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #telephonetool>
+          <p align="start" class="mb-1" *ngIf="addDeliveryCenterForm.get('telephone').hasError('required')">
+            Required Field
+          </p>
+          <p align="start" class="mb-1" *ngIf="addDeliveryCenterForm.get('telephone').hasError('pattern')">
+            Invalid Telephone number</p>
+        </ng-template>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Street <span class="mandatory">*</span></mat-label>
+          <input matInput type="text" formControlName="street" appBlockCopyPaste trim="blur" autocomplete="off" />
+          <span *ngIf="!addDeliveryCenterForm.get('street').valid && addDeliveryCenterForm.get('street').touched"
+            class="mandatory-alert" [tooltip]="streettool" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #streettool>
+          <p class="mb-1" align="start" *ngIf="addDeliveryCenterForm.get('street').hasError('required')">Required Field
+          </p>
+        </ng-template>
+        <mat-form-field appearance="outline">
+          <mat-label>Country</mat-label>
+          <mat-select formControlName="countryId" (selectionChange)="onCountrySelectionChange($event)">
+            <!-- <mat-option
+                      *ngFor="let country of countries$"
+                      [value]="country['id']"
+                      >{{ country['name'] }}</mat-option
+                    > -->
+            <mat-option>
+              <ngx-mat-select-search #country [formControl]="countryControl" [placeholderLabel]="'Find Country ..'"
+                [noEntriesFoundLabel]="'no matches  found'"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option [value]="countrySingle.id" *ngFor="
+                        let countrySingle of countries$
+                          | dropdownfilter: country.value:'name'
+                      ">{{ countrySingle.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+
+        <mat-form-field appearance="outline">
+          <mat-label>Post Code <span class="mandatory">*</span></mat-label>
+          <input type="number" matInput formControlName="postcode" appBlockCopyPaste min="0" maxlength="6" trim="blur"
+            autocomplete="off" />
+          <span *ngIf="!addDeliveryCenterForm.get('postcode').valid && addDeliveryCenterForm.get('postcode').touched"
+            class="mandatory-alert" [tooltip]="postcodetool" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #postcodetool>
+          <p class="mb-1" align="start" *ngIf="addDeliveryCenterForm.get('postcode').hasError('required')">
+            Required Field
+          </p>
+        </ng-template>
+        <mat-form-field appearance="outline">
+          <mat-label>Mobile <span class="mandatory">*</span></mat-label>
+          <input type="tel" matInput formControlName="alternativePhone" appBlockCopyPaste trim="blur"
+            autocomplete="off" />
+          <span
+            *ngIf="!addDeliveryCenterForm.get('alternativePhone').valid && addDeliveryCenterForm.get('alternativePhone').touched"
+            class="mandatory-alert" [tooltip]="mobiletool" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #mobiletool>
+          <p align="start" class="mb-1" *ngIf="addDeliveryCenterForm.get('alternativePhone').hasError('required')">
+            Required Field
+          </p>
+          <p align="start" class="mb-1" *ngIf="addDeliveryCenterForm.get('alternativePhone').hasError('pattern')">
+            Invalid Mobile number</p>
+        </ng-template>
+        <mat-form-field appearance="outline">
+          <mat-label>Email <span class="mandatory">*</span></mat-label>
+          <input type="email" matInput formControlName="email" appBlockCopyPaste trim="blur" autocomplete="off" />
+          <span *ngIf="!addDeliveryCenterForm.get('email').valid && addDeliveryCenterForm.get('email').touched"
+            class="mandatory-alert" [tooltip]="emailtool" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #emailtool>
+          <p align="start" class="mb-1" *ngIf="addDeliveryCenterForm.get('email').hasError('required')">Required Field
+          </p>
+          <p align="start" class="mb-1" *ngIf="addDeliveryCenterForm.get('email').hasError('pattern')">Invalid Email
+            address</p>
+        </ng-template>
+      </div>
+      <div class="col-12" *ngIf="!_id">
+        <button type="button" mat-flat-button color="primary" (click)="showMatHint = true">
+          <mat-icon>add</mat-icon>Add New ZipCode
+        </button>
+        <mat-hint *ngIf="showMatHint" style="padding-left: 10px;color:red;font-size: 12px;">Add a Delivery center to
+          continue.
+        </mat-hint>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="box-shadow bg-white padding-10 mt-3" *ngIf="openZipcode">
+  <form [formGroup]="addZipcodeForm" autocomplete="off">
+    <div class="content-head">
+      <div class="content-head-caption">
+        <h3>Add Pincode</h3>
+      </div>
+      <div class="content-head-action head-form">
+        <mat-form-field appearance="outline">
+          <input matInput type="number" placeholder="Enter TAT (In Hours)" formControlName="deliveryTat" trim="blur"
+            autocomplete="off" />
+          <span *ngIf="!addZipcodeForm.get('deliveryTat').valid && addZipcodeForm.get('deliveryTat').touched"
+            class="mandatory-alert" [tooltip]="enterTat" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #enterTat>
+          <p align="start" class="mb-1" *ngIf="addZipcodeForm.get('deliveryTat').hasError('required')">Required Field
+          </p>
+          <!-- <mat-hint align="start" class="error" *ngIf="addZipcodeForm.get('deliveryTat').hasError('pattern')">Invalid Zip code</mat-hint> -->
+        </ng-template>
+        <mat-form-field appearance="outline">
+          <input type="number" matInput placeholder="Enter Pincode" formControlName="zipCode" />
+          <button class="ml-2 md-2" type="button" mat-flat-button matSuffix color="primary"
+            [disabled]="!addZipcodeForm.valid" (click)="submitAddZipcode()">
+            Add</button>
+          <ng-container *ngIf="!addZipcodeForm.get('deliveryTat').valid && addZipcodeForm.get('deliveryTat').touched">
+            <mat-hint align="start" class="error" *ngIf="addZipcodeForm.get('deliveryTat').hasError('required')">
+              Required Field</mat-hint>
+            <!-- <mat-hint align="start" class="error" *ngIf="addZipcodeForm.get('deliveryTat').hasError('pattern')">Invalid Zip code</mat-hint> -->
+          </ng-container>
+        </mat-form-field>
+        <!-- <mat-form-field appearance="outline">
+              <input type="number" matInput placeholder="Enter Pincode" formControlName="zipCode" trim="blur"
+                autocomplete="off" />
+              <ng-container *ngIf="!addZipcodeForm.get('zipCode').valid && addZipcodeForm.get('zipCode').touched">
+                <mat-hint align="start" class="error" *ngIf="addZipcodeForm.get('zipCode').hasError('required')">
+                  Required
+                  Field</mat-hint>
+              </ng-container>
+              <button class="ml-2 md-2" type="button" mat-flat-button matSuffix color="primary"
+                [disabled]="!addZipcodeForm.valid" (click)="submitAddZipcode()">
+                Add
+              </button>
+            </mat-form-field> -->
+
+        <!-- <ng-container *ngIf="!addZipcodeForm.get('zipCode').valid && addZipcodeForm.get('zipCode').touched">
+            <mat-hint align="start" class="error" *ngIf="addZipcodeForm.get('zipCode').hasError('required')">Required
+              Field</mat-hint>
+            <mat-hint align="start" class="error" *ngIf="addZipcodeForm.get('zipCode').hasError('pattern')">Invalid Zip code</mat-hint>
+          </ng-container> -->
+        <!-- <ng-container *ngIf="isEdit">
+              <button type="button" mat-raised-button class="noshadow top-btn-font white-btn  ml-2" style="top: -6px;height: 44px;" (click)="toggleFormDisable('addZipcodeForm')">
+                <ng-container *ngIf="getFormDisableStats('addZipcodeForm')">
+                  <mat-icon>edit</mat-icon> Edit
+                </ng-container>
+                <ng-container *ngIf="!getFormDisableStats('addZipcodeForm')">
+                  <mat-icon>cancel</mat-icon> Cancel
+                </ng-container>
+              </button>
+            </ng-container> -->
+      </div>
+    </div>
+  </form>
+  <div class="form-content-body mt-3">
+    <ng-container *ngIf="isEdit ||rowData.length > 0">
+      <fieldset [disabled]="getFormDisableStats('addZipcodeForm')">
+        <ag-grid-angular style="width: 100%; height: 300px;" class="ag-theme-balham" [rowData]="rowData"
+          [columnDefs]="columnDefs" [floatingFilter]="true" (firstDataRendered)="onFirstDataRendered($event)"
+          (gridReady)="onGridReady($event)" (gridSizeChanged)="onGridSizeChanged($event)"
+          (alwaysShowVerticalScroll)="true">
+        </ag-grid-angular>
+      </fieldset>
+    </ng-container>
+  </div>
+</div>

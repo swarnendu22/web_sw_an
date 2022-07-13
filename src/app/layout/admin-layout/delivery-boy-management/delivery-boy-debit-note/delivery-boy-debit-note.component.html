@@ -1,0 +1,150 @@
+<div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title">Debit Note</h3>
+        </div>
+        <div class="form-header-btn">
+            <div class="input-group mr-2" style="width: 300px;">
+                <input type="text" style="height: 38px;" class="form-control" placeholder="Search by DE ID/Mobile No.">
+                <div class="input-group-append">
+                    <button class="btn btn-info" style="height: 38px;" type="button" (click)="search()">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="DEID">
+            <th mat-header-cell *matHeaderCellDef> DE ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.DEID}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Mobile">
+            <th mat-header-cell *matHeaderCellDef> Mobile </th>
+            <td mat-cell *matCellDef="let element"> {{element.mobile}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Alt">
+            <th mat-header-cell *matHeaderCellDef> Alt No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.alt}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Area">
+            <th mat-header-cell *matHeaderCellDef> Area </th>
+            <td mat-cell *matCellDef="let element"> {{element.area}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="City">
+            <th mat-header-cell *matHeaderCellDef> City </th>
+            <td mat-cell *matCellDef="let element"> {{element.city}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Vehicle">
+            <th mat-header-cell *matHeaderCellDef> Vehicle </th>
+            <td mat-cell *matCellDef="let element"> {{element.vehicle}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="View">
+            <th mat-header-cell *matHeaderCellDef> View </th>
+            <td mat-cell *matCellDef="let element">
+                <a mat-flat-button color="primary" matTooltip="View" aria-label="Show Details"
+                    (click)="deliveryBoyView()" class="btn-data btn-sm-data">
+                    <mat-icon>visibility</mat-icon>
+                </a>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="box-shadow p-3 hoz-form bg-white mt-3">
+        <h5>Debit Form</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Order ID</mat-label>
+                            <input matInput placeholder="Enter Order ID" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Purpose</mat-label>
+                            <mat-select placeholder="Purpose">
+                                <mat-option value="distance">Distance</mat-option>
+                                <mat-option value="wc">Waiting Charge</mat-option>
+                                <mat-option value="w">Weight</mat-option>
+                                <mat-option value="RTO">Return to Origin</mat-option>
+                                <mat-option value="RTZ">Return to Zone</mat-option>
+                                <mat-option value="others">Other</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Amount</mat-label>
+                            <input matInput placeholder="Amount" />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- <table class="debit-note-form">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Purpose</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <mat-form-field appearance="outline">
+                                    <input matInput placeholder="Enter Order ID" />
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field appearance="outline">
+                                    <mat-select placeholder="Purpose">
+                                        <mat-option value="distance">Distance</mat-option>
+                                        <mat-option value="wc">Waiting Charge</mat-option>
+                                        <mat-option value="w">Weight</mat-option>
+                                        <mat-option value="RTO">Return to Origin</mat-option>
+                                        <mat-option value="RTZ">Return to Zone</mat-option>
+                                        <mat-option value="others">Other</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+
+                            <td>
+                                <mat-form-field appearance="outline">
+                                    <input matInput placeholder="Amount" />
+                                </mat-form-field>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table> -->
+            </div>
+            <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                    <textarea rows="10" matInput placeholder="Comment If Purpose is other"></textarea>
+                </mat-form-field>
+                <div class="mt-2 text-right">
+                    <button type="button" mat-raised-button color="primary" class="">Debit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

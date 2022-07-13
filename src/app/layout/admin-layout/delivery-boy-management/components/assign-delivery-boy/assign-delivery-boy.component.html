@@ -1,0 +1,53 @@
+<!-- <mat-selection-list>
+    <div style="border: grey solid 1px; display: flex; flex-direction: row; justify-content: space-around ;">
+        <span>ID</span>
+        <span>Name</span>
+        <span>Distance</span>
+    </div>
+    <mat-list-option *ngFor="let boy of deliveryBoysList" [value]="boy">
+        <div style=" display: flex; flex-direction: row; justify-content: space-around ;">
+            <span>{{boy.id}}</span>
+            <span>{{boy.name}}</span>
+            <span>{{boy.distance}}</span>
+        </div>
+    </mat-list-option>
+</mat-selection-list> -->
+<mat-dialog-content class="mat-typography">
+    <div class="loading" *ngIf="loading">
+      <mat-spinner [diameter]="30"></mat-spinner>
+    </div>
+    <div>
+      <span>Assign Delivery Boy</span>
+    </div>
+    <mat-nav-list>
+      <table class="table table-hover" style="width:100%">
+        <thead>
+          <tr>
+            <th></th>
+            <th style="font-size: 14px; text-align: center;"><b>DE ID</b></th>
+            <th style="font-size: 14px; text-align: center;"><b>DE Name</b></th>
+            <th style="font-size: 14px; text-align: center;"><b>Distance away from Seller</b></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let link of assignedDeliveryBoy; let i = index">
+            <td>
+              <mat-radio-button color="primary" [value]="i" (change)="changeDeliveryBoy($event.value)">
+              </mat-radio-button>
+            </td>
+            <td style="text-align:center">{{ link.id }}</td>
+            <td style="text-align:center">{{ link.name }}</td>
+            <td style="text-align:center">{{ link.distance }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </mat-nav-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button type="button" mat-raised-button class="top-btn-font drop" color="primary"
+    (click)="assignDeliveryBoy(item)">
+    Assign
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,23 @@
+<div class="top-bar box-shadow">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title">Affiliate User Management <span class="total-count">Total Records: {{totalRecords}}</span></h3>
+    </div>
+  </div>
+</div>
+
+
+<div class="bg-white single-pagination" style="height: calc(100% - 40px)">
+  <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData"
+    [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" (firstDataRendered)="onFirstDataRendered($event)"
+    (gridReady)="onGridReady($event)" [rowSelection]="rowSelection" [enableFilter]="true" [floatingFilter]="true"
+    (gridSizeChanged)="onGridSizeChanged($event)">
+  </ag-grid-angular>
+  <ul style="display: none;">
+    <li
+      *ngFor="let item of rowData | paginate: { id: 'dataPagination', itemsPerPage: 100, currentPage: pageNo, totalItems: totalRecords }">
+      {{ item.id }}</li>
+  </ul>
+  <pagination-controls (pageChange)="getPageNoData($event)" id="dataPagination"></pagination-controls>
+
+</div>

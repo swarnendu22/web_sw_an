@@ -1,0 +1,27 @@
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /store/manage-categories
+
+Date: 2019-07-23T20:33:20.584Z
+Hash: beb0dd5f971f7c1b0ab5
+Time: 58141ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 60.1 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.07 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.3 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 94.2 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.73 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 11.7 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.

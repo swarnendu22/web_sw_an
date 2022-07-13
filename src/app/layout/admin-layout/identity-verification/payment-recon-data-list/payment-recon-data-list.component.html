@@ -1,0 +1,74 @@
+<div class="tab-area-content p-0">
+    <div class="loading" *ngIf="loading">
+        <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+    <div class="top-bar box-shadow">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <button (click)="backReconcilation()" style="height: 42px; margin-right: 15px;" mat-raised-button class="noshadow top-btn-font white-btn">
+                    <mat-icon>arrow_back</mat-icon> Back
+                </button>
+                <h3 class="m-subheader__title">Payment Reconcilation Data List </h3>
+            </div>
+            <div class="auto-col" style="float: right;">
+                <mat-form-field appearance="outline">
+                  <mat-label>Page</mat-label>
+                  <mat-select (selectionChange)="pageChange();" [(ngModel)]="page">
+                      <ng-container>
+                          <mat-option *ngFor="let item of createRange(total_pages);" [value]="item">{{item}}</mat-option>
+                      </ng-container>
+                  </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white payment_rec" style="height: calc(100vh - 140px)">
+        <ag-grid-angular style="width:33%; height: 100%; float: left;" class="ag-theme-balham" #gridApi
+            [rowData]="rowData" 
+            [defaultColDef]="defaultColDef"
+            [columnDefs]="columnDefs" 
+            [pagination]="false"
+            [suppressRowClickSelection]="true"
+            (gridReady)="onGridReady($event)"
+            (firstDataRendered)="firstDataRendered($event)"
+            [floatingFilter]="true" 
+            [enableFilter]="true" 
+            (gridSizeChanged)="onGridSizeChanged($event)" 
+            [rowSelection]="rowSelection" 
+            (rowClicked)='onRowClicked($event)'
+        >
+        </ag-grid-angular>
+
+        <ag-grid-angular style="width:32%; height: 100%; float: left;margin-left: 1.5%;" class="ag-theme-balham"        #gridApi2
+            [rowData]="rowData2" 
+            [defaultColDef]="defaultColDef"
+            [columnDefs]="columnDefs2" 
+            [pagination]="false"
+            (gridReady)="onGridReady2($event)"
+            (firstDataRendered)="firstDataRendered2($event)"
+            [floatingFilter]="true"
+            [enableFilter]="true"
+            [suppressRowClickSelection]="true"
+            (gridSizeChanged)="onGridSizeChanged($event)" 
+            [rowSelection]="rowSelection"
+            (rowClicked)='onRowClicked2($event)'
+        >
+        </ag-grid-angular>
+
+        <ag-grid-angular style="width:32%; height: 100%; float: left;margin-left: 1.5%;" class="ag-theme-balham" #gridApi3
+            [rowData]="rowData3" 
+            [defaultColDef]="defaultColDef"
+            [columnDefs]="columnDefs3" 
+            [pagination]="false" 
+            (gridReady)="onGridReady3($event)"
+            (firstDataRendered)="firstDataRendered3($event)"
+            [floatingFilter]="true" 
+            [enableFilter]="true"
+            [suppressRowClickSelection]="false"
+            (gridSizeChanged)="onGridSizeChanged($event)" 
+            [rowSelection]="rowSelection"
+            (rowClicked)='onRowClicked3($event)'
+        >
+        </ag-grid-angular>
+</div>

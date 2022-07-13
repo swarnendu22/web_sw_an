@@ -1,0 +1,84 @@
+<div class="master-product-view">
+    <div class="row">
+        <div class="col-12">
+            <div class="master-product-list">
+              <div class="master-product-header">
+                <h1>Private Products</h1>
+                <div class="search-sort-filter">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Store</mat-label>
+                        <mat-select (selectionChange)="searchPrivateProductList();" [(ngModel)]="storeId"> 
+                            <div 
+                                class="custom-panel" 
+                                style="position: relative;overflow-x: hidden;max-height: 250px;"
+
+                                infiniteScroll
+                                [infiniteScrollDistance]="2"
+                                [infiniteScrollThrottle]="50"
+                                (scrolled)="onScrollDown()"
+                                [scrollWindow]="false"
+                            >
+                                <mat-option>
+                                    <ngx-mat-select-search [placeholderLabel]="'Find Store ..'" (keyup)="findStore($event.target.value)"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option [value]="0">--Select Store--</mat-option>
+                                <mat-option *ngFor="let store of allStore"
+                                    [value]="store._source.store_id">{{store._source.store_name}}
+                                </mat-option>
+                            </div>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+              </div>
+              <div class="master-product-table">
+                <table mat-table [dataSource]="rowData">
+                  <ng-container matColumnDef="base_image_url">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element" >
+                      <img *ngIf="element._source.base_image_url" class="mp-img" src="{{element._source.base_image_url}}" />
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="product_name">
+                    <th mat-header-cell *matHeaderCellDef style="width: 30%;"> Product Name </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{element._source.product_name}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="store_prod_name">
+                    <th mat-header-cell *matHeaderCellDef style="width: 30%;"> Store Name </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{element._source.store_prod_name}}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="cat_full_tree">
+                    <th mat-header-cell *matHeaderCellDef> Category </th>
+                    <td mat-cell *matCellDef="let element" > {{getCateName(element)}} </td>
+                  </ng-container> 
+                  
+                  <ng-container matColumnDef="brand_name">
+                    <th mat-header-cell *matHeaderCellDef> Brand </th>
+                    <td mat-cell *matCellDef="let element" > {{element._source.brand_name}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="maximum_retail_price">
+                    <th mat-header-cell *matHeaderCellDef style="width: 10%;"> MRP </th>
+                    <td mat-cell *matCellDef="let element" > ₹{{element._source.maximum_retail_price}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="selling_price">
+                    <th mat-header-cell *matHeaderCellDef> Selling Price </th>
+                    <td mat-cell *matCellDef="let element" > ₹{{element._source.selling_price}} </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator style-paginator [length]="totalRecords" pageIndex="{{pageNo}}" pageSize="{{pageSize}}" [pageSizeOptions]="[5, 10, 20, 50, 100]" (page)="onPaginateChange($event)" showFirstLastButtons></mat-paginator>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<!-- <div class="modal-header">
+    <span class="modal-title">
+        <a href="javascript:void(0);">
+            <p style="color:green; font-size: x-large;">
+                Request For {{payLoad.payload.actionType}}
+            </p>
+        </a>
+    </span>
+
+    <button type="button" class="close" aria-label="Close" (click)="process('dismiss',payLoad.payload.actionType)">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div> -->
+<h2 mat-dialog-title>Request For {{payLoad.payload.actionType}}</h2>
+<mat-dialog-content class="mat-typography hoz-form">
+    <div class="row">
+        <div class="col-sm-6">
+            <mat-form-field appearance="outline">
+                <mat-label>Store Name
+                </mat-label>
+                <input matInput readonly="true" value="{{payLoad.payload.paramData.storeName}}" trim="blur" />
+            </mat-form-field>
+        </div>
+
+        <div class="col-sm-6">
+            <mat-form-field appearance="outline">
+                <mat-label>City
+                </mat-label>
+                <input matInput readonly="true" value="{{payLoad.payload.paramData.city}}" trim="blur" />
+            </mat-form-field>
+        </div>
+        <div class="col-sm-6">
+            <mat-form-field appearance="outline">
+                <mat-label>Region Name
+                </mat-label>
+                <input matInput readonly="true" value="{{payLoad.payload.paramData.regionName}}" trim="blur" />
+            </mat-form-field>
+        </div>
+
+        <div class="col-sm-6">
+            <mat-form-field appearance="outline">
+                <mat-label>Zip Code
+                </mat-label>
+                <input matInput readonly="true" value="{{payLoad.payload.paramData.zipCode}}" trim="blur" />
+            </mat-form-field>
+        </div>
+        <div class="col-12">
+            <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Remarks</mat-label>
+                <textarea matInput trim="blur" placeholder="Enter Description" [(ngModel)]="remarks"></textarea>
+            </mat-form-field>
+        </div>
+
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close (click)="process('cancel',payLoad.payload.actionType)">Cancel</button>
+  <button mat-raised-button color="primary" type="button" (click)="process('process',payLoad.payload.actionType)">Submit</button>
+</mat-dialog-actions>
+
+<!-- <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="process('cancel',payLoad.payload.actionType)">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="process('process',payLoad.payload.actionType)">Submit</button>
+</div> -->

@@ -1,0 +1,187 @@
+<form [formGroup]="productExceptionForm" autocomplete="off">
+
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">Add New Product Exception</h3>
+      </div>
+      <div class="form-header-btn">
+        <ng-container *ngIf="!approveMode">
+          <button routerLink="/category/exception/commission-exception" mat-raised-button class="noshadow top-btn-font white-btn">
+            <mat-icon>arrow_back</mat-icon> Back
+          </button>
+          <button mat-raised-button class="noshadow top-btn-font" color="primary" [disabled]="!productExceptionForm.valid" (click)="onSubmit()">
+            <mat-icon>save</mat-icon> Save
+          </button>
+        </ng-container>
+        <ng-container *ngIf="approveMode">
+          <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (click)="requestProcess('APPROVED')">
+            <mat-icon>save</mat-icon> Accept
+          </button>
+          <button type="button" mat-raised-button class="noshadow top-btn-font" color="default" (click)="requestProcess('REJECTED')">
+            <mat-icon>cancel</mat-icon> Reject
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="box-shadow bg-white padding-10">
+    <div class="hoz-form">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-6">
+              <div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Exception Name</mat-label>
+                  <input matInput formControlName="exceptionName" [ngClass]="{ 'ng-invalid ng-touched': !f.exceptionName.valid }" />
+                </mat-form-field>
+                <div *ngIf="!f.exceptionName.valid && f.exceptionName.touched" class="error">
+
+                  <span class="text-danger" *ngIf="f.exceptionName.errors.required">Required</span>
+
+                </div>
+              </div>
+              <div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Select Seller</mat-label>
+                  <mat-select formControlName="sellerId" [ngClass]="{ 'ng-invalid ng-touched': !f.sellerId.valid }">
+                    <mat-option>
+                      <ngx-mat-select-search #myInput [formControl]="sellerFilterCtrl" [placeholderLabel]="'Find Seller ..'" [noEntriesFoundLabel]="'no matches  found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]="sellerItem.id" *ngFor="let sellerItem of sellers | dropdownfilter:myInput.value:'displayName'">{{sellerItem.displayName}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="!f.sellerId.valid && f.sellerId.touched" class="error">
+
+                  <span class="text-danger" *ngIf="f.sellerId.errors.required">Required</span>
+
+                </div>
+              </div>
+
+
+              <div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Select Product</mat-label>
+                  <mat-select formControlName="productId" [ngClass]="{ 'ng-invalid ng-touched': !f.productId.valid }">
+                    <mat-option>
+                      <ngx-mat-select-search #myProductInput [formControl]="productFilterCtrl" [placeholderLabel]="'Find Product...'" [noEntriesFoundLabel]="'no matches  found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]="product.id" *ngFor="let product of productDropdown | dropdownfilter:myProductInput.value:'productName'">{{product.productName}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="!f.productId.valid && f.productId.touched" class="error">
+
+                  <span class="text-danger" *ngIf="f.productId.errors.required">Required</span>
+
+                </div>
+              </div>
+
+
+            </div>
+            <div class="col-sm-6">
+              <div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Group</mat-label>
+                  <mat-select formControlName="groupId" [ngClass]="{ 'ng-invalid ng-touched': !f.groupId.valid }">
+                    <mat-option>
+                      <ngx-mat-select-search #myGrouptInput [formControl]="groupFilterCtrl" [placeholderLabel]="'Find Group...'" [noEntriesFoundLabel]="'no matches  found'"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]="groupItem.id" *ngFor="let groupItem of comssionGroups | dropdownfilter:myGrouptInput.value:'groupName'">{{groupItem.groupName}}</mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="!f.groupId.valid && f.groupId.touched" class="error">
+
+                  <span class="text-danger" *ngIf="f.groupId.errors.required">Required</span>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput [matDatepicker]="fpicker" [min]="minDate" formControlName="affectFrom" [ngClass]="{ 'ng-invalid ng-touched': !f.affectFrom.valid }"
+                      (dateInput)="changeStartDate()" />
+                    <mat-datepicker-toggle matSuffix [for]="fpicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fpicker></mat-datepicker>
+                  </mat-form-field>
+                  <div *ngIf="!f.affectFrom.valid && f.affectFrom.touched" class="error">
+
+                    <span class="text-danger" *ngIf="f.affectFrom.errors.required">Required</span>
+
+                  </div>
+
+                </div>
+                <div class="col-6">
+                  <mat-form-field appearance="outline">
+                    <mat-label>End Date</mat-label>
+                    <input matInput [matDatepicker]="upicker" [min]="maxDate" formControlName="expiryDate" [ngClass]="{ 'ng-invalid ng-touched': !f.expiryDate.valid }"
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="upicker"></mat-datepicker-toggle>
+                    <mat-datepicker #upicker></mat-datepicker>
+                  </mat-form-field>
+
+                  <div *ngIf="!f.expiryDate.valid && f.expiryDate.touched" class="error">
+
+                    <span class="text-danger" *ngIf="f.expiryDate.errors.required">Required</span>
+
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-8">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Commission Value</mat-label>
+                    <input matInput formControlName="value" [ngClass]="{ 'ng-invalid ng-touched': !f.value.valid }" />
+                  </mat-form-field>
+                  <div *ngIf="!f.value.valid && f.value.touched" class="error">
+
+                    <span class="text-danger" *ngIf="f.value.errors.required">Required</span>
+
+                  </div>
+                </div>
+                <div class="col-4">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Value Type</mat-label>
+                    <mat-select formControlName="type" [ngClass]="{ 'ng-invalid ng-touched': !f.type.valid }">
+                      <mat-option value="f">Fixed</mat-option>
+                      <mat-option value="p">%</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div *ngIf="!f.type.valid && f.type.touched" class="error">
+
+                    <span class="text-danger" *ngIf="f.type.errors.required">Required</span>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="col-sm-12">
+          <div class="row  mt-2">
+            <div class="col-sm-3">
+              <mat-slide-toggle color="primary" formControlName="addLogistic">Add Logistic Charge</mat-slide-toggle>
+            </div>
+            <div class="col-sm-3">
+              <mat-slide-toggle color="primary" formControlName="addPaymentHandling">Add Payment Handling Charge</mat-slide-toggle>
+            </div>
+            <div class="col-sm-3">
+              <mat-slide-toggle color="primary" formControlName="addClosingFee">Add Closing Fee</mat-slide-toggle>
+            </div>
+            <div class="col-sm-3">
+              <mat-slide-toggle color="primary" formControlName="addFullfillmentFee">Add Fullfillment Fees</mat-slide-toggle>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+</form>

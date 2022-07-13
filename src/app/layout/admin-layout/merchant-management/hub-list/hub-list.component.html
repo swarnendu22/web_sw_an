@@ -1,0 +1,232 @@
+<div class="tab-area-content py-0 box-relative">
+    <button style="position: absolute;top: 10px;right: 56px;z-index: 9;" mat-raised-button (click)="hideHubForm()" [hidden] = "isHubFormShow">Close</button>
+
+    <button (click)="openHubForm()" style="position: absolute;top: 10px;right: 56px;z-index: 9;" mat-raised-button color="primary" [hidden] = "!isHubFormShow"><mat-icon>add</mat-icon> Add New Hub</button>
+
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="panelHubList">
+            <mat-expansion-panel-header>
+                <mat-panel-title style="align-items: center;">
+                    <h4 class="mb-0">Hubs: {{rowData.length}}</h4>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <form [formGroup]="hubForm">
+                <div class="hoz-form hoz-form-box" [hidden] = "isHubFormShow">
+                    <div style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 10px;">
+                        <h4>Basic Information</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="p-label">Full Address
+                                <a href="javascript:void(0);">Lat/Long - ({{map.lat}},{{map.lng}})
+                                </a>
+                            </p>
+                            <mat-form-field appearance="outline">
+                                <textarea matInput readonly formControlName="address" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !hubForm.get('address').valid }"></textarea>
+                                <mat-icon (click)="openDialogLatLong()" style="cursor: pointer" matSuffix>edit</mat-icon>
+
+                                <span [tooltip]="address" *ngIf="!hubForm.get('address').valid && hubForm.get('address').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #address>
+                                <div>
+                                    <p class="mb-1" *ngIf="hubForm.get('address').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="p-label">Land Mark</p>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Land Mark</mat-label>
+                                <input matInput formControlName="landmark" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !hubForm.get('landmark').valid }" maxlength="100">
+
+                                <span [tooltip]="landmark" *ngIf="!hubForm.get('landmark').valid && hubForm.get('landmark').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #landmark>
+                                <div>
+                                    <p class="mb-1" *ngIf="hubForm.get('landmark').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="hubForm.get('landmark').errors.maxlength">Max Length 100</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="p-label">City</p>
+                            <mat-form-field appearance="outline">
+                                <mat-label>City</mat-label>
+                                <input matInput formControlName="city" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !hubForm.get('city').valid }" maxlength="100">
+
+                                <span [tooltip]="city" *ngIf="!hubForm.get('city').valid && hubForm.get('city').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+                            <ng-template #city>
+                                <div>
+                                    <p class="mb-1" *ngIf="hubForm.get('city').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="hubForm.get('city').errors.maxlength">Max Length 100</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="p-label">Pin Code</p>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Pin Code</mat-label>
+                                <input numbersOnly matInput formControlName="zipCode" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !hubForm.get('zipCode').valid }" maxlength="25">
+
+                                <span [tooltip]="zipCode" *ngIf="!hubForm.get('zipCode').valid && hubForm.get('zipCode').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #zipCode>
+                                <div>
+                                    <p class="mb-1" *ngIf="hubForm.get('zipCode').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="hubForm.get('zipCode').errors.pattern">Not Valid</p>
+                                    <p class="mb-1" *ngIf="hubForm.get('zipCode').errors.maxlength">Max Length 25</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="p-label">Region</p>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Region</mat-label>
+                                <mat-select formControlName="regionName" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !hubForm.get('regionName').valid }">
+                                    <mat-option [value]="region.regionName" *ngFor="let region of regions">{{region.regionName}}</mat-option>
+                                </mat-select>
+
+                                <span [tooltip]="regionName" *ngIf="!hubForm.get('regionName').valid && hubForm.get('regionName').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #regionName>
+                                <div>
+                                    <p class="mb-1" *ngIf="hubForm.get('regionName').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="p-label">Country</p>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Country</mat-label>
+                                <mat-select formControlName="countryCode" [ngClass]="{ 'ng-invalid ng-touched': !hubForm.get('countryCode').valid }">
+                                    <mat-option [value]="item.countryCode" *ngFor="let item of countries">{{item.countryName}}</mat-option>
+                                </mat-select>
+
+                                <span [tooltip]="countryCode" *ngIf="!hubForm.get('countryCode').valid && hubForm.get('countryCode').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #countryCode>
+                                <div>
+                                    <p class="mb-1" *ngIf="hubForm.get('countryCode').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Contact Number</mat-label>
+                                <input numbersOnly matInput formControlName="contact_number" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !hubForm.get('contact_number').valid }" maxlength="10">
+    
+                                <span [tooltip]="contact_number" *ngIf="!hubForm.get('contact_number').valid && hubForm.get('contact_number').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+    
+                            <ng-template #contact_number>
+                                <div>
+                                    <p class="mb-1" *ngIf="hubForm.get('contact_number').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="hubForm.get('contact_number').errors.maxlength">Max Length 10</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Email</mat-label>
+                                <input matInput formControlName="email" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !hubForm.get('email').valid }" maxlength="100">
+    
+                                <span [tooltip]="email" *ngIf="!hubForm.get('email').valid && hubForm.get('email').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+    
+                            <ng-template #email>
+                                <div>
+                                    <p class="mb-1" *ngIf="hubForm.get('email').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="hubForm.get('email').errors.pattern">Not Valid</p>
+                                    <p class="mb-1" *ngIf="hubForm.get('email').errors.maxlength">Max Length 100</p>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                    </div>
+                    <div style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 10px;">
+                        <h4>Legal Information</h4>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Legal Name</mat-label>
+                                <input [(ngModel)]="gstLegalNameEdit" (ngModelChange)="gstUpdate($event)" matInput formControlName="gstnLegalName" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !hubForm.get('gstnLegalName').valid }">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>GSTIN Number</mat-label>
+                                <input [(ngModel)]="gstNumberEdit" (ngModelChange)="gstUpdate($event)" matInput formControlName="gstn" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !hubForm.get('gstn').valid }">
+                            </mat-form-field>
+                        </div>
+    
+                        <div class="col-md-4" *ngIf="isUpdateForm">
+                            <button mat-raised-button color="primary" [disabled]="gstVerifiedBtn" (click)="verifyLegalInformation()">Verify Again</button>
+                        </div>
+
+                        <span *ngIf="gstn_verified" style="padding: 0px 5px 10px 15px; color: green;">
+                            <mat-icon style="vertical-align: sub;color: green;font-size: 16px;width: 16px;">done</mat-icon> Verified
+                        </span>
+                        
+                        <span  *ngIf="gstnVerificationReference != null" style="color: #a9a8a8; font-size: 10px;padding: 0px 15px 15px 15px;">GSTIN Verification Reference: {{gstnVerificationReference}}</span>
+                    </div>
+
+                    <div class="row  mt-3">
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Trade Name</mat-label>
+                                <input matInput formControlName="gstnTradeName" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !hubForm.get('gstnTradeName').valid }">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4" style="padding-top: 20px;">
+                            <mat-checkbox formControlName="hasGstNonEnrollmentDec"></mat-checkbox> Declaration of GST Non-Enrollment
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: right;">
+                        
+                        <button mat-raised-button color="primary" (click)="onSubmitHubAdd()" *ngIf="!isUpdateForm">Save</button>
+
+                        <button mat-raised-button color="primary" (click)="onSubmitHubUpdate()" *ngIf="isUpdateForm">Update</button>
+                    </div>
+                </div>
+            </form>
+            <div style="height: calc(100vh - 240px)">
+                <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData" [defaultColDef]="defaultColDef" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)"  (firstDataRendered)="onFirstDataRendered($event)"  (gridSizeChanged)="onGridSizeChanged($event)"></ag-grid-angular>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

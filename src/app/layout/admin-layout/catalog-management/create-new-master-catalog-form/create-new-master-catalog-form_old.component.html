@@ -1,0 +1,742 @@
+<form [formGroup]="catalogForm" autocomplete="off" novalidate>
+    <div class="top-bar box-shadow">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title">Create Master Catalog</h3>
+            </div>
+            <div class="mr-auto">
+                <h3 class="m-subheader__title"></h3>
+            </div>
+            <div class="form-header-btn">
+
+                <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" color="primary" (click)="goBack()">
+                    <mat-icon>arrow_back</mat-icon> Back
+                </button>
+                <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (keydown.enter)="$event.preventDefault()"
+                    (click)="onFormSubmit($event)">
+                    <mat-icon>save</mat-icon> Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-shadow bg-white padding-10">
+        <div class="content-head">
+            <div class="content-head-caption">
+                <h3>Key Details</h3>
+            </div>
+
+        </div>
+        <div class="form-content-body">
+            <fieldset>
+                <div class="hoz-form mt-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <mat-form-field appearance="outline">
+                                <mat-hint style="color: grey; font-size: 10px">
+                                    <i>Product Name Max Limit 250</i>
+                                </mat-hint>
+                                <mat-label>Product Name</mat-label>
+                                <input matInput tabindex="1" formControlName="productName" required maxlength="250" />
+                            </mat-form-field>
+                            <ng-container *ngIf="!catalogForm.get('productName').valid && catalogForm.get('productName').touched">
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('productName').hasError('required')">
+                                    Required Product Name</mat-hint>
+                            </ng-container>
+                        </div>
+
+                        <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Category</mat-label>
+                                <input type="hidden" formControlName="categories" />
+
+                                <input matInput tabindex="2" formControlName="categories_path" required readonly (click)="openCatelist()" />
+
+                                <mat-icon (click)="openCatelist()" style="cursor: pointer" matSuffix>edit</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Brands
+                                    <span style="color: grey; font-size: 10px">*</span>
+                                </mat-label>
+                                <mat-select tabindex="3" formControlName="brand">
+                                    <div class="custom-panel" style="position: relative;overflow-x: hidden;">
+                                        <mat-option>
+                                            <ngx-mat-select-search #myInput [formControl]="brandFilterCtrl" [placeholderLabel]="'Find Brand ..'">
+                                            </ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option [ngClass]="{'barnd-not-link':brandItem.categoryLink=='0'}" #hasValue *ngFor="let brandItem of brandsBasedOnCategory| dropdownfilter:myInput.value:'brandName'"
+                                            [value]="brandItem.id">{{brandItem.brandName}}
+                                        </mat-option>
+                                    </div>
+                                    <footer>
+                                        <button mat-button (click)="createNewBand()">Add New Band</button>
+                                    </footer>
+                                </mat-select>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-hint style="color: grey; font-size: 10px">
+                                    <i>Description Max Limit 65,535</i>
+                                </mat-hint>
+                                <mat-label>Description</mat-label>
+                                <textarea matInput tabindex="4" rows="5" placeholder="Enter Description" formControlName="description" maxlength="65535"></textarea>
+                            </mat-form-field>
+                            <ng-container *ngIf="!catalogForm.get('description').valid && catalogForm.get('description').touched">
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('description').hasError('required')">
+                                    Required Description</mat-hint>
+                            </ng-container>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-hint style="color: grey; font-size: 10px">
+                                    <i>Other Details Max Limit 65,535</i>
+                                </mat-hint>
+                                <mat-label>Other Details</mat-label>
+                                <textarea matInput tabindex="5" rows="5" placeholder="Enter Other Details" formControlName="otherDetails" maxlength="65535"></textarea>
+                            </mat-form-field>
+
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="box-shadow bg-white padding-10 mt-3">
+        <div class="box-shadow bg-white padding-10 mt-3">
+            <div class="content-head">
+                <div class="content-head-caption">
+                    <h3>Shipping & Pricing</h3>
+                </div>
+            </div>
+            <div class="form-content-body">
+                <fieldset>
+                    <div class="hoz-form mt-3">
+                        <div class="row">
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>MRP</mat-label>
+                                    <input type="textbox" matInput tabindex="6" minValue="0.00" maxValue="99999999.99" formControlName="shippingMrp" required
+                                        appTwoDigitDecimaNumber (focusout)="checkMRPOverRP('shippingMrp','shippingRetailPrice');"
+                                    />
+                                </mat-form-field>
+                                <ng-container *ngIf="!catalogForm.get('shippingMrp').valid && catalogForm.get('shippingMrp').touched">
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingMrp').hasError('required')">
+                                        Required MRP</mat-hint>
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingMrp').hasError('pattern')">
+                                        Invalid MRP</mat-hint>
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingMrp').hasError('min') || catalogForm.get('shippingMrp').hasError('max')">
+                                        Value should be 0 to 99999999.99</mat-hint>
+                                </ng-container>
+                            </div>
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Selling Price</mat-label>
+                                    <input type="textbox" matInput tabindex="7" formControlName="shippingRetailPrice" required appTwoDigitDecimaNumber minValue="0.00"
+                                        maxValue="99999999.99" (focusout)="checkMRPOverRP('shippingMrp','shippingRetailPrice');onMOPFocus();"
+                                    />
+                                </mat-form-field>
+                                <ng-container *ngIf="!catalogForm.get('shippingRetailPrice').valid && catalogForm.get('shippingRetailPrice').touched">
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingMrp').value && catalogForm.get('shippingRetailPrice').hasError('lte')">
+                                        Selling Price should not be greater than MRP</mat-hint>
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingMrp').value && catalogForm.get('shippingRetailPrice').hasError('gte')">
+                                        Selling Price can not be less than MOP</mat-hint>
+    
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingRetailPrice').hasError('required')">Required Selling Price</mat-hint>
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingRetailPrice').hasError('pattern')">Invalid Selling Price</mat-hint>
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingRetailPrice').hasError('min') || catalogForm.get('shippingRetailPrice').hasError('max')">
+                                        Value should be 0 to 99999999.99</mat-hint>
+                                </ng-container>
+                                <mat-hint align="start" class="error" *ngIf="moperror!=''">
+                                    {{moperror}}</mat-hint>
+                            </div>
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Currency</mat-label>
+                                    <mat-select tabindex="8" formControlName="shippingCurrency">
+                                        <mat-option value="INR">INR</mat-option>
+                                        <mat-option value="USD">USD</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <ng-container *ngIf="!catalogForm.get('shippingCurrency').valid && catalogForm.get('shippingCurrency').touched">
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingCurrency').hasError('required')">
+                                        Required Currency</mat-hint>
+                                </ng-container>
+                            </div>
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-hint style="color: grey; font-size: 10px">
+                                        <i>Note:ISBN number must be 13 digits</i>
+                                    </mat-hint>
+                                    <mat-label>ISBN</mat-label>
+                                    <input tabIndex="9" matInput formControlName="shippingIsbn" maxlength="13" numbersOnly/>
+                                </mat-form-field>
+    
+                                <ng-container *ngIf="!catalogForm.get('shippingIsbn').valid &&catalogForm.get('shippingIsbn').touched">
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingIsbn').hasError('required')">
+                                        ISBN Field Required</mat-hint>
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingIsbn').hasError('pattern')">
+                                        Invalid ISBN, ISBN must be 13 digits</mat-hint>
+                                </ng-container>
+                            </div>
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-hint style="color: grey; font-size: 10px">
+                                        <i>Note:EAN Max Limit 48</i>
+                                    </mat-hint>
+                                    <mat-label>EAN</mat-label>
+                                    <input type="text" matInput tabindex="10" (keyup)="copyValueBarcode($event.target.value)" numbersOnly formControlName="shippingEan"
+                                        maxlength="48" />
+                                </mat-form-field>
+                                <ng-container *ngIf="!catalogForm.get('shippingEan').valid && catalogForm.get('shippingEan').touched">
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingEan').hasError('pattern')">
+                                        Invalid EAN, EAN Max Limit 48</mat-hint>
+                                </ng-container>
+                            </div>
+    
+                        </div>
+                        <div class="row">
+    
+                            <div class="col">
+    
+                                <mat-form-field appearance="outline">
+                                    <mat-hint style="color: grey; font-size: 10px">
+                                        <i>Note:UPC number must be 13 digits</i>
+                                    </mat-hint>
+                                    <mat-label>UPC</mat-label>
+                                    <input matInput tabindex="11" formControlName="shippingUpc" maxlength="13" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                    />
+                                </mat-form-field>
+                                <ng-container *ngIf="catalogForm.get('shippingUpc').untouched &&  catalogForm.get('shippingUpc').touched">
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingUpc').hasError('pattern')">
+                                        Invalid UPC, UPC must be 13 digits</mat-hint>
+                                </ng-container>
+                            </div>
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Length(cm)</mat-label>
+                                    <input type="textbox" matInput tabindex="12" formControlName="shippingLength" appTwoDigitDecimaNumber minValue="0.00" maxValue="99999999.99"
+                                    />
+                                </mat-form-field>
+                                <ng-container *ngIf="!catalogForm.get('shippingLength').valid && catalogForm.get('shippingLength').touched">
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingLength').hasError('required')">
+                                        Required Length</mat-hint>
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingLength').hasError('pattern')">
+                                        Invalid Length</mat-hint>
+    
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingLength').hasError('min') || catalogForm.get('shippingLength').hasError('max')">
+                                        Value should be 0 to 99999999.99</mat-hint>
+                                </ng-container>
+                            </div>
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Width(cm)</mat-label>
+                                    <input type="textbox" tabindex="13" matInput formControlName="shippingWidth" appTwoDigitDecimaNumber minValue="0.00" maxValue="99999999.99"
+                                    />
+                                </mat-form-field>
+                                <ng-container *ngIf="!catalogForm.get('shippingWidth').valid &&catalogForm.get('shippingWidth').touched">
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingWidth').hasError('required')">
+                                        Required Width</mat-hint>
+    
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingWidth').hasError('pattern')">
+                                        Invalid Width</mat-hint>
+    
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingWidth').hasError('min') || catalogForm.get('shippingWidth').hasError('max')">
+                                        Value should be 0 to 99999999.99</mat-hint>
+                                </ng-container>
+                            </div>
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Height(cm)</mat-label>
+                                    <input type="textbox" matInput tabindex="14" formControlName="shippingHeight" appTwoDigitDecimaNumber minValue="0.00" maxValue="99999999.99"
+                                    />
+                                </mat-form-field>
+                                <ng-container *ngIf="!catalogForm.get('shippingHeight').valid && catalogForm.get('shippingHeight').touched">
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingHeight').hasError('required')">
+                                        Required Height</mat-hint>
+    
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingHeight').hasError('pattern')">
+                                        Invalid Height</mat-hint>
+    
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingHeight').hasError('min') || catalogForm.get('shippingHeight').hasError('max')">
+                                        Value should be 0 to 99999999.99</mat-hint>
+                                </ng-container>
+                            </div>
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Dead Weight(gm)</mat-label>
+                                    <input type="textbox" matInput tabindex="15" formControlName="shippingWeight" appTwoDigitDecimaNumber minValue="0.00" maxValue="99999999.99"
+                                    />
+                                </mat-form-field>
+                                <ng-container *ngIf="!catalogForm.get('shippingWeight').valid && catalogForm.get('shippingWeight').touched">
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingWeight').hasError('required')">
+                                        Required Weight</mat-hint>
+    
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingWeight').hasError('pattern')">
+                                        Invalid Weight</mat-hint>
+    
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingWeight').hasError('min') || catalogForm.get('shippingWeight').hasError('max')">
+                                        Value should be 0 to 99999999.99</mat-hint>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-hint style="color: grey; font-size: 10px">
+                                        <i>Note:HSN Code max limit 20</i>
+                                    </mat-hint>
+                                    <mat-label>HSN Code</mat-label>
+                                    <input matInput tabindex="16" formControlName="shippingHsnCode" maxlength="20" />
+                                </mat-form-field>
+                                <ng-container *ngIf="!catalogForm.get('shippingHsnCode').valid && catalogForm.get('shippingHsnCode').touched">
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingHsnCode').hasError('required')">
+                                        Required HSN Code</mat-hint>
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingHsnCode').hasError('pattern')">
+                                        Invalid HSN Code</mat-hint>
+                                </ng-container>
+                            </div>
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>GST
+                                    </mat-label>
+                                    <mat-select tabindex="17" formControlName="shippingGst">
+                                        <mat-option value="3">3%</mat-option>
+                                        <mat-option value="5">5%</mat-option>
+                                        <mat-option value="8">8%</mat-option>
+                                        <mat-option value="12">12%</mat-option>
+                                        <mat-option value="18">18%</mat-option>
+                                        <mat-option value="28">28%</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <ng-container *ngIf="!catalogForm.get('shippingHsnCode').valid && catalogForm.get('shippingHsnCode').touched">
+                                    <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingHsnCode').hasError('required')">
+                                        Required GST</mat-hint>
+                                </ng-container>
+                            </div>
+                            <div class="col" *ngIf="catalogForm.get('productVariantDetailsJSON').length == 0">
+                                <mat-form-field appearance="outline">
+                                    <mat-hint style="color: grey; font-size: 10px">
+                                        <i>Note:Barcode max limit 48</i>
+                                    </mat-hint>
+                                    <mat-label>Barcode</mat-label>
+                                    <input matInput tabindex="16" [(ngModel)]="barcode" [ngModelOptions]="{standalone: true}" maxlength="48" />
+                                </mat-form-field>
+    
+                            </div>
+                            <div class="col" *ngIf="catalogForm.get('productVariantDetailsJSON').length == 0">
+                                <mat-form-field appearance="outline">
+                                    <mat-hint style="color: grey; font-size: 10px">
+                                        <i>Note:SKU max limit 128</i>
+                                    </mat-hint>
+                                    <mat-label>SKU</mat-label>
+                                    <input matInput tabindex="16" [(ngModel)]="sku" [ngModelOptions]="{standalone: true}" maxlength="128" />
+                                </mat-form-field>
+    
+                            </div>
+                            <div class="col" *ngIf="catalogForm.get('productVariantDetailsJSON').length == 0">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>MOP</mat-label>
+                                    <input type="textbox" matInput tabindex="16" [(ngModel)]="mop" [ngModelOptions]="{standalone: true}" appTwoDigitDecimaNumber
+                                        minValue="0.00" maxValue="99999999.99" (focusout)="onMOPFocus();" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="box-shadow bg-white padding-10 mt-3">
+            <div class="add-master-banner">
+                <div class="add-master-banner-box">
+                    <div class="add-master-banner-upload">
+                        <input type="file" (change)="onSelectFile($event)">
+                        <div>
+                            <mat-icon>add</mat-icon>
+                            <h5>Add Image</h5>
+                        </div>
+                    </div>
+                    <div class="add-master-banner-img" *ngFor="let imgItem of productImages;let i=index">
+                        <img [src]="imgItem">
+                        <div class="btnon-hover">
+                            <button type="button" mat-mini-fab color="warn" aria-label="Delete Image" (click)="deleteImage(i)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+    
+                </div>
+            </div>
+        </div>
+
+        <div class="content-head">
+            <div class="content-head-caption">
+                <h3>Attributes</h3>
+            </div>
+            <div class="content-head-action action-form">
+                <div class="d-flex">
+                    <mat-form-field appearance="outline" *ngIf="attributeSetsData">
+                        <mat-label>Attributes </mat-label>
+                        <mat-select (selectionChange)="attributeSetSelectionDropDown($event)" formControlName="attributeId">
+                            <mat-option *ngFor="let attributes of attributeSetsData" [value]="attributes.id">{{attributes.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="form-content-body">
+            <fieldset>
+                <div class="hoz-form mb-3">
+                    <table class="table-form row-attribute" formArrayName="productDetailsAttributes">
+                        <tr>
+                            <th width="30%">Attribute Name</th>
+                            <th width="50%">Value</th>
+                            <th width="10%">Key Attribute</th>
+                            <th width="10%">Visible</th>
+                        </tr>
+                        <tr *ngFor="let attribute of catalogForm.get('productDetailsAttributes')['controls'];let i=index;" [formGroupName]="i">
+                            <td>
+                                <mat-form-field appearance="outline">
+                                    <input matInput formControlName="name" [readonly]="true">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field appearance="outline" *ngIf="attribute.get('type').value==='TEXT'">
+                                    <mat-hint *ngIf="attribute.get('option').value == 'M'" style="color: grey; font-size: 10px">
+                                        <i>* Required Field</i>
+                                    </mat-hint>
+                                    <input matInput formControlName="value" />
+                                </mat-form-field>
+                                <ng-container *ngIf="!attribute.get('value').valid &&attribute.get('value').touched">
+                                    <mat-hint align="start" class="error" *ngIf="attribute.get('value').hasError('required') && attribute.get('type').value==='TEXT'">
+                                        Required Field</mat-hint>
+                                </ng-container>
+                                <mat-form-field appearance="outline" *ngIf="attribute.get('type').value=='SELECT' || attribute.get('type').value === 'SWATCH'">
+                                    <mat-hint *ngIf="attribute.get('option').value == 'M'" style="color: grey; font-size: 10px">
+                                        <i>* Required Field</i>
+                                    </mat-hint>
+                                    <mat-select formControlName="value" [value]="attribute.get('value').value">
+                                        <mat-option>
+                                            <ngx-mat-select-search #existingAttrCtrl [formControl]="ExistingAttrCtrl" [placeholderLabel]="'Find Attribute ..'" [noEntriesFoundLabel]="'no matches  found'">
+                                            </ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option *ngFor="let existattrValue of attribute.get('dropDownValue').value|splitString:',' | dropdownfilter:existingAttrCtrl.value:''"
+                                            [value]="existattrValue">{{existattrValue}}</mat-option>
+
+                                    </mat-select>
+                                </mat-form-field>
+                                <ng-container *ngIf="!attribute.get('value').valid &&attribute.get('value').touched">
+                                    <mat-hint align="start" class="error" *ngIf="attribute.get('value').hasError('required') && (attribute.get('type').value=='SELECT' || attribute.get('type').value === 'SWATCH')">
+                                        Required Field</mat-hint>
+                                </ng-container>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" [checked]="attribute.get('is_key').value" formControlName="is_key">
+                                </mat-checkbox>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" [checked]="attribute.get('isVisible').value" formControlName="isVisible">
+                                </mat-checkbox>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="choose-attribute box-shadow bg-white padding-10 mt-3">
+        <mat-radio-group aria-label="Select an option" formControlName="ConfigurationType" (change)="ConfigurationTypeChange($event)">
+            <mat-radio-button value="Simple" color="primary">Simple</mat-radio-button>
+            <mat-radio-button value="Configurable" color="primary">Configurable</mat-radio-button>
+        </mat-radio-group>
+
+        
+    </div>
+    <div class="box-shadow bg-white padding-10 mt-3" *ngIf="catalogForm.get('ConfigurationType').value=='Configurable'">
+        <div class="product-attribute-area">
+            <div class="content-head">
+                <div class="content-head-caption">
+                    <h3>Product Attributes</h3>
+                </div>
+                <div class="content-head-action action-form">
+                    <div class="d-flex">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Select Product Attributes</mat-label>
+                            <mat-select multiple formControlName="productAttributes" (selectionChange)="productAttributesChanged();">
+                                <mat-option value="{{i}}" *ngFor="let productAttribute of productAttributesByCategory; let i = index">{{productAttribute.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-attribute" *ngIf="catalogForm.get('productSizesArray').length > 0" formArrayName="productSizesArray">
+                <span *ngFor="let val of catalogForm.get('productAttributes').value; let i = index;" [formGroupName]="i">
+                    <mat-form-field class="mr-2" appearance="outline">
+                        <mat-label>Select {{productAttributesByCategory[i].name}}</mat-label>
+                        <mat-select multiple formControlName="productSizes" (selectionChange)="productAttributesValuesChanged();">
+                            <mat-option value="{{j}}" *ngFor="let val1 of productAttributesByCategory[i].attributeValues; let j = index;">{{val1.attributeValue}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </span>
+            </div>
+            <div class="hoz-form mb-2 mt-1" *ngIf="catalogForm.get('productVeriatesArray').length > 0" formArrayName="productVeriatesArray">
+                <table class="table-form row-attribute">
+                    <thead>
+                        <tr>
+                            <th width="40%">Attribute Name</th>
+                            <th width="20%">Price</th>
+                            <th width="20%">Brand</th>
+                            <th width="20%"></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let variantDetails of catalogForm.get('productVeriatesArray').controls;let i=index;" [formGroupName]="i">
+                        <tr>
+                            <td>
+                                <mat-form-field appearance="outline">
+                                    <input matInput value="" formControlName="productVariateName">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field appearance="outline">
+                                    <input matInput formControlName="productVariatePrice">
+                                </mat-form-field>
+                            </td>
+                            <td class="text-center">
+                                <mat-form-field appearance="outline">
+                                    <input matInput formControlName="productVariateBrand">
+                                </mat-form-field>
+                            </td>
+                            <td class="text-center">
+                                <div class="upload-img-btn">
+                                    <input type="file" />
+                                    <button mat-stroked-button color="primary"><mat-icon>camera_alt</mat-icon> Upload Image</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <!-- <div class="add-img-variant">
+                                    <img src="https://media-cdn.tripadvisor.com/media/photo-s/11/9d/06/cd/photo6jpg.jpg" />
+                                    <div class="btnon-hover">
+                                        <button type="button" mat-mini-fab color="warn" aria-label="Delete Image" (click)="deleteImage(i)">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </div>
+                                </div> -->
+                                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="box-shadow bg-white padding-10 mt-3" style="display: none;">
+        <div class="content-head">
+            <div class="content-head-caption">
+                <h3>Variants</h3>
+            </div>
+        </div>
+        <div class="form-content-body full-width">
+            <div class="hoz-form mt-3 px-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-hint style="color: grey; font-size: 10px">
+                                <i>Note:Variant Type max limit 255</i>
+                            </mat-hint>
+                            <mat-label>Variant Type</mat-label>
+                            <input type="text" [(ngModel)]="variantType" [ngModelOptions]="{standalone: true}" matInput tabindex="14" maxlength="255"
+                            />
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-md-3 mt-2">
+                        <button type="button" *ngIf="catalogForm.get('productVariantDetailsJSON').length == 0" mat-flat-button color="primary" (click)="addItem()">
+                            Add Variants
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12" *ngIf="catalogForm.get('productVariantDetailsJSON').length > 0">
+                        <table class="table-form" formArrayName="productVariantDetailsJSON">
+                            <tr>
+                                <th>Variant Name </th>
+                                <th>MRP</th>
+                                <th>Selling Price</th>
+                                <th>Variant Type</th>
+                                <th>SKU</th>
+                                <th>MOP</th>
+                                <th>Default</th>
+                                <th>Action</th>
+                            </tr>
+                            <tr *ngFor="let variantDetails of catalogForm.get('productVariantDetailsJSON').controls;let i=index;" [formGroupName]="i">
+                                <td>
+                                    <mat-form-field appearance="outline">
+                                        <mat-hint style="color: grey; font-size: 10px">
+                                            <i>Note:Variant Name max limit 255</i>
+                                        </mat-hint>
+                                        <mat-label>Variant Name</mat-label>
+                                        <input type="text" matInput tabindex="14" formControlName="variant_name" maxlength="255" />
+                                    </mat-form-field>
+                                    <ng-container *ngIf="!formArrControls(i).get('variant_name').valid && formArrControls(i).get('variant_name').touched">
+                                        <mat-hint align="start" class="error" *ngIf="formArrControls(i).get('variant_name').hasError('required')">
+                                            Required</mat-hint>
+                                    </ng-container>
+                                </td>
+                                <td>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>MRP</mat-label>
+                                        <input type="textbox" matInput tabindex="14" formControlName="maximum_retail_price" appTwoDigitDecimaNumber minValue="0.00"
+                                            maxValue="99999999.99" />
+                                    </mat-form-field>
+                                    <ng-container *ngIf="!formArrControls(i).get('maximum_retail_price').valid && formArrControls(i).get('maximum_retail_price').touched">
+                                        <mat-hint align="start" class="error" *ngIf="formArrControls(i).get('maximum_retail_price').hasError('required')">
+                                            Required</mat-hint>
+
+                                        <mat-hint align="start" class="error" *ngIf="formArrControls(i).get('maximum_retail_price').hasError('pattern')">
+                                            Invalid MRP</mat-hint>
+
+                                        <mat-hint align="start" class="error" *ngIf="formArrControls(i).get('maximum_retail_price').hasError('min') || formArrControls(i).get('maximum_retail_price').hasError('max')">
+                                            Value should be 0 to 99999999.99</mat-hint>
+                                    </ng-container>
+                                </td>
+                                <td>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Selling Price</mat-label>
+                                        <input type="textbox" matInput tabindex="14" formControlName="selling_price" appTwoDigitDecimaNumber minValue="0.00" maxValue="99999999.99"
+                                        />
+                                    </mat-form-field>
+                                    <ng-container *ngIf="!formArrControls(i).get('selling_price').valid && formArrControls(i).get('selling_price').touched">
+                                        <mat-hint align="start" class="error" *ngIf="formArrControls(i).get('selling_price').hasError('required')">
+                                            Required</mat-hint>
+                                        <mat-hint align="start" class="error" *ngIf="formArrControls(i).get('selling_price').hasError('gte')">
+                                            Selling Price can not be less than MOP</mat-hint>
+
+                                        <mat-hint align="start" class="error" *ngIf="formArrControls(i).get('selling_price').hasError('pattern')">
+                                            Invalid MRP</mat-hint>
+
+                                        <mat-hint align="start" class="error" *ngIf="formArrControls(i).get('selling_price').hasError('min') || formArrControls(i).get('selling_price').hasError('max')">
+                                            Value should be 0 to 99999999.99</mat-hint>
+                                    </ng-container>
+                                </td>
+                                <td>
+                                    <mat-form-field appearance="outline">
+                                        <mat-hint style="color: grey; font-size: 10px">
+                                            <i>Note:Barcode max limit 48</i>
+                                        </mat-hint>
+                                        <mat-label>Barcode</mat-label>
+                                        <input type="text" matInput tabindex="14" formControlName="bar_code" />
+                                    </mat-form-field>
+                                    <ng-container *ngIf="!formArrControls(i).get('bar_code').valid && formArrControls(i).get('bar_code').touched">
+                                        <mat-hint align="start" class="error" *ngIf="formArrControls(i).get('bar_code').hasError('required')">
+                                            Required</mat-hint>
+                                    </ng-container>
+                                </td>
+                                <td>
+                                    <mat-form-field appearance="outline">
+                                        <mat-hint style="color: grey; font-size: 10px">
+                                            <i>Note:SKU max limit 128</i>
+                                        </mat-hint>
+                                        <mat-label>SKU</mat-label>
+                                        <input type="text" matInput tabindex="14" formControlName="sku" maxlength="128" />
+                                    </mat-form-field>
+                                    <ng-container *ngIf="!formArrControls(i).get('sku').valid && formArrControls(i).get('sku').touched">
+                                        <mat-hint align="start" class="error" *ngIf="formArrControls(i).get('sku').hasError('required')">
+                                            Required</mat-hint>
+                                    </ng-container>
+                                </td>
+                                <td>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>MOP</mat-label>
+                                        <input type="textbox" matInput tabindex="14" formControlName="minimum_operating_price" appTwoDigitDecimaNumber minValue="0.00"
+                                            maxValue="99999999.99" />
+
+                                    </mat-form-field>
+                                    <ng-container *ngIf="!formArrControls(i).get('minimum_operating_price').valid && formArrControls(i).get('minimum_operating_price').touched">
+                                        <mat-hint align="start" class="error" *ngIf="formArrControls(i).get('minimum_operating_price').value && formArrControls(i).get('minimum_operating_price').hasError('lte')">
+                                            MOP should not be greater than MRP</mat-hint>
+
+                                        <mat-hint align="start" class="error" *ngIf="formArrControls(i).get('minimum_operating_price').hasError('pattern')">
+                                            Invalid MOP</mat-hint>
+
+                                        <mat-hint align="start" class="error" *ngIf="formArrControls(i).get('minimum_operating_price').hasError('min') || formArrControls(i).get('minimum_operating_price').hasError('max')">
+                                            Value should be 0 to 99999999.99</mat-hint>
+                                    </ng-container>
+
+                                </td>
+                                <td>
+
+                                    <mat-radio-button [checked]="i==0?true:false" (change)="changeRadio($event,i)"></mat-radio-button>
+
+                                </td>
+                                <td>
+
+                                    <mat-icon style="cursor: pointer;" (click)="deleteRow(i)">delete</mat-icon>
+
+                                </td>
+                            </tr>
+                            <tr *ngIf="catalogForm.get('productVariantDetailsJSON').length > 0">
+                                <div class="col-md-3 mt-2">
+                                    <button type="button" mat-flat-button color="primary" (click)="addItem()">
+                                        <mat-icon>add</mat-icon> Add More
+                                    </button>
+                                </div>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="box-shadow bg-white padding-10 mt-3">
+        <div class="form-content-body">
+            <fieldset>
+                <div class="hoz-form mt-3">
+                    <mat-form-field appearance="outline">
+                        <mat-hint style="color: grey; font-size: 10px">
+                            <i>Note:Meta Title max limit 100</i>
+                        </mat-hint>
+                        <mat-label>Meta Title</mat-label>
+                        <input matInput formControlName="metaTitle" maxlength="100">
+                    </mat-form-field>
+                    <div *ngIf="!catalogForm.get('metaTitle').valid && catalogForm.get('metaTitle').touched" class="has-danger form-control-feedback">
+                        <span class="text-danger" *ngIf="catalogForm.get('metaTitle').errors.maxlength">Max Length 100</span>
+                    </div>
+                    <mat-form-field appearance="outline">
+                        <mat-hint style="color: grey; font-size: 10px">
+                            <i>Note:Meta keyword max limit 100</i>
+                        </mat-hint>
+                        <mat-label>Meta keyword</mat-label>
+                        <input matInput formControlName="metaKeyword" maxlength="100">
+                    </mat-form-field>
+                    <div *ngIf="!catalogForm.get('metaKeyword').valid && catalogForm.get('metaKeyword').touched" class="has-danger form-control-feedback">
+
+                        <span class="text-danger" *ngIf="catalogForm.get('metaKeyword').errors.maxlength">Max Length 100</span>
+
+                    </div>
+                    <mat-form-field appearance="outline">
+                        <mat-hint style="color: grey; font-size: 10px">
+                            <i>Note:Meta Description max limit 255</i>
+                        </mat-hint>
+                        <mat-label>Meta Description</mat-label>
+                        <textarea matInput formControlName="metaDesc" maxlength="255" style="height:200px;"></textarea>
+                    </mat-form-field>
+                    <div *ngIf="!catalogForm.get('metaDesc').valid && catalogForm.get('metaDesc').touched" class="has-danger form-control-feedback">
+                        <span class="text-danger" *ngIf="catalogForm.get('metaDesc').errors.maxlength">Max Length 255</span>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+</form>

@@ -1,0 +1,124 @@
+.sb-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.sidenav-container {
+  flex: 1;
+}
+
+.sidenav {
+  color: #d36423;
+}
+
+.mat-list-item {
+  color: #676c7b;
+  opacity: 1;
+}
+
+.mat-drawer {
+  background: White;
+  border: none;
+  box-shadow: 13px -2px 17px -12px rgba(41, 50, 66, 0.05);
+}
+
+.sidenav-content {
+  display: flex;
+  height: 100%;
+  padding: 20px;
+}
+
+.mat-menu-item a {
+  text-decoration: none;
+}
+
+.is-mobile .toolbar {
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+}
+
+h1.app-name {
+  margin-left: 8px;
+}
+
+.sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+  height: calc(100% - 64px);
+}
+
+.is-mobile .sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+     `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
+}
+
+.sidenav-content {
+  height: 100%;
+  background-color: #f2f3f8;
+}
+.toolbar {
+  box-shadow: 0px 1px 15px 1px rgba(69, 65, 78, 0.1);
+  z-index: 2;
+  position: relative;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+.top-menu {
+  padding-left: 30px;
+}
+
+.logo {
+  padding-left: 15px;
+  width: 140px;
+}
+.user-pic {
+  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  overflow: hidden;
+}
+.user-pic img {
+  max-width: 100%;
+}
+.user-name {
+  padding-left: 0;
+}
+.user-name h4 {
+  font-size: 17px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.user-name p {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #8e8e8e;
+  margin-bottom: 0;
+}
+.user-details {
+  padding: 20px 10px;
+  border-bottom: 1px solid #e6e6e6;
+  overflow-x: hidden;
+  margin-top: -8px;
+}
+
+.gap {
+  flex: 0 0 10px;
+}
+
+.side-menu-toggle .mat-expansion-panel-header {
+  padding-left: 0;
+}
+
+

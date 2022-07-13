@@ -1,0 +1,143 @@
+<h2 mat-dialog-title class="mb-3 d-flex justify-content-between">Product Filter
+    <mat-icon mat-dialog-close>highlight_off</mat-icon>
+</h2>
+<form [formGroup]="catalogFilterForm" (ngSubmit)="onSubmit()" autocomplete="off">
+    <mat-dialog-content class="mat-typography">
+        <div class="input-group-append">
+            <mat-radio-group aria-label="Select an option" formControlName="searchType">
+                <mat-radio-button class="mr-3" value="name">Name</mat-radio-button>
+                <mat-radio-button class="mr-3" value="nupc">NUPC</mat-radio-button>
+                <mat-radio-button value="barcode">Barcode</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="mat-input-field">
+            <div class="input-group">
+                <input type="text" class="form-control" formControlName="nameOrNupc" trim="blur" placeholder="Search by">
+
+            </div>
+        </div>
+
+        <!-- <div class="mt-3">
+        	<ng5-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"></ng5-slider>
+        </div> -->
+        <!-- <div class="double-date mt-3">
+            <h5 class="mb-1">Created Date Range</h5>
+            <date-range-picker [(dateRange)]="dateRange" [maxDate]="maxDate"></date-range-picker>
+        </div> -->
+        <!-- <div class="double-date">
+            <h5 class="mb-1">Created Date Range</h5>
+            <date-range-picker
+              [class]="'form-control'"
+              [options]="daterangepickerOptions"
+              (rangeSelected)="rangeSelected($event)">
+            </date-range-picker>
+        </div> -->
+        <!-- <div class="mt-3 hoz-form mat-50">
+            <mat-form-field appearance="outline">
+              <mat-label>Type</mat-label>
+              <mat-select>
+                <mat-option value="1">Type 1</mat-option>
+                <mat-option value="2">Type 2</mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div> -->
+
+        <div class="mt-3">
+            <tree-select name="simpleSelect" class="check-tree" [items]="items" idField="id" textField="name" childrenField="childList"
+                required=true [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}" [filterPlaceholder]="FilterPlaceholder"
+                [allowFilter]="ShowFilter" [disabled]="Disabled" [allowParentSelection]="AllowParentSelection" [restructureWhenChildSameName]="RestructureWhenChildSameName"
+                expandMode="all">
+            </tree-select>
+        </div>
+        <div class="mt-2 popup-form">
+            <div class="row">
+                <div class="col-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>From Date</mat-label>
+                        <input matInput placeholder="MM/DD/YYYY" [readonly]="true" [matDatepicker]="upicker" formControlName="fromDate" />
+                        <mat-datepicker-toggle matSuffix [for]="upicker"></mat-datepicker-toggle>
+                        <mat-datepicker #upicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>To Date</mat-label>
+                        <input matInput placeholder="MM/DD/YYYY" [readonly]="true" [matDatepicker]="fpicker" formControlName="toDate" />
+                        <mat-datepicker-toggle matSuffix [for]="fpicker"></mat-datepicker-toggle>
+                        <mat-datepicker #fpicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 mt-2">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Select Brand</mat-label>
+                        <mat-select formControlName="brandId">
+                            <mat-option>
+                                <ngx-mat-select-search #myBrandInput [formControl]="brandFilterCtrl" [placeholderLabel]="'Find Brand...'" [noEntriesFoundLabel]="'no matches  found'">
+                                </ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option [value]="brandItem['id']" *ngFor="let brandItem of brands | dropdownfilter:myBrandInput.value:'brandName'">{{brandItem.brandName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- <label class="single-label">Select Brand</label>
+    		<mat-form-field appearance="outline" class="full-width">
+                <mat-label>Search Brand</mat-label>
+                <input matInput #mybrandInput autocomplete="off" />
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+            <mat-chip-list aria-label="Brand Selection">
+                <mat-chip class="selected-chip" color="primary" selected>
+                    <span matTooltip="Rolex" aria-label="" class="text">Baskin Robbins</span> <mat-icon>cancel</mat-icon>
+                </mat-chip>
+                <mat-chip class="selected-chip" color="primary" selected>
+                    <span matTooltip="Rolex" aria-label="" class="text">Brannigans</span> <mat-icon>cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-list>
+            <mat-selection-list>
+                <mat-list-option value="1" color="primary">Baskin Robbins</mat-list-option>
+                <mat-list-option value="2" color="primary">Krispy Kreme</mat-list-option>
+                <mat-list-option value="3" color="primary">Salt 'n' Shake</mat-list-option>
+                <mat-list-option value="4" color="primary">Wheat Crunchies</mat-list-option>
+                <mat-list-option value="5" color="primary">Brannigans</mat-list-option>
+            </mat-selection-list> -->
+        </div>
+        <div class="mt-2 hoz-form">
+            <h5 class="mb-0">MRP Range</h5>
+            <div class="row">
+                <div class="col-6">
+                    <mat-form-field appearance="outline">
+                        <input matInput formControlName="fromMrp" trim="blur" numbersOnly appBlockCopyPaste placeholder="Min MRP" />
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field appearance="outline">
+                        <input matInput formControlName="toMrp" trim="blur" numbersOnly appBlockCopyPaste placeholder="Max MRP" />
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="hoz-form">
+            <h5 class="mb-0">Selling Price Range</h5>
+            <div class="row">
+                <div class="col-6">
+                    <mat-form-field appearance="outline">
+                        <input matInput formControlName="fromSellingPrice" trim="blur" numbersOnly appBlockCopyPaste placeholder="Min Price" />
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field appearance="outline">
+                        <input matInput formControlName="toSellingPrice" trim="blur" numbersOnly appBlockCopyPaste placeholder="Max Price" />
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="" align="end">
+        <button mat-button type="button" class="custom-btn-default" (click)="clearFilter()">Clear Filter</button>
+        <button mat-button class="custom-btn-blue" cdkFocusInitial>Search</button>
+    </mat-dialog-actions>
+</form>

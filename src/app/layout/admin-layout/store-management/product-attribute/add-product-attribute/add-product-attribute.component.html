@@ -1,0 +1,269 @@
+<form [formGroup]="attributeForm" autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">Add New Product Attribute</h3>
+      </div>
+      <div class="form-header-btn">
+        <button [routerLink]="['/store/product-attribute']" mat-raised-button class="noshadow top-btn-font white-btn">
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+        <button type="button" (keydown.enter)="$event.preventDefault()" (click)="saveProductAttribute($event)"
+          mat-raised-button class="noshadow top-btn-font" color="primary"
+          [disabled]="!(attributeForm.valid && attributeForm.dirty)">
+          <mat-icon>save</mat-icon>Save
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="box-shadow bg-white padding-10">
+    <div class="hoz-form">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Select Attribute Group <span class="mandatory">*</span></mat-label>
+                <mat-select formControlName="groupId">
+                  <mat-option>
+                    <ngx-mat-select-search #group [formControl]="groupControl" [placeholderLabel]="'Find Group Name ..'"
+                      [noEntriesFoundLabel]="'no matches  found'"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option [value]="groupSingle.id" *ngFor="
+                      let groupSingle of groupNameList
+                        | dropdownfilter: group.value:'groupName'
+                    ">{{ groupSingle.groupName }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <ng-template #attributeGroup>
+                <p align="start" class="mb-1" *ngIf="attributeForm.get('groupId').hasError('required')">Required Field
+                </p>
+              </ng-template>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Type <span class="mandatory">*</span></mat-label>
+                <mat-select #typeSelect (selectionChange)="typeChangeTemp(typeSelect.value)" formControlName="type">
+                  <mat-option value="TEXT">Text</mat-option>
+                  <mat-option value="SELECT">Select</mat-option>
+                  <mat-option value="SWATCH">Swatch</mat-option>
+                  <!-- <mat-option value="IMAGE">Image</mat-option> -->
+                </mat-select>
+              </mat-form-field>
+              <ng-template #type>
+                <p align="start" class="mb-1" *ngIf="attributeForm.get('type').hasError('required')">
+                  Required Field</p>
+              </ng-template>
+            </div>
+            <div class="col-sm-6">
+              <div class="box-relative">
+                <mat-form-field appearance="outline">
+                  <mat-label>Attribute Product Name <span class="mandatory">*</span></mat-label>
+                  <input matInput placeholder="Enter Attribute Name" formControlName="name" trim="blur"
+                    autocomplete="off" />
+                  <a [disabled]="!(attributeForm.get('groupId').value &&
+                            attributeForm.get('groupId').dirty &&
+                            attributeForm.get('name').value &&
+                            attributeForm.get('name').dirty
+                          )
+                    " mat-button matSuffix id="checkAvailibility" class="matSuffix-text" color="primary"
+                    (click)="checkAvail()">
+                    Check Availibility
+                  </a>
+                </mat-form-field>
+              </div>
+              <mat-hint align="start">
+                <span
+                  style="color: green;font-size: 12px;margin-top: -7px;display: block;margin-bottom: 7px;">{{ validAttributeName }}</span>
+              </mat-hint>
+              <ng-template #productName>
+                <p align="start" class="mb-1" *ngIf="attributeForm.get('name').hasError('required')">Required Field
+                </p>
+                <p align="start" class="mb-1" *ngIf="attributeForm.get('name').hasError('maxlength')">
+                  Invalid Value
+                </p>
+              </ng-template>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Position <span class="mandatory">*</span></mat-label>
+                <input type="text" matInput formControlName="position" (paste)="onPaste($event)" autocomplete="off"
+                  onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" maxlength="4"/>
+              </mat-form-field>
+              <ng-template #position>
+                <p align="start" class="mb-1" *ngIf="attributeForm.get('position').hasError('required')">Required Field
+                </p>
+                <p align="start" class="mb-1" *ngIf="attributeForm.get('position').hasError('maxlength')">
+                  Invalid Value
+                </p>
+              </ng-template>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Attribute Max Length</mat-label>
+                <input type="text" matInput formControlName="maxLength" (paste)="onPaste($event)" autocomplete="off"
+                  onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" />
+              </mat-form-field>
+              <ng-template #maxLength>
+                <p align="start" class="mb-1" *ngIf="attributeForm.get('maxLength').hasError('maxlength')">
+                  Invalid Value
+                </p>
+              </ng-template>
+            </div>
+
+            <div class="col-sm-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Attribute Option <span class="mandatory">*</span></mat-label>
+                <mat-select formControlName="option">
+                  <mat-option value="M">Mandatory</mat-option>
+                  <mat-option value="N">Non Mandatory</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <ng-template #attributeOption>
+                <p align="start" class="mb-1" *ngIf="attributeForm.get('option').hasError('required')">Required Field
+                </p>
+              </ng-template>
+            </div>
+          </div>
+          <div class="row  mt-2">
+            <div class="col">
+              <mat-slide-toggle color="primary" formControlName="filterable">Filterable
+                <button mat-raised-button
+                  matTooltip="When selected, this attribute value can be used while filtering in the website/app."
+                  class="title-info" aria-label="Button that displays a tooltip when focused or hovered over">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </button>
+              </mat-slide-toggle>
+            </div>
+            <div class="col">
+              <mat-slide-toggle color="primary" formControlName="searchable">Searchable
+                <button mat-raised-button
+                  matTooltip="When selected, this attribute value can be used while searching in the website/app."
+                  class="title-info" aria-label="Button that displays a tooltip when focused or hovered over">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </button>
+              </mat-slide-toggle>
+            </div>
+            <div class="col">
+              <mat-slide-toggle color="primary" formControlName="isVariant">Is Variant
+                <button mat-raised-button
+                  matTooltip="When selected, this attribute value will be displayed in the product page as variant. An user can select a specific variant product using this attribute value."
+                  class="title-info" aria-label="Button that displays a tooltip when focused or hovered over">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </button>
+              </mat-slide-toggle>
+            </div>
+            <div class="col">
+              <mat-slide-toggle color="primary" formControlName="isVisibleOnList">Visible on List
+                <button mat-raised-button
+                  matTooltip="When selected, this attribute value will be displayed when list view is selected to view the product."
+                  class="title-info" aria-label="Button that displays a tooltip when focused or hovered over">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </button>
+              </mat-slide-toggle>
+            </div>
+            <div class="col-3">
+              <mat-slide-toggle color="primary" formControlName="promoRules">Use for Promo Rules Condition
+                <button mat-raised-button
+                  matTooltip="When selected, this attribute value can be used while creating promotion rules."
+                  class="title-info" aria-label="Button that displays a tooltip when focused or hovered over">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </button>
+              </mat-slide-toggle>
+            </div>
+            <div class="col-2">
+              <mat-slide-toggle color="primary" formControlName="isVisibleOnFront">Visible on Storefront
+                <button mat-raised-button
+                  matTooltip="When selected, this attribute value will be displayed in the product details section of website/app."
+                  class="title-info" aria-label="Button that displays a tooltip when focused or hovered over">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </button>
+              </mat-slide-toggle>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="typeEmitter(typeSelect.value)">
+    <fieldset>
+      <div class="mt-3">
+        <button mat-raised-button class="noshadow top-btn-font" color="primary" (click)="addAttributeItem()">
+          <mat-icon>add</mat-icon> Add New Row
+        </button>
+      </div>
+      <div class=" box-shadow bg-white padding-10 mt-3">
+        <table class="table" formArrayName="attributesValues" cdkDropList [cdkDropListData]="attributeArray.controls"
+          (cdkDropListDropped)="dropTable($event)">
+          <thead>
+            <tr>
+              <th>
+                Is Default
+                <span style="color: grey; font-size: 10px">(Select Default Value)</span>
+              </th>
+              <th>Attribute Value</th>
+              <th>Color</th>
+              <th>Position</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr cdkDrag [cdkDragData]="attrValue" *ngFor="
+                let attrValue of attributeForm.get('attributesValues').controls;
+                let i = index
+              " [formGroupName]="i">
+              <td>
+                <mat-radio-button [value]="0" [checked]="attrValue.get('default1').value"
+                  (change)="defaultAttributeValueCheck($event, i, attrValue)"></mat-radio-button>
+              </td>
+
+              <td>
+                <mat-form-field appearance="outline">
+                  <input matInput placeholder="Value" formControlName="attributeValue" (focus)="changeAttributeName(i)"
+                    trim="blur" />
+                </mat-form-field>
+                <mat-error *ngIf="
+                    attributeArray.controls[i].get('attributeValue').errors &&
+                    attributeArray.controls[i].get('attributeValue').touched &&
+                    attributeArray.controls[i].get('attributeValue').invalid
+                  ">Attribute Name is Required</mat-error>
+              </td>
+              <td>
+                <mat-form-field appearance="outline">
+                  <input matInput class="cus-color-picker" appBlockTypeInput [cpPosition]="'top'" [style.background]="
+                      attributeArray.controls[i]
+                        ? attributeArray.controls[i].get('swatchColorCode')
+                            .value
+                        : ''
+                    " [cpOKButton]="true" [cpSaveClickOutside]="false" [cpOutputFormat]="'hex'"
+                    [cpOKButtonClass]="'btn btn-primary btn-xs'" [colorPicker]="colorValue"
+                    (colorPickerChange)="colorPicker($event, i)" formControlName="swatchColorCode" />
+                </mat-form-field>
+                <mat-error *ngIf="
+                    attributeArray.controls[i].get('swatchColorCode').errors &&
+                    attributeArray.controls[i].get('swatchColorCode').touched &&
+                    attributeArray.controls[i].get('swatchColorCode').invalid
+                  ">Swatch Color Code is Required</mat-error>
+              </td>
+              <td>
+                <mat-icon cdkDragHandle style="color: #ccc; cursor: move">reorder</mat-icon>
+              </td>
+              <td>
+                <span *ngIf="attrValue.get('default1').value==false">
+                  <button type="button" mat-raised-button class="noshadow top-btn-font" color="danger"
+                    (click)="removeItem(i)" [disabled]="attributeArray.length === 1"
+                    style="background-color: none !important">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+    </fieldset>
+  </ng-container>
+</form>

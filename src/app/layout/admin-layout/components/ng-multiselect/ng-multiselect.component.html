@@ -1,0 +1,45 @@
+<button type="button" mat-flat-button class="btn-block mb-3 multi-btn" [matMenuTriggerFor]="multiSelectMenu" [disabled]="disabled">
+  <span>{{getSelectedNames()}}</span>
+  <mat-icon>expand_more</mat-icon>
+</button>
+<mat-menu #multiSelectMenu="matMenu" class="multi-menu">
+  <div class="tree-search" (click)="$event.stopPropagation()">
+    <input type="search" matInput class="multi-search" placeholder="Search Category" (keyup)="searchCategory($event)" />
+    <ul class="multi-selected-item">
+      <li *ngFor="let selected of checklistSelection.selected">
+        {{selected.item.name}} <span class="multi-selected-item-close" (click)="checklistSelection.deselect(selected)"><i class="fa fa-times"></i></span>
+      </li>
+    </ul>
+  </div>
+  <!-- tree For Parent Selection -->
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" (click)="$event.stopPropagation()">
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+      <button mat-icon-button [disabled]="disableButton"></button>
+      <!-- </mat-radio-group> -->
+      <mat-checkbox color="primary" class="checklist-leaf-node" [checked]="checklistSelection.isSelected(node)"
+        (change)="checklistSelection.toggle(node)" [disabled]="getDisabledValue(node)">{{
+        node.item.name }}</mat-checkbox>
+    </mat-tree-node>
+
+    <!-- <mat-tree-node *matTreeNodeDef="let node; when: hasNoContent" matTreeNodePadding>
+      <button mat-icon-button disabled></button>
+      <mat-form-field>
+        <input matInput #itemValue placeholder="New item..." />
+      </mat-form-field>
+      <button mat-button (click)="saveNode(node, itemValue.value)">Save</button>
+    </mat-tree-node> -->
+
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+      <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
+        </mat-icon>
+      </button>
+      <mat-checkbox color="primary" [checked]="descendantsAllSelected(node)" [indeterminate]="descendantsPartiallySelected(node)"
+        [disabled]="getDisabledValue(node)" (change)="todoItemSelectionToggle(node)">{{
+        node.item.name
+        }}</mat-checkbox>
+    </mat-tree-node>
+  </mat-tree>
+
+</mat-menu>

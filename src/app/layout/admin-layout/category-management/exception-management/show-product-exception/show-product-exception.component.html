@@ -1,0 +1,298 @@
+<form [formGroup]="productExceptionForm" autocomplete="off">
+
+    <div class="top-bar box-shadow">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title">Edit Product Exception</h3>
+            </div>
+            <div class="form-header-btn">
+                <ng-container *ngIf="!approveMode">
+
+
+
+                    <ng-container *ngIf="getFormDisableStats('productExceptionForm')">
+                        <button routerLink="/category/exception/commission-exception" mat-raised-button class="noshadow top-btn-font white-btn">
+                            <mat-icon>arrow_back</mat-icon> Back
+                        </button>
+                        <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" (click)="toggleFormDisable('productExceptionForm')">
+                            <mat-icon>edit</mat-icon> Edit
+                        </button>
+                    </ng-container>
+                    <ng-container *ngIf="!getFormDisableStats('productExceptionForm')">
+                        <button type="button" mat-raised-button class="noshadow top-btn-font" color="defalt" (click)="toggleFormDisable('productExceptionForm')">
+                            <mat-icon>cancel</mat-icon> Cancel
+                        </button>
+
+
+
+                        <button mat-raised-button class="noshadow top-btn-font" color="primary" [disabled]="!productExceptionForm.valid" (click)="onSubmit()">
+                            <mat-icon>save</mat-icon> Save
+                        </button>
+                    </ng-container>
+                </ng-container>
+
+                <ng-container *ngIf="approveMode">
+                    <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (click)="requestProcess('APPROVED')">
+                        <mat-icon>save</mat-icon> Accept
+                    </button>
+                    <button type="button" mat-raised-button class="noshadow top-btn-font" color="default" (click)="requestProcess('REJECTED')">
+                        <mat-icon>cancel</mat-icon> Reject
+                    </button>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="box-shadow bg-white padding-10">
+        <div class="hoz-form">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Exception Name</mat-label>
+                                    <input matInput formControlName="exceptionName" [ngClass]="{ 'ng-invalid ng-touched': !f.exceptionName.valid }" />
+                                </mat-form-field>
+                                <div *ngIf="!f.exceptionName.valid && f.exceptionName.touched" class="error">
+
+                                    <span class="text-danger" *ngIf="f.exceptionName.errors.required">Required</span>
+
+                                </div>
+                                <ng-container *ngIf="approveMode">
+                                    <mat-hint align="start" class="request_class" *ngIf="requestObj['exceptionName']">
+                                        <span *ngIf="requestObj['exceptionName'] != productExceptionForm.get('exceptionName').value">Requested Change: {{requestObj['exceptionName']}}
+                                        </span>
+                                    </mat-hint>
+                                </ng-container>
+                            </div>
+
+                            <div>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Select Seller</mat-label>
+                                    <mat-select formControlName="sellerId" [ngClass]="{ 'ng-invalid ng-touched': !f.sellerId.valid }">
+                                        <mat-option>
+                                            <ngx-mat-select-search #myInput [formControl]="sellerFilterCtrl" [placeholderLabel]="'Find Seller ..'" [noEntriesFoundLabel]="'no matches  found'"></ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option [value]="sellerItem.id" *ngFor="let sellerItem of sellers| dropdownfilter:myInput.value:'displayName'">{{sellerItem.displayName}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div *ngIf="!f.sellerId.valid && f.sellerId.touched" class="has-danger form-control-feedback">
+
+                                    <span class="text-danger" *ngIf="f.sellerId.errors.required">Required</span>
+
+                                </div>
+                                <ng-container *ngIf="approveMode">
+                                    <mat-hint align="start" class="request_class" *ngIf="requestObj['sellerId']">
+                                        <span *ngIf="requestObj['sellerId'] != productExceptionForm.get('sellerId').value">
+                                            Requested Change: {{getValueForDropDownInApprove('sellers',requestObj['sellerId'],'displayName','id')}}
+
+                                        </span>
+                                    </mat-hint>
+                                </ng-container>
+                            </div>
+
+
+                            <div>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Select Product</mat-label>
+                                    <mat-select formControlName="productId" [ngClass]="{ 'ng-invalid ng-touched': !f.productId.valid }">
+                                        <mat-option>
+                                            <ngx-mat-select-search #myProductInput [formControl]="productFilterCtrl" [placeholderLabel]="'Find Product...'" [noEntriesFoundLabel]="'no matches  found'"></ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option [value]="product.id" *ngFor="let product of productDropdown | dropdownfilter:myProductInput.value:'productName'">{{product.productName}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div *ngIf="!f.productId.valid && f.productId.touched" class="has-danger form-control-feedback">
+
+                                    <span class="text-danger" *ngIf="f.productId.errors.required">Required</span>
+
+                                </div>
+                                <ng-container *ngIf="approveMode">
+                                    <mat-hint align="start" class="request_class" *ngIf="requestObj['productId']">
+                                        <span *ngIf="requestObj['productId'] != productExceptionForm.get('productId').value">
+                                            Requested Change: {{getValueForDropDownInApprove('productDropdown',requestObj['productId'],'productName','id')}}
+                                        </span>
+                                    </mat-hint>
+                                </ng-container>
+                            </div>
+
+
+                        </div>
+                        <div class="col-sm-6">
+                            <div>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Group</mat-label>
+                                    <mat-select formControlName="groupId" [ngClass]="{ 'ng-invalid ng-touched': !f.groupId.valid }">
+                                        <mat-option>
+                                            <ngx-mat-select-search #myGrouptInput [formControl]="groupFilterCtrl" [placeholderLabel]="'Find Group...'" [noEntriesFoundLabel]="'no matches  found'"></ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option [value]="groupItem.id" *ngFor="let groupItem of comssionGroups| dropdownfilter:myGrouptInput.value:'groupName'">{{groupItem.groupClass}}</mat-option>
+
+                                    </mat-select>
+                                </mat-form-field>
+                                <div *ngIf="!f.groupId.valid && f.groupId.touched" class="has-danger form-control-feedback">
+
+                                    <span class="text-danger" *ngIf="f.groupId.errors.required">Required</span>
+
+                                </div>
+                                <ng-container *ngIf="approveMode">
+                                    <mat-hint align="start" class="request_class" *ngIf="requestObj['groupId']">
+                                        <span *ngIf="requestObj['groupId'] != productExceptionForm.get('groupId').value">
+                                            Requested Change: {{getValueForDropDownInApprove('comssionGroups',requestObj['groupId'],'groupClass','id')}}
+                                        </span>
+                                    </mat-hint>
+                                </ng-container>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Start Date</mat-label>
+                                        <input matInput [matDatepicker]="fpicker" [min]="minDate" formControlName="affectFrom" [ngClass]="{ 'ng-invalid ng-touched': !f.affectFrom.valid }"
+                                            (dateInput)="changeStartDate()" />
+                                        <mat-datepicker-toggle matSuffix [for]="fpicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #fpicker></mat-datepicker>
+                                    </mat-form-field>
+                                    <div *ngIf="!f.affectFrom.valid && f.affectFrom.touched" class="has-danger form-control-feedback">
+
+                                        <span class="text-danger" *ngIf="f.affectFrom.errors.required">Required</span>
+
+                                    </div>
+                                    <ng-container *ngIf="approveMode">
+                                        <mat-hint align="start" class="request_class" *ngIf="requestObj['affectFrom']">
+                                            <span *ngIf="requestObj['affectFrom'] != productExceptionForm.get('affectFrom').value">Requested Change: {{requestObj['affectFrom']| date: 'dd/MM/yyyy'}}
+                                            </span>
+                                        </mat-hint>
+                                    </ng-container>
+
+                                </div>
+                                <div class="col-6">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>End Date</mat-label>
+                                        <input matInput [matDatepicker]="upicker" formControlName="expiryDate" [ngClass]="{ 'ng-invalid ng-touched': !f.expiryDate.valid }"
+                                            [min]="maxDate" />
+                                        <mat-datepicker-toggle matSuffix [for]="upicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #upicker></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <div *ngIf="!f.expiryDate.valid && f.expiryDate.touched" class="has-danger form-control-feedback">
+
+                                        <span class="text-danger" *ngIf="f.expiryDate.errors.required">Required</span>
+
+                                    </div>
+
+                                    <ng-container *ngIf="approveMode">
+                                        <mat-hint align="start" class="request_class" *ngIf="requestObj['expiryDate']">
+                                            <span *ngIf="requestObj['expiryDate'] != productExceptionForm.get('expiryDate').value">Requested Change: {{requestObj['expiryDate']| date: 'dd/MM/yyyy'}}
+                                            </span>
+                                        </mat-hint>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Commission Value</mat-label>
+                                        <input matInput formControlName="value" [ngClass]="{ 'ng-invalid ng-touched': !f.value.valid }" />
+                                    </mat-form-field>
+                                    <div *ngIf="!f.value.valid && f.value.touched" class="has-danger form-control-feedback">
+
+                                        <span class="text-danger" *ngIf="f.value.errors.required">Required</span>
+
+                                    </div>
+                                    <ng-container *ngIf="approveMode">
+                                        <mat-hint align="start" class="request_class" *ngIf="requestObj['value']">
+                                            <span *ngIf="parseFloat(requestObj['value']) != productExceptionForm.get('value').value">Requested Change: {{requestObj['value']}}
+                                            </span>
+                                        </mat-hint>
+                                    </ng-container>
+                                </div>
+                                <div class="col-4">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Value Type</mat-label>
+                                        <mat-select formControlName="type" [ngClass]="{ 'ng-invalid ng-touched': !f.type.valid }">
+                                            <mat-option value="f">Fixed</mat-option>
+                                            <mat-option value="p">%</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div *ngIf="!f.type.valid && f.type.touched" class="has-danger form-control-feedback">
+
+                                        <span class="text-danger" *ngIf="f.type.errors.required">Required</span>
+
+                                    </div>
+                                    <ng-container *ngIf="approveMode">
+                                        <mat-hint align="start" class="request_class" *ngIf="requestObj['type']">
+                                            <span *ngIf="requestObj['type'] != productExceptionForm.get('type').value">Requested Change: {{requestObj['type']}}
+                                            </span>
+                                        </mat-hint>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-sm-12">
+                    <div class="row  mt-2">
+                        <div class="col-sm-3">
+                            <mat-slide-toggle color="primary" formControlName="addLogistic">Add Logistic Charge</mat-slide-toggle>
+                            <br/>
+                            <br/>
+                            <ng-container *ngIf="approveMode">
+                                <mat-hint align="start" class="request_class" *ngIf="requestObj['addLogistic']!='null'">
+                                    <span *ngIf="requestObj['addLogistic'].toString() != productExceptionForm.get('addLogistic').value.toString()">
+                                        Requested Change: {{requestObj['addLogistic']?'YES':'NO'}}
+
+                                    </span>
+                                </mat-hint>
+                            </ng-container>
+                        </div>
+                        <div class="col-sm-3">
+                            <mat-slide-toggle color="primary" formControlName="addPaymentHandling">Add Payment Handling Charge</mat-slide-toggle>
+                            <br/>
+                            <br/>
+                            <ng-container *ngIf="approveMode">
+                                <mat-hint align="start" class="request_class" *ngIf="requestObj['addPaymentHandling']!='null'">
+                                    <span *ngIf="requestObj['addPaymentHandling'].toString() != productExceptionForm.get('addPaymentHandling').value.toString()">
+                                        Requested Change: {{requestObj['addPaymentHandling']?'YES':'NO'}}
+
+                                    </span>
+                                </mat-hint>
+                            </ng-container>
+                        </div>
+                        <div class="col-sm-3">
+                            <mat-slide-toggle color="primary" formControlName="addClosingFee">Add Closing Fee</mat-slide-toggle>
+                            <br/>
+                            <br/>
+                            <ng-container *ngIf="approveMode">
+                                <mat-hint align="start" class="request_class" *ngIf="requestObj['addClosingFee']!='null'">
+                                    <span *ngIf="requestObj['addClosingFee'].toString() != productExceptionForm.get('addClosingFee').value.toString()">
+                                        Requested Change: {{requestObj['addClosingFee']?'YES':'NO'}}
+
+                                    </span>
+                                </mat-hint>
+                            </ng-container>
+                        </div>
+                        <div class="col-sm-3">
+                            <mat-slide-toggle color="primary" formControlName="addFullfillmentFee">Add Fullfillment Fees</mat-slide-toggle>
+                            <br/>
+                            <br/>
+                            <ng-container *ngIf="approveMode">
+                                <mat-hint align="start" class="request_class" *ngIf="requestObj['addFullfillmentFee']!='null'">
+                                    <span *ngIf="requestObj['addFullfillmentFee'].toString() != productExceptionForm.get('addFullfillmentFee').value.toString()">
+                                        Requested Change: {{requestObj['addFullfillmentFee']?'YES':'NO'}}
+
+                                    </span>
+                                </mat-hint>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</form>

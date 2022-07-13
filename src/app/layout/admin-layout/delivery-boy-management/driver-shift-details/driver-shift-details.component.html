@@ -1,0 +1,51 @@
+<div class="driver-details-view">
+	<!-- <div class="d-flex justify-content-between align-items-center mb-2">
+		<h1>Shift Details</h1>
+	</div> -->
+	<div class="driver-details-view-area">
+		<div class="hoz-form">
+			<div class="row">
+				<div class="col-md-3">
+					<mat-form-field class="forDate" appearance="outline">
+						<mat-label>Start Date</mat-label>
+						<input [formControl]="fromDate" matInput [matDatepicker]="startpicker" [max]="toDate.value"
+							(dateChange)="fromDateChange($event)">
+						<mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
+						<mat-datepicker #startpicker></mat-datepicker>
+					</mat-form-field>
+				</div>
+				<div class="col-md-3">
+					<mat-form-field class="forDate" appearance="outline">
+						<mat-label>End Date</mat-label>
+						<input [formControl]="toDate" matInput [matDatepicker]="endpicker" [min]="fromDate.value"
+							[max]="toDate.value" (dateChange)="toDateChange($event)">
+						<mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
+						<mat-datepicker #endpicker></mat-datepicker>
+					</mat-form-field>
+				</div>
+				<div class="col-md-6 mt-2">
+					<button mat-raised-button color="primary" class="mr-2" (click)="searchShift()">Search</button>
+					<button mat-raised-button color="secondary"
+						(click)="clearShift()">Clear</button>
+				</div>
+			</div>
+		</div>
+		<div class="mt-3">
+			<!-- ag-grid -->
+			<div class="bg-white single-pagination" style="height: calc(100% - 90px)">
+				<ag-grid-angular style="width:100%; height: 470px;" class="ag-theme-balham" [rowData]="rowData"
+					[columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
+					(firstDataRendered)="onFirstDataRendered($event)" [autoGroupColumnDef]="autoGroupColumnDef"
+					(gridReady)="onGridReady($event)" [enableFilter]="true" [floatingFilter]="true"
+					(gridSizeChanged)="onGridSizeChanged($event)">
+				</ag-grid-angular>
+
+				<!-- <ul style="display: none;">
+            <li *ngFor="let item of rowData | paginate: { id: 'dataPagination', itemsPerPage: 20, currentPage: pageNo, totalItems: totalRecords }">{{ item.id }}</li>
+        </ul>
+        <pagination-controls (pageChange)="getPageNoData($event)" id="dataPagination"></pagination-controls> -->
+
+			</div>
+		</div>
+	</div>
+</div>

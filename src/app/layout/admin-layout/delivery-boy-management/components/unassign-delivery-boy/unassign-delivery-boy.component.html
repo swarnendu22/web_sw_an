@@ -1,0 +1,31 @@
+<form [formGroup]="driverDetailsForm">
+    <mat-dialog-content class="mat-typography">
+        <div class="driver-details-view">
+            <div class="driver-details-view-area">
+                <div class="hoz-form">
+                    <h4>Unassigned Delivery Boy</h4>
+                    <div class="row mb-3">
+                        <div class="col-md-">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Reasons</mat-label>
+                                <mat-select>
+                                    <mat-option value="1">Reason 1</mat-option>
+                                    <mat-option value="2">Reason 2</mat-option>
+                                    <mat-option value="3">Others</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Comment</mat-label>
+                                <textarea rows="10" matInput></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button type="button" mat-raised-button color="primary" class="">Unassign</button>
+    </mat-dialog-actions>
+</form>

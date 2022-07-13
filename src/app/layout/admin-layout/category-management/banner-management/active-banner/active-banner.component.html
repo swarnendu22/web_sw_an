@@ -1,0 +1,19 @@
+<div class="top-bar box-shadow">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title">Active Banner</h3>
+    </div>
+    <div class="form-header-btn">
+      <button routerLink="/category/banner/new-banner" mat-raised-button class="noshadow top-btn-font" color="primary">
+        <mat-icon>add</mat-icon> Add New Banner
+      </button>
+    </div>
+  </div>
+</div>
+<div class="bg-white grid-box-area" style="height: calc(100% - 80px)">
+  <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData"
+    [columnDefs]="columnDefs" (firstDataRendered)="onFirstDataRendered($event)" (gridReady)="onGridReady($event)"
+    (gridSizeChanged)="onGridSizeChanged($event)" [pagination]="true" [paginationPageSize]="10"
+    [defaultColDef]="defaultColDef" (gridReady)="onGridReady($event)" [floatingFilter]="true">
+  </ag-grid-angular>
+</div>

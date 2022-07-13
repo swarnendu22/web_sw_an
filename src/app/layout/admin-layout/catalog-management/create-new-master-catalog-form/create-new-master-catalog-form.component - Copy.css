@@ -1,0 +1,223 @@
+.mat-select-panel{
+    overflow: hidden !important;
+}
+footer{
+    height: 40px;
+    text-align:right;
+}
+.custom-panel {
+    max-height: 200px;
+    overflow: auto;
+}
+.variateOuter
+{
+    content: "";
+    flex: auto;
+    border-left: 1px solid #ccc;
+    margin-left: 130px;
+    padding: 30px;
+    margin-top: -13px;
+}
+.maximum_retail_price_div ::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -16px;
+    height: 54%;
+    transform: rotate( 
+    90deg
+    );
+    border-left: 1px solid #ccc;
+}
+.variate_add_left{
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 100%;
+}
+.variate_add_left::before {
+    content: "";
+    position: absolute;
+    top: 24px;
+    left: -3px;
+    height: 100%;
+    background: #ccc;
+    width: 1px;
+}
+.variate_add_left.single::before {
+    display: none;
+}
+.display_name_left::before {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 8px;
+    height: 24%;
+    border-left: 1px solid #ccc;
+    transform: rotate( 
+    90deg
+    );
+}
+.add_more_barcode{
+    margin-left: 160px;
+    position: relative;
+    margin-top: -15px;
+    margin-bottom: 30px;
+}
+.add_more_barcode::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: -16px;
+    height: 85%;
+    transform: rotate( 
+    90deg
+    );
+    border-left: 1px solid #ccc;
+}
+.add_more_variates::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: -10px;
+    height: 85%;
+    transform: rotate( 
+    90deg
+    );
+    border-left: 1px solid #ccc
+}
+.add_more_variates {
+    position: absolute;
+    margin-left: 10px;
+    margin-top: 9px;
+}
+.mat-form-field-infix {
+    width: 130px !important;
+}
+.row-shipping {
+    position: absolute;
+    top: 70px;
+    right: -19%;
+    width: 80%;
+}
+.variate_outer_shhping {
+    padding-top: 120px;
+}
+.row-shipping-checked::before {
+    content: "";
+    position: absolute;
+    top: 29px;
+    right: 37px;;
+    height: 74%;
+    border-left: 1px solid #ccc;
+}
+.shipping-col::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    height: 52%;
+    border-left: 1px solid #ccc;
+    transform: rotate( 
+    90deg
+    );
+}
+.product-group-name{
+    position: relative;
+}
+.product-group-name:before{
+    content: '';
+    position: absolute;
+    top: 17px;
+    left: -8px;
+    height: 24%;
+    border-left: 1px solid #ccc;
+    transform: rotate( 
+    90deg
+    );
+}
+
+.single-variants .variateOuter
+{
+    margin-left: 0px;
+    padding: 0px;
+    margin-top: 0px;
+    border-left: 0px solid #ccc;
+}
+.single-variants{
+    position: relative;
+    padding-left: 25px;
+}
+.single-variants:before{
+    content: "";
+    position: absolute;
+    top: 26px;
+    left: -7px;
+    height: calc(100% - 46px);
+    background: #ccc;
+    width: 1px;
+
+}
+.single-variants .maximum_retail_price_div ::before {
+    border-left: 1px solid #ccc;
+}
+.single-variants .add_more_barcode {
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.single-variants .add_more_barcode::before {
+    border-left: 1px solid #ccc;
+}
+.single-variants .add_more_variates::before {
+    border-left: 0px solid #ccc;
+}
+.single-variants .add_more_variates {
+    position: static;
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+.product-configure-view{}
+.product-configure-view p{
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.product-grey-box{
+    background-color: #f2f2f2;
+    border: 1px solid #e1e1e1;
+    padding: 20px;
+    padding-bottom: 15px;
+}
+
+.sp-weight{
+    position: relative;
+}
+.sp-weight::before{
+    content: '';
+    position: absolute;
+    height: 75px;
+    width: 1px;
+    background: #e1e1e1;
+    left: -50px;
+    top: -10px;
+}
+.product-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.save-product{
+    display: flex;
+    align-items: center;
+}
+.save-product p{
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+.save-product .mat-stroked-buttonp{
+    margin-left: 15px;
+    color: #30b0d9;
+    padding: 0px 30px;
+}

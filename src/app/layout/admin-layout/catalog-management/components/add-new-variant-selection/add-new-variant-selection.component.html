@@ -1,0 +1,59 @@
+<td>
+  <!-- <span>{{newVariant[2]}}</span> -->
+  <mat-form-field appearance="outline">
+    <mat-label>Attribute Type</mat-label>
+
+    <mat-select (selectionChange)="productVariantSelectChange($event)" #variantSelection
+      [value]="showSelected?tempProductVariant[0]:''">
+      <mat-option>
+        <ngx-mat-select-search #prodvariantInput [formControl]="myProdVariantFilterCtrl"
+          [placeholderLabel]="'Find Product Variant ..'" [noEntriesFoundLabel]="'no matches  found'">
+        </ngx-mat-select-search>
+      </mat-option>
+      <mat-option *ngIf="tempProductVariant.length===0">No Variants Found</mat-option>
+      <mat-option *ngFor="let variant of tempProductVariant | dropdownfilter:prodvariantInput.value:'2'"
+        [value]="variant">{{variant[2]}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</td>
+<td>
+  <ng-container *ngIf="variantSelection.value && newVariant.addable===true">
+    <mat-form-field appearance="outline"
+      *ngIf="variantSelection.value[3]==='SELECT' || variantSelection.value[3]==='SWATCH'">
+      <mat-label>Value</mat-label>
+      <mat-select #checkVal multiple (openedChange)="openChange($event)"
+        (selectionChange)="productVariantValueChange($event,variantSelection.value[0],newVariant.values)"
+        [value]="newVariant.values|splitString:','">
+
+        <!-- <ul *ngIf="newVariant.values.length>0" class="m-selected-item"> -->
+        <!-- <li *ngFor="let chosen of newVariant.values|splitString:',';let chosenI=index">
+            {{chosen}}
+            <i (click)="removeChosenVariantValue(chosenI)" class="fa fa-times"></i>
+          </li> -->
+        <!-- </ul> -->
+        <mat-option>
+          <ngx-mat-select-search #prodvariantSubValue [formControl]="myprodvariantSubValueFilterCtrl"
+            [placeholderLabel]="'Find Product Variant ..'" [noEntriesFoundLabel]="'no matches  found'">
+          </ngx-mat-select-search>
+        </mat-option>
+
+        <mat-option
+          *ngFor="let variantValue of variantBasedOnVariant[variantSelection.value[0]]| dropdownfilter:prodvariantSubValue.value:''"
+          [value]="variantValue" [disabled]="disableValue(variantValue,checkVal.value)">{{variantValue}}
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+    <!-- [disabled]="disableValue(variantValue,checkVal.value)" DISABLE FUNCTION loop -->
+    <!-- <mat-form-field appearance="outline"
+      *ngIf="variantSelection.value[3]!=='SELECT' || variantSelection.value[3]!=='SWATCH'">
+      <mat-label>Value </mat-label>
+      <span>{{newVariant.values}}</span> -->
+    <!-- (blur)="productVariantValueChange($event,variantSelection.value[0],variantSelection.value[3])" -->
+    <!-- <input matInput #inputValue (keydown)="detectCommaPress($event,variantSelection.value[0],newVariant.values)"
+        [(ngModel)]="variantInput" />
+    </mat-form-field> -->
+  </ng-container>
+</td>

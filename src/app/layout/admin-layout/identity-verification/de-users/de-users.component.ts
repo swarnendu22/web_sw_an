@@ -1,0 +1,255 @@
+import { FilterDeUsersComponent } from './../filter-de-users-component/filter-de-users-component.component';
+import { DeUsersAreaOperationComponent } from './../de-users-area-operation-component/de-users-area-operation-component.component';
+import { Component, OnInit } from '@angular/core';
+import { AgGridOptions } from 'src/app/utils/agGridOption/ag-grid-option';
+import { MatDialog } from '@angular/material/dialog';
+import { ApiMessageService } from 'src/app/utils/api/api-message.service';
+import { GetDeliveryBoys } from 'src/app/actions/merchant-management.actions';
+import { select, Store } from '@ngrx/store';
+import { CellRendererDeliveryBoysComponent } from '../../components/cell-renderer-delivery-boys/cell-renderer-delivery-boys.component';
+import { ActionTypes, ApproveRejectDeUsers, GetDeUsers } from 'src/app/actions/identity-verification.action';
+import { DeUserCellRendererComponent } from '../de-user-cell-renderer/de-user-cell-renderer.component';
+
+@Component({
+  selector: 'app-de-users',
+  templateUrl: './de-users.component.html',
+  styleUrls: ['./de-users.component.css']
+})
+export class DEUsersComponent implements OnInit {
+
+  private gridApi;
+  private gridColumnApi;
+  columnDefs;
+  defaultColDef;
+  rowData: any[];
+  pageNo = 1;
+  totalRecords = null;
+  payLoadForSearch = {
+    search: 'PENDING',
+    state_name: null,
+    vehicle_type: null
+  }
+  constructor(private ag: AgGridOptions,
+    private store: Store<any>, private dialog: MatDialog, private apiMsgService: ApiMessageService) {
+
+    this.columnDefs = [
+      {
+        headerName: 'Photo',
+        field: 'photo_url',
+        resizable: true,
+        sortable: true,
+        cellRenderer: (data) => {
+          return `<img src=${data.value}?w=40&h=40 width=40 height=40 >`
+        }
+      },
+      {
+        headerName: 'Name',
+        field: 'name',
+        resizable: true,
+        sortable: true,
+
+      },
+      {
+        headerName: 'Phone',
+        field: 'phone',
+        resizable: true,
+        sortable: true,
+      },
+      {
+        headerName: 'Email',
+        resizable: true,
+        field: 'email',
+      },
+
+
+      {
+        headerName: 'State',
+        field: 'driving_licence_state',
+        resizable: true,
+
+      },
+      {
+        headerName: 'Vehicle Type',
+        field: 'vehicle_type',
+        resizable: true,
+      },
+      {
+        headerName: 'License No',
+        field: 'driving_license_number',
+        resizable: true,
+        cellRenderer: (data) => {
+          if (data.value) {
+            return `<a target="_blank" href="${data.data.driving_license_front_page_url}">${data.value}</a>`
+          }
+        }
+      },
+      {
+        headerName: 'Pan Card',
+        field: 'pan_card_number',
+        resizable: true,
+        cellRenderer: (data) => {
+          if (data.value) {
+            return `<a target="_blank" href="${data.data.pan_card_photo_url}">${data.value}</a>`
+
+          }
+        }
+      },
+      {
+        headerName: 'Status',
+        field: 'status',
+        resizable: true
+      },
+      {
+        headerName: 'Action',
+        field: 'value',
+        colId: 'params',
+        cellRendererFramework: DeUserCellRendererComponent,
+        cellRendererParams: {
+          onActionBtnClick: this.rejectApproveOperation.bind(this),
+        },
+        sortable: false,
+        filter: false,
+        floatingFiltersHeight: 0,
+        resizable: true,
+        pinned: 'right'
+      },
+    ];
+
+    this.defaultColDef = {
+      flex: 1,
+      minWidth: 150,
+      sortable: true,
+      filter: 'agTextColumnFilter',
+    };
+  }
+
+  ngOnInit() {
+    this.store.dispatch(new GetDeUsers({
+      "pageNo": this.pageNo,
+      "status": 'PENDING',
+      "requestBody": this.payLoadForSearch
+    }));
+
+  }
+
+  onFirstDataRendered(params) {
+    params.api.sizeColumnsToFit();
+  }
+
+  rejectApproveOperation(data) {
+    const dialog = this.dialog.open(DeUsersAreaOperationComponent, {
+      minHeight: '300px',
+      minWidth: '450px',
+      data: { id: data.id, status: data.status }
+    });
+
+    dialog.afterClosed().subscribe(result => {
+      console.log(result)
+      if (result) {
+        this.store.dispatch(new ApproveRejectDeUsers({
+          id: result.id,
+          status: result.status,
+          lat: result.lat,
+          lng: result.lng,
+          max_buffer_distance: result.max_buffer_distance
+        }))
+        this.apiMsgService.currentApiStatus.subscribe((response) => {
+          if (response.status && response.type == ActionTypes.approveRejectDeUsers) {
+            this.store.dispatch(new GetDeUsers({
+              "pageNo": this.pageNo,
+              "status": this.payLoadForSearch ? this.payLoadForSearch.search : 'PENDING',
+              "requestBody": this.payLoadForSearch
+            }));
+          }
+        })
+      }
+    });
+  }
+
+  onGridSizeChanged(params) {
+    var gridWidth = params.offsetWidth;
+    var columnsToShow = [];
+    var columnsToHide = [];
+    var totalColsWidth = 0;
+    var allColumns = params.columnApi.getAllColumns();
+    for (var i = 0; i < allColumns.length; i++) {
+      let column = allColumns[i];
+      totalColsWidth += column.getMinWidth();
+      if (totalColsWidth > gridWidth) {
+        columnsToHide.push(column.colId);
+      } else {
+        columnsToShow.push(column.colId);
+      }
+    }
+    params.columnApi.setColumnsVisible(columnsToShow, true);
+    params.columnApi.setColumnsVisible(columnsToHide, false);
+    params.api.sizeColumnsToFit();
+  }
+
+  getPageNoData(page: number) {
+    console.log(page);
+    this.pageNo = page;
+    this.store.dispatch(new GetDeUsers({
+      "pageNo": this.pageNo,
+      "status": this.payLoadForSearch ? this.payLoadForSearch.search : 'PENDING',
+      "requestBody": this.payLoadForSearch
+    }));
+  }
+  nextPage(event) {
+    console.log(event);
+    // this.p = event;
+    this.pageNo += 1;
+    this.store.dispatch(new GetDeUsers({
+      "pageNo": this.pageNo,
+      "status": this.payLoadForSearch ? this.payLoadForSearch.search : 'PENDING',
+      "requestBody": this.payLoadForSearch
+    }));
+  }
+
+  onGridReady(event) {
+    this.gridApi = event.api;
+    this.store
+      .pipe(select('identityVerification'))
+      .subscribe(res => {
+        // console.log("DE useer Response:::: ", res);
+        if (res && res.deUsersReducer) {
+          console.log("After If Statement DE useer Response:::: ", res);
+          //console.log(res.deUsersReducer)
+          this.totalRecords = res.deUsersReducer.total_record;
+
+          this.rowData = res.deUsersReducer.delivery_boys;
+          event.api.setRowData(this.rowData);
+
+
+        }
+      });
+    window.addEventListener("resize", function () {
+      setTimeout(function () {
+        event.api.sizeColumnsToFit();
+      });
+    });
+
+  }
+
+  openFilter() {
+    const dialog = this.dialog.open(FilterDeUsersComponent, {
+      panelClass: 'filter-modal',
+      height: '10px',
+      data: { payLoadForSearch: this.payLoadForSearch }
+    });
+
+    dialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.pageNo = 1;
+        this.payLoadForSearch = result;
+        this.store.dispatch(new GetDeUsers({
+          pageNo: this.pageNo,
+          status: this.payLoadForSearch.search,
+          requestBody: this.payLoadForSearch
+        }));
+      }
+    });
+  }
+
+
+}

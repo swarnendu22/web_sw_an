@@ -1,0 +1,91 @@
+<form [formGroup]="addCounryForm" autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title"> {{ isEdit ? 'Edit' : 'Add New' }} Country</h3>
+      </div>
+      <div class="form-header-btn">
+        <ng-container>
+          <ng-container *ngIf="getFormDisableStats('addCounryForm')">
+            <button routerLink="/store/country" mat-raised-button class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+              (click)="toggleFormDisable('addCounryForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('addCounryForm')">
+            <button *ngIf="isEdit" type="button" mat-raised-button class="noshadow top-btn-font" color="defalt"
+              (click)="toggleFormDisable('addCounryForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button *ngIf="!isEdit" routerLink="/store/country" mat-raised-button
+              class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+
+            <button mat-raised-button class="noshadow top-btn-font" color="primary" (click)="submitCountry()">
+              <mat-icon>save</mat-icon> Save
+            </button>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="box-shadow bg-white padding-10 hoz-form">
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>ISO Name</mat-label>
+          <input matInput type="text" formControlName="iso" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container *ngIf="!addCounryForm.get('iso').valid && addCounryForm.get('iso').touched">
+          <mat-hint class="error" align="start" *ngIf="addCounryForm.get('iso').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+        <mat-form-field appearance="outline">
+          <mat-label>Country ISD Code</mat-label>
+          <input matInput type="number" formControlName="numcode" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container *ngIf="!addCounryForm.get('numcode').valid && addCounryForm.get('numcode').touched">
+          <mat-hint class="error" align="start" *ngIf="addCounryForm.get('numcode').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+      </div>
+      <div class="col-6">
+        <div class="row">
+          <div class="col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Name</mat-label>
+              <input matInput type="text" formControlName="name" trim="blur" autocomplete="off" />
+            </mat-form-field>
+            <ng-container *ngIf="!addCounryForm.get('name').valid && addCounryForm.get('name').touched">
+              <mat-hint class="error" align="start" *ngIf="addCounryForm.get('name').hasError('required')">
+                Required
+                Field
+              </mat-hint>
+            </ng-container>
+          </div>
+          <div class="col-12 mt-2">
+            <div class="row">
+              <div class="col-6">
+                <mat-slide-toggle color="primary" type="text" formControlName="statesRequired">States Required
+                </mat-slide-toggle>
+              </div>
+              <div class="col-6">
+                <mat-slide-toggle color="primary" type="text" formControlName="zipcodeRequired">Zip Code Required
+                </mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

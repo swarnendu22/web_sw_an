@@ -1,0 +1,33 @@
+<div class="top-bar box-shadow" style="position: relative;">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">Edit Delivery Partner</h3>
+      </div>
+      <div class="form-header-btn">
+        <button mat-dialog-close mat-raised-button class="noshadow ml-2 top-btn-font" color="primary">
+          <mat-icon>close</mat-icon> Close
+        </button>
+      </div>
+    </div>
+</div>
+
+<mat-dialog-content>
+    <div style="margin-top: 20px; align-items: center;" class="row">  
+        <div class="col-md-6">
+            <img style="width: 93%;" src="../../../../../assets/img/deliveryPartner.png" />
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Delivery partner</mat-label>
+                    <input #DeliveryPartner style="text-transform: uppercase;" matInput trim="blur">
+                </mat-form-field>
+            </div>
+            <div style="padding-right: 0px;" class="col-md-12">
+                <button style="margin-top: 13px; width: 100%;" mat-flat-button color="accent" (click)="UpdateDeliveryPartner( DeliveryPartner.value )" >Update
+                </button>
+            </div>
+        </div>
+        
+    </div>
+</mat-dialog-content>

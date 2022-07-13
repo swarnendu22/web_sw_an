@@ -1,0 +1,107 @@
+<div class="filter-modal-form">
+  <div class="form-group">
+    <label *ngIf="payLoadForSearch.isAesc">
+      Accending (Created On)
+    </label>
+    <label *ngIf="!payLoadForSearch.isAesc">
+      Decending (Created On)
+    </label>
+    <mat-slide-toggle class="ml-2" [(ngModel)]="payLoadForSearch.isAesc"></mat-slide-toggle>
+  </div>
+
+  <div class="form-group">
+    <input type="text" [(ngModel)]="payLoadForSearch.storeName" class="form-control width-class-90" id="storeName" placeholder="Store Name">
+    <a href="javascript:void(0);" *ngIf="payLoadForSearch.storeName" (click)="payLoadForSearch.storeName = null">
+      <mat-icon>cancel</mat-icon>
+    </a>
+  </div>
+
+  <div class="form-group">
+    <input type="text" numbersOnly [(ngModel)]="payLoadForSearch.contactNo" class="form-control width-class-90" id="contactNo"
+      placeholder="Contact No">
+    <a href="javascript:void(0);" *ngIf="payLoadForSearch.contactNo" (click)="payLoadForSearch.contactNo = null">
+      <mat-icon>cancel</mat-icon>
+    </a>
+  </div>
+
+  <div class="form-group">
+    <mat-select class="form-control width-class-90" [(ngModel)]="payLoadForSearch.storeType"  placeholder="Store Type" id="storeType">
+      <mat-option value="PRIVATE">PRIVATE</mat-option>
+      <mat-option value="PUBLIC">PUBLIC</mat-option>
+    </mat-select>
+  </div>
+
+  <div class="form-group">
+    <mat-select class="form-control width-class-90" [(ngModel)]="payLoadForSearch.storeLevel"  placeholder="Store Level" id="storeLevel">
+      <mat-option value="BASIC">Basic</mat-option>
+      <mat-option value="SILVER">Silver</mat-option>
+      <mat-option value="GOLD">Gold</mat-option>
+      <mat-option value="PLATINUM">Platinum</mat-option>
+      <mat-option value="DIAMOND">Diamond</mat-option>
+    </mat-select>
+  </div>
+
+  <div class="form-group">
+    <mat-select class="form-control width-class-90" [(ngModel)]="payLoadForSearch.businessCategory" placeholder="Business Category"
+      id="businessCategory">
+      <mat-option style="color: #2AACD8" *ngFor="let businessCategory of businessCategoryList" [value]="businessCategory.id">{{businessCategory.businessCategoryName}}</mat-option>
+    </mat-select>
+    <a href="javascript:void(0);" *ngIf="payLoadForSearch.businessCategory" (click)="payLoadForSearch.businessCategory=null">
+      <mat-icon>cancel</mat-icon>
+    </a>
+  </div>
+
+  <div class="form-group">
+    <input type="text" numbersOnly [(ngModel)]="payLoadForSearch.pinCode" class="form-control width-class-90" id="payLoadForSearch.pinCode"
+      placeholder="Pin Code">
+    <a href="javascript:void(0);" *ngIf="payLoadForSearch.pinCode" (click)="payLoadForSearch.pinCode=null">
+      <mat-icon>cancel</mat-icon>
+    </a>
+  </div>
+
+  <div class="form-group">
+    <mat-select class="form-control width-class-90" [(ngModel)]="payLoadForSearch.stateCode" placeholder="Region" id="region">
+      <mat-option style="color: #2AACD8" *ngFor="let region of regionList" [value]="region.regionName">{{region.regionName}}</mat-option>
+    </mat-select>
+    <a href="javascript:void(0);" *ngIf="payLoadForSearch.stateCode" (click)="payLoadForSearch.stateCode = null">
+      <mat-icon>cancel</mat-icon>
+    </a>
+  </div>
+
+  <div class="form-group">
+    <mat-select class="form-control width-class-90" [(ngModel)]="payLoadForSearch.dateType" (selectionChange)="dateTypeChange()"
+      placeholder="Select Time Range" id="filterRange">
+      <mat-option style="color: #2AACD8" *ngFor="let status of timeStatus" [value]="status.statusKey">{{status.statusValue}}</mat-option>
+    </mat-select>
+    <a href="javascript:void(0);" *ngIf="payLoadForSearch.dateType" (click)="payLoadForSearch.dateType = null; payLoadForSearch.createdDateFrom=null; payLoadForSearch.createdDateTo=null; customFromDate=null; customToDate=null;">
+      <mat-icon>cancel</mat-icon>
+    </a>
+  </div>
+
+  <div class="row" *ngIf="payLoadForSearch.dateType === 'CUSTOM'">
+    <div class="col-md-6">
+      <mat-form-field class="full-width">
+        <mat-label>From Date</mat-label>
+        <input matInput [(ngModel)]='customFromDate' [matDatepicker]="fromDate">
+        <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+        <mat-datepicker #fromDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6">
+      <mat-form-field class="full-width">
+        <mat-label>To Date</mat-label>
+        <input matInput [(ngModel)]='customToDate' [matDatepicker]="toDate">
+        <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+        <mat-datepicker #toDate></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" (click)="process('cancel')">Cancel</button>
+  <button type="button" class="btn btn-primary" (click)="process('process')">Search</button>
+</div>

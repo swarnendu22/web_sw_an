@@ -1,0 +1,113 @@
+<div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title">Pending Stores
+                <span class="total-count">Total Records: {{totalRecords}}</span>
+            </h3>
+            <div class="search-filter" *ngIf="payLoadForSearch">
+                <label *ngIf="payLoadForSearch.storeName">
+                    <span class="text">Store Name</span>
+                    <span class="value">{{this.payLoadForSearch.storeName}}</span>
+                </label>
+                <label *ngIf="payLoadForSearch.contactNo">
+                    <span class="text">Contact No</span>
+                    <span class="value">{{this.payLoadForSearch.contactNo}}</span>
+                </label>
+                <label *ngIf="payLoadForSearch.status">
+                    <span class="text">Status</span>
+                    <span class="value">{{this.payLoadForSearch.status}}</span>
+                </label>
+                <label *ngIf="payLoadForSearch.businessCategory && payLoadForSearch.businessCategory!='' && payLoadForSearch.businessCategoryName && payLoadForSearch.businessCategoryName!=''">
+                    <span class="text">Business Category</span>
+                    <span class="value">{{this.payLoadForSearch.businessCategoryName}}</span>
+                </label>
+                <label *ngIf="payLoadForSearch.pinCode">
+                    <span class="text">Pin Code</span>
+                    <span class="value">{{this.payLoadForSearch.pinCode}}</span>
+                </label>
+                <label *ngIf="payLoadForSearch.stateCode && payLoadForSearch.stateCode!=''">
+                    <span class="text">State Name</span>
+                    <span class="value">{{this.payLoadForSearch.stateCode}}</span>
+                </label>
+                <label *ngIf="payLoadForSearch.dateType">
+                    <span class="text">Date</span>
+                    <span class="value">{{this.payLoadForSearch.dateType}}</span>
+                </label>
+                <label *ngIf="payLoadForSearch.isAesc">
+                    <span class="text">Order By</span>
+                    <span class="value">Accending</span>
+                </label>
+                <label *ngIf="!payLoadForSearch.isAesc">
+                    <span class="text">Order By</span>
+                    <span class="value">Decending</span>
+                </label>
+            </div>
+            <mat-form-field appearance="outline" style="width: 100px; margin-left: 50px;">
+                <mat-label>Store Type</mat-label>
+                <mat-select [(ngModel)]="storeTypeSearch" (selectionChange)="onStoreTypeChange()">
+                    <mat-option value="">All</mat-option>
+                    <mat-option value="PRIVATE">PRIVATE</mat-option>
+                    <mat-option value="PUBLIC">PUBLIC</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 100px; margin-left: 50px;">
+                <mat-label>Store Level</mat-label>
+                <mat-select [(ngModel)]="storeLevel" (selectionChange)="onStoreTypeChange()">
+                  <mat-option value="">All</mat-option>
+                  <mat-option value="BASIC">Basic</mat-option>
+                  <mat-option value="SILVER">Silver</mat-option>
+                  <mat-option value="GOLD">Gold</mat-option>
+                  <mat-option value="PLATINUM">Platinum</mat-option>
+                  <mat-option value="DIAMOND">Diamond</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form-header-btn">
+
+            <div class="store-approval-btn">
+                <button [disabled]="bulkOperationList.length<1" mat-raised-button (click)="bulkOperation('REJECTED')" type="button" class="btn btn-danger">REJECT</button>
+                <button [disabled]="bulkOperationList.length<1" mat-raised-button type="button" (click)="bulkOperation('APPROVED')" class="btn btn-success">APPROVE</button>
+            </div>
+
+            <button type="button" (click)="openStoreFilter()" mat-raised-button class="top-btn-font drop mr-2" color="primary">
+                Filter
+                <mat-icon>filter_list</mat-icon>
+            </button>
+
+            <!--  
+        <mat-form-field>
+          <mat-label style="color:#2AACD8">
+            <h4>Status</h4>
+          </mat-label>
+          <mat-select [(ngModel)]="this.selectedStatus" (selectionChange)="statusFilter()">
+            <mat-option style="color: #2AACD8" *ngFor="let status of merchentsStatus" [value]="status.statusKey">{{status.statusValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+         -->
+
+
+
+            <!--
+          <button [routerLink] = "['/merchant/create-new-merchant']" mat-raised-button class="noshadow top-btn-font" color="primary">
+            <mat-icon>add</mat-icon> Add New
+          </button>
+           <mat-spinner [diameter]="20"></mat-spinner> -->
+        </div>
+    </div>
+</div>
+
+<div class="bg-white single-pagination" style="height: calc(100% - 40px)">
+
+    <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham merchant-store-check merchatntAll" [rowData]="rowData" [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef" (firstDataRendered)="onFirstDataRendered($event)" [gridOptions]="gridOptions" (gridReady)="onGridReady($event)" [rowSelection]="rowSelection"
+        [enableFilter]="true" [floatingFilter]="true" (gridSizeChanged)="onGridSizeChanged($event)" (cellClicked)='onCellClicked($event)' [rowHeight]="rowHeight">
+    </ag-grid-angular>
+
+    <ul style="display: none;">
+        <li *ngFor="let item of rowData | paginate: { id: 'dataPagination', itemsPerPage: pageSize, currentPage: pageNo, totalItems: totalRecords }">{{ item.id }}</li>
+    </ul>
+    <pagination-controls (pageChange)="getPageNoData($event)" id="dataPagination"></pagination-controls>
+
+
+</div>

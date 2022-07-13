@@ -1,0 +1,175 @@
+<form [formGroup]="addZipcodeForm" autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">
+          {{ isEdit ? 'Update' : 'Add New' }} Zip Code
+        </h3>
+      </div>
+      <div class="form-header-btn">
+        <ng-container>
+          <ng-container *ngIf="getFormDisableStats('addZipcodeForm')">
+            <button typr="button" routerLink="/store/zip-code-management/zipcode" mat-raised-button
+              class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+              (click)="toggleFormDisable('addZipcodeForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('addZipcodeForm')">
+            <button *ngIf="isEdit" type="button" mat-raised-button class="noshadow top-btn-font" color="defalt"
+              (click)="toggleFormDisable('addZipcodeForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button type="button" *ngIf="!isEdit" routerLink="/store/zip-code-management/zipcode" mat-raised-button
+              class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <ng-container *ngIf="isEdit || !_id">
+              <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary"
+                (keydown.enter)="$event.preventDefault()" (click)="submitZipcode($event)"
+                [disabled]="!(addZipcodeForm.valid && addZipcodeForm.dirty)">
+                <mat-icon>save</mat-icon> Save
+              </button>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+        <!-- <button
+          routerLink="/store/zip-code-management"
+          mat-raised-button
+          class="noshadow top-btn-font white-btn"
+        >
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+        <button mat-raised-button class="noshadow top-btn-font" color="primary">
+          <mat-icon>save</mat-icon> Save
+        </button> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="box-shadow bg-white padding-10 hoz-form">
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Zip Code <span class="mandatory">*</span></mat-label>
+          <input matInput formControlName="zipCode" trim="blur" autocomplete="off" />
+          <span *ngIf="!addZipcodeForm.get('zipCode').valid &&
+            addZipcodeForm.get('zipCode').touched" class="mandatory-alert" [tooltip]="zipcodetool"
+            content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #zipcodetool>
+          <p align="start" class="mb-1" *ngIf="addZipcodeForm.get('zipCode').hasError('required')">Required Field</p>
+          <p align="start" class="mb-1" *ngIf="addZipcodeForm.get('zipCode').hasError('pattern')">Invalid Zipcode</p>
+          <p align="start" class="mb-1" *ngIf="addZipcodeForm.get('zipCode').hasError('maxlength')">Invalid Zipcode</p>
+        </ng-template>
+
+        <mat-form-field appearance="outline">
+          <mat-label>COD Available <span class="mandatory">*</span></mat-label>
+          <mat-select formControlName="isCodAvailable">
+            <mat-option [value]="1">Yes</mat-option>
+            <mat-option [value]="0">No</mat-option>
+          </mat-select>
+          <span *ngIf="!addZipcodeForm.get('isCodAvailable').valid && addZipcodeForm.get('isCodAvailable').touched"
+            class="mandatory-alert" [tooltip]="codtool" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #codtool>
+          <p align="start" class="mb-1" *ngIf="addZipcodeForm.get('isCodAvailable').hasError('required')">Required Field
+          </p>
+        </ng-template>
+        <mat-form-field appearance="outline" formGroupName="zoneId">
+          <mat-label>Select Zone <span class="mandatory">*</span></mat-label>
+          <mat-select formControlName="id">
+            <mat-option>
+              <ngx-mat-select-search #zone [formControl]="zoneControl" [placeholderLabel]="'Find Zone ..'"
+                [noEntriesFoundLabel]="'no matches  found'"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option [value]="zoneSingle.id" *ngFor="
+                let zoneSingle of zoneList$
+                  | dropdownfilter: zone.value:'zoneName'
+              ">{{ zoneSingle.zoneName }}</mat-option>
+          </mat-select>
+          <span *ngIf="!addZipcodeForm.get('zoneId').valid && addZipcodeForm.get('zoneId').touched"
+            class="mandatory-alert" [tooltip]="zonetool" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #zonetool>
+          <p align="start" class="mb-1" *ngIf="addZipcodeForm.get('zoneId.id').hasError('required')">Required Field</p>
+        </ng-template>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Deliver TAT <span class="mandatory">*</span></mat-label>
+          <input matInput formControlName="deliveryTat" trim="blur" autocomplete="off" />
+          <span *ngIf="!addZipcodeForm.get('deliveryTat').valid && addZipcodeForm.get('deliveryTat').touched"
+            class="mandatory-alert" [tooltip]="deliveryTattool" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #deliveryTattool>
+          <p align="start" class="mb-1" *ngIf="addZipcodeForm.get('deliveryTat').hasError('required')">Required Field
+          </p>
+          <p align="start" class="mb-1" *ngIf="addZipcodeForm.get('deliveryTat').hasError('pattern')">Delivery TAT must
+            be a number</p>
+          <p align="start" class="mb-1" *ngIf="addZipcodeForm.get('deliveryTat').hasError('maxlength')">Invalid Delivery
+            TAT</p>
+        </ng-template>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Additional Delivery Charge <span class="mandatory">*</span></mat-label>
+          <input matInput formControlName="additionalDelivery" trim="blur" autocomplete="off" />
+          <span *ngIf="!addZipcodeForm.get('additionalDelivery').valid &&
+            addZipcodeForm.get('additionalDelivery').touched" class="mandatory-alert" [tooltip]="addChargetool"
+            content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #addChargetool>
+          <p align="start" class="mb-1" *ngIf="addZipcodeForm.get('additionalDelivery').hasError('required')">Required
+            Field</p>
+          <p align="start" class="mb-1" *ngIf="addZipcodeForm.get('additionalDelivery').hasError('pattern')">Additional
+            Delivery Charges must be a number</p>
+          <p align="start" class="mb-1" *ngIf="
+              addZipcodeForm.get('additionalDelivery').hasError('maxlength')">Invalid Additional Delivery Charges</p>
+        </ng-template>
+        <mat-form-field appearance="outline" *ngIf="_id">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            <mat-option [value]="1">Active</mat-option>
+            <mat-option [value]="0">In Active</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</form>
+<!-- <div class="box-shadow bg-white padding-10 mt-3">
+  <div class="content-head">
+    <div class="content-head-caption">
+      <h3>Add Zip Code</h3>
+    </div>
+    <div class="content-head-action">
+      <button (click)="openZipDialog()" mat-flat-button color="primary">
+        <mat-icon>add</mat-icon> Add
+      </button>
+    </div>
+  </div>
+  <div class="form-content-body mt-3">
+    <ag-grid-angular
+      style="width: 100%; height: 400px;"
+      class="ag-theme-balham"
+      [rowData]="rowData"
+      [columnDefs]="columnDefs"
+      [floatingFilter]="true"
+      (firstDataRendered)="onFirstDataRendered($event)"
+    >
+    </ag-grid-angular>
+  </div>
+</div> -->

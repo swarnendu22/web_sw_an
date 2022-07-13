@@ -1,0 +1,11 @@
+<a mat-flat-button color="primary" *ngIf="params.data.id" matTooltip="View" aria-label="View" class="btn-data btn-sm-data"
+    (click)="invokeParentMethod('VIEW')">
+    <mat-icon>visibility</mat-icon>
+</a>
+<a mat-flat-button color="primary" *ngIf="!params.data.id" matTooltip="Add" aria-label="View" class="btn-data btn-sm-data"
+    (click)="invokeParentMethod('VIEW')">
+    <mat-icon>add</mat-icon>
+</a>
+
+<!-- <button mat-raised-button class="btn-parimary" color="primary"
+(click)="complianceSelected(changeTypeVal)">Add</button> -->

@@ -1,0 +1,91 @@
+<form [formGroup]="addRegionsForm" autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">{{ isEdit ? 'Edit' : 'Add New' }} Region</h3>
+      </div>
+      <div class="form-header-btn">
+        <ng-container>
+          <ng-container *ngIf="getFormDisableStats('addRegionsForm')">
+            <button routerLink="/store/region" mat-raised-button class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+              (click)="toggleFormDisable('addRegionsForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('addRegionsForm')">
+            <button *ngIf="isEdit" type="button" mat-raised-button class="noshadow top-btn-font" color="defalt"
+              (click)="toggleFormDisable('addRegionsForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button *ngIf="!isEdit" routerLink="/store/region" mat-raised-button
+              class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+
+            <button mat-raised-button class="noshadow top-btn-font" color="primary"
+              (keydown.enter)="$event.preventDefault()" (click)="submitRegion($event)">
+              <mat-icon>save</mat-icon> Save
+            </button>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="box-shadow bg-white padding-10 hoz-form">
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Region Code</mat-label>
+          <input matInput formControlName="code" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container *ngIf="!addRegionsForm.get('code').valid && addRegionsForm.get('code').touched">
+          <mat-hint class="error" align="start" *ngIf="addRegionsForm.get('code').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Region Name</mat-label>
+          <input matInput formControlName="name" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container *ngIf="!addRegionsForm.get('name').valid && addRegionsForm.get('name').touched">
+          <mat-hint class="error" align="start" *ngIf="addRegionsForm.get('name').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+      </div>
+      <div class="col-12" formGroupName="countryId">
+        <mat-form-field appearance="outline">
+          <mat-label>Country</mat-label>
+          <mat-select formControlName="id" [disabled]="getFormDisableStats('addRegionsForm')">
+            <!-- <mat-option
+              *ngFor="let country of countries$"
+              [value]="country['id']"
+              >{{ country['name'] }}</mat-option
+            > -->
+            <mat-option>
+              <ngx-mat-select-search #country [formControl]="countryControl" [placeholderLabel]="'Find Country ..'"
+                [noEntriesFoundLabel]="'no matches  found'"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option [value]="countrySingle.id" *ngFor="
+                let countrySingle of countries$
+                  | dropdownfilter: country.value:'name'
+              ">{{ countrySingle.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <ng-container *ngIf="!addRegionsForm.get('countryId').valid && addRegionsForm.get('countryId').touched">
+          <mat-hint class="error" align="start" *ngIf="addRegionsForm.get('countryId').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</form>

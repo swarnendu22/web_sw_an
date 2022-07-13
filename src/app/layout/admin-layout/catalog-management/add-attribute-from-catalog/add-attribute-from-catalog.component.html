@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>
+    Add new Attribute Value </h2>
+<mat-dialog-content>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Attribute Value</th>
+                <th>Swatch Color</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <mat-form-field appearance="outline">
+                        <input matInput placeholder="Value" [(ngModel)]="attributeValue" />
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field appearance="outline">
+                        <input matInput [disabled]="data.type=='SELECT'" class="cus-color-picker" [cpPosition]="'top'"
+                            [style.background]="swatchColorCode" [cpOKButton]="true" [cpSaveClickOutside]="false"
+                            [cpOutputFormat]="'hex'" [cpOKButtonClass]="'btn btn-primary btn-xs'"
+                            [colorPicker]="colorValue" (colorPickerChange)="colorPicker($event)"
+                            [(ngModel)]="swatchColorCode" />
+                    </mat-form-field>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-button class="btn-primary" mat-dialog-close (keydown.enter)="$event.preventDefault()"
+        (click)="onSubmit($event)">save</button>
+</mat-dialog-actions>

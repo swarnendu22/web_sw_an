@@ -1,0 +1,5 @@
+<h3 style="margin-bottom: 25px;" mat-dialog-title>Are You Sure You want to change the status to <b style="color: red;">{{ newStatus }}</b> ?</h3>
+<div style="display: flex; justify-content: flex-end; height: 35px;" mat-dialog-actions>
+  <button style="width: 55px; margin-right: 20px;" class="btn btn-primary" (click)="response( false )">No</button>
+  <button style="width: 55px;" class="btn btn-success" (click)="response( true )">Yes</button>
+</div>

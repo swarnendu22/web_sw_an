@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>{{data.type=='REJECTED'?'Reject':'Accept'}} Catalog</h2>
+<mat-dialog-content>
+  <p>Do you want to {{data.type=='REJECTED'?'reject':'accept'}} this catalog?</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <!-- [mat-dialog-close]="true" -->
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+  <button mat-flat-button color="primary" cdkFocusInitial (click)="requestProcess()">Yes</button>
+</mat-dialog-actions>

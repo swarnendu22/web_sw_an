@@ -1,0 +1,269 @@
+<form [formGroup]="commissionSettingsForm">
+  <div class="top-bar box-shadow" style="border: 0px solid #eceff7;
+            border-bottom: 1px solid #eceff7;">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">Edit Commission Settings</h3>
+      </div>
+      <div class="form-header-btn">
+        <button (click)="goBackButton()" type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+          color="primary">
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+      </div>
+      <button class="ml-2" mat-raised-button color="primary" (click)="updateCommissionSettings()">
+        <mat-icon>sync</mat-icon> Update
+      </button>
+
+
+    </div>
+  </div>
+  <div class="driver-details-view-area">
+    <div class="hoz-form">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" trim="blur">
+            <span [tooltip]="name"
+              *ngIf="!commissionSettingsForm.get('name').valid && commissionSettingsForm.get('name').touched"
+              class="mandatory-alert" content-type="template">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+          <ng-template #name>
+            <div>
+              <p class="mb-1" *ngIf="commissionSettingsForm.get('name').errors.required">Required
+              </p>
+            </div>
+          </ng-template>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Base Rate</mat-label>
+            <input matInput formControlName="base_rate" trim="blur">
+            <span [tooltip]="base_rate"
+              *ngIf="!commissionSettingsForm.get('base_rate').valid && commissionSettingsForm.get('base_rate').touched"
+              class="mandatory-alert" content-type="template">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+          <ng-template #base_rate>
+            <div>
+              <p class="mb-1" *ngIf="commissionSettingsForm.get('base_rate').errors.required">Required</p>
+            </div>
+          </ng-template>
+          <mat-form-field appearance="outline">
+            <mat-label>Base Distance(In Km)</mat-label>
+            <input matInput formControlName="base_distance_km" trim="blur">
+            <span [tooltip]="base_distance_km"
+              *ngIf="!commissionSettingsForm.get('base_distance_km').valid && commissionSettingsForm.get('base_distance_km').touched"
+              class="mandatory-alert" content-type="template">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+          <ng-template #base_distance_km>
+            <div>
+              <p class="mb-1" *ngIf="commissionSettingsForm.get('base_distance_km').errors.required">
+                Required</p>
+            </div>
+          </ng-template>
+          <mat-form-field appearance="outline">
+            <mat-label>Additional Per Kg</mat-label>
+            <input matInput formControlName="additional_per_kg" trim="blur">
+            <span [tooltip]="additional_per_kg"
+              *ngIf="!commissionSettingsForm.get('additional_per_kg').valid && commissionSettingsForm.get('additional_per_kg').touched"
+              class="mandatory-alert" content-type="template">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+          <ng-template #additional_per_kg>
+            <div>
+              <p class="mb-1" *ngIf="commissionSettingsForm.get('additional_per_kg').errors.required">
+                Required
+              </p>
+            </div>
+          </ng-template>
+          <mat-form-field appearance="outline">
+            <mat-label>Additional Per Km</mat-label>
+            <input matInput formControlName="additional_per_km" trim="blur">
+            <span [tooltip]="additional_per_km"
+              *ngIf="!commissionSettingsForm.get('additional_per_km').valid && commissionSettingsForm.get('additional_per_km').touched"
+              class="mandatory-alert" content-type="template">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+          <ng-template #additional_per_km>
+            <div>
+              <p class="mb-1" *ngIf="commissionSettingsForm.get('additional_per_km').errors.required">
+                Required</p>
+            </div>
+          </ng-template>
+          <mat-form-field appearance="outline">
+            <mat-label>Max Distance Km</mat-label>
+            <input matInput formControlName="max_distance_km" trim="blur">
+            <span [tooltip]="max_distance_km"
+              *ngIf="!commissionSettingsForm.get('max_distance_km').valid && commissionSettingsForm.get('max_distance_km').touched"
+              class="mandatory-alert" content-type="template">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+          <ng-template #max_distance_km>
+            <div>
+              <p class="mb-1" *ngIf="commissionSettingsForm.get('max_distance_km').errors.required">
+                Required
+              </p>
+            </div>
+          </ng-template>
+          <mat-form-field appearance="outline">
+            <mat-label>Max Dimension Inch</mat-label>
+            <input matInput formControlName="max_dimention_inch" trim="blur">
+            <span [tooltip]="max_dimention_inch"
+              *ngIf="!commissionSettingsForm.get('max_dimention_inch').valid && commissionSettingsForm.get('max_dimention_inch').touched"
+              class="mandatory-alert" content-type="template">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+          <ng-template #max_dimention_inch>
+            <div>
+              <p class="mb-1" *ngIf="commissionSettingsForm.get('max_dimention_inch').errors.required">
+                Required</p>
+            </div>
+          </ng-template>
+
+        </div>
+        <div class="col-md-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Code</mat-label>
+            <input matInput formControlName="code" trim="blur">
+            <span [tooltip]="code"
+              *ngIf="!commissionSettingsForm.get('code').valid && commissionSettingsForm.get('code').touched"
+              class="mandatory-alert" content-type="template">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+          <ng-template #code>
+            <div>
+              <p class="mb-1" *ngIf="commissionSettingsForm.get('code').errors.required">Required
+              </p>
+            </div>
+          </ng-template>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Base Dimension (In Inch)</mat-label>
+            <input matInput formControlName="base_dimention_inch" trim="blur">
+            <span [tooltip]="base_dimention_inch"
+              *ngIf="!commissionSettingsForm.get('base_dimention_inch').valid && commissionSettingsForm.get('base_dimention_inch').touched"
+              class="mandatory-alert" content-type="template">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+          <ng-template #base_dimention_inch>
+            <div>
+              <p class="mb-1" *ngIf="commissionSettingsForm.get('base_dimention_inch').errors.required">
+                Required</p>
+            </div>
+          </ng-template>
+          <mat-form-field appearance="outline">
+            <mat-label>Base Weight (Kg)</mat-label>
+            <input matInput formControlName="base_weight_kg" trim="blur">
+            <span [tooltip]="base_weight_kg"
+              *ngIf="!commissionSettingsForm.get('base_weight_kg').valid && commissionSettingsForm.get('base_weight_kg').touched"
+              class="mandatory-alert" content-type="template">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+          <ng-template #base_weight_kg>
+            <div>
+              <p class="mb-1" *ngIf="commissionSettingsForm.get('base_weight_kg').errors.required">Required</p>
+            </div>
+          </ng-template>
+          <mat-form-field appearance="outline">
+            <mat-label>Additional Per Inch</mat-label>
+            <input matInput formControlName="additional_per_inch" trim="blur">
+            <span [tooltip]="additional_per_inch"
+              *ngIf="!commissionSettingsForm.get('additional_per_inch').valid && commissionSettingsForm.get('additional_per_inch').touched"
+              class="mandatory-alert" content-type="template">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+          <ng-template #additional_per_inch>
+            <div>
+              <p class="mb-1" *ngIf="commissionSettingsForm.get('additional_per_inch').errors.required">
+                Required
+              </p>
+            </div>
+          </ng-template>
+          <mat-form-field appearance="outline">
+            <mat-label>Max Order Allowed</mat-label>
+            <input matInput formControlName="max_order_allowed" trim="blur">
+            <span [tooltip]="max_order_allowed"
+              *ngIf="!commissionSettingsForm.get('max_order_allowed').valid && commissionSettingsForm.get('max_order_allowed').touched"
+              class="mandatory-alert" content-type="template">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+          <ng-template #max_order_allowed>
+            <div>
+              <p class="mb-1" *ngIf="commissionSettingsForm.get('max_order_allowed').errors.required">
+                Required
+              </p>
+            </div>
+          </ng-template>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Max Weight Kg</mat-label>
+            <input matInput formControlName="max_weight_kg" trim="blur">
+            <span [tooltip]="max_weight_kg"
+              *ngIf="!commissionSettingsForm.get('max_weight_kg').valid && commissionSettingsForm.get('max_weight_kg').touched"
+              class="mandatory-alert" content-type="template">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+          <ng-template #max_weight_kg>
+            <div>
+              <p class="mb-1" *ngIf="commissionSettingsForm.get('max_weight_kg').errors.required">Required
+              </p>
+            </div>
+          </ng-template>
+          <div class="row md">
+            <div class="col-md-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Max 1st Mile</mat-label>
+                <input matInput formControlName="max_first_mile" trim="blur">
+                <span [tooltip]="max_first_mile"
+                  *ngIf="!commissionSettingsForm.get('max_first_mile').valid && commissionSettingsForm.get('max_first_mile').touched"
+                  class="mandatory-alert" content-type="template">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </span>
+              </mat-form-field>
+              <ng-template #max_first_mile>
+                <div>
+                  <p class="mb-1" *ngIf="commissionSettingsForm.get('max_first_mile').errors.required">
+                    Required
+                  </p>
+                </div>
+              </ng-template>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Max Last Mile</mat-label>
+                <input matInput formControlName="max_last_mile" trim="blur">
+                <span [tooltip]="max_last_mile"
+                  *ngIf="!commissionSettingsForm.get('max_last_mile').valid && commissionSettingsForm.get('max_last_mile').touched"
+                  class="mandatory-alert" content-type="template">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </span>
+              </mat-form-field>
+              <ng-template #max_last_mile>
+                <div>
+                  <p class="mb-1" *ngIf="commissionSettingsForm.get('max_last_mile').errors.required">Required
+                  </p>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

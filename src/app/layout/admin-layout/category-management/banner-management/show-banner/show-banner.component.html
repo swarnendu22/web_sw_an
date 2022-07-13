@@ -1,0 +1,283 @@
+<form [formGroup]="bannerForm" (keydown.enter)="$event.preventDefault()" (ngSubmit)="bannerFormSubmit($event)"
+  autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">Edit Banner</h3>
+      </div>
+      <div class="form-header-btn">
+        <ng-container *ngIf="getFormDisableStats('bannerForm')">
+          <button type="button" routerLink="/category/banner/active-banner" mat-raised-button
+            class="noshadow top-btn-font white-btn">
+            <mat-icon>arrow_back</mat-icon> Back
+          </button>
+          <button type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+            (click)="toggleFormDisable('bannerForm')">
+            <mat-icon>edit</mat-icon> Edit
+          </button>
+        </ng-container>
+        <ng-container *ngIf="!getFormDisableStats('bannerForm')">
+          <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" color="default"
+            (click)="toggleFormDisable('bannerForm')">
+            <mat-icon>cancel</mat-icon> Cancel
+          </button>
+          <button mat-raised-button class="noshadow top-btn-font" color="primary" [disabled]="!bannerForm.valid">
+            <mat-icon>save</mat-icon> Save
+          </button>
+        </ng-container>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="box-shadow bg-white padding-10 hoz-form">
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Banner Type</mat-label>
+          <mat-select formControlName="applicable_to_widget_type">
+            <mat-option value="TYPE_1_SLIDER_BANNER">TYPE_1_SLIDER_BANNER</mat-option>
+            <mat-option value="TYPE_2_SLIDER_BANNER">TYPE_2_SLIDER_BANNER</mat-option>
+            <mat-option value="TYPE_3_SLIDER_BANNER">TYPE_3_SLIDER_BANNER</mat-option>
+            <mat-option value="TYPE_1_FLASH_DEAL_COLLECTION_BANNER">TYPE_1_FLASH_DEAL_COLLECTION_BANNER</mat-option>
+            <mat-option value="TYPE_1_STATIC_BANNER">TYPE_1_STATIC_BANNER</mat-option>
+            <mat-option value="TYPE_2_STATIC_BANNER">TYPE_2_STATIC_BANNER</mat-option>
+            <mat-option value="TYPE_3_STATIC_BANNER">TYPE_3_STATIC_BANNER</mat-option>
+            <mat-option value="TYPE_1_COLLECTION_BANNER">TYPE_1_COLLECTION_BANNER</mat-option>
+            <mat-option value="TYPE_2_COLLECTION_BANNER">TYPE_2_COLLECTION_BANNER</mat-option>
+            <mat-option value="TYPE_1_FLASH_DEAL_STATIC_BANNER">TYPE_1_FLASH_DEAL_STATIC_BANNER</mat-option>
+
+
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-12" id="product_img_div">
+        <div class="row">
+          <div class="col-6">
+            <mat-button-toggle-group name="imageType" aria-label="Image Type" #imgType="matButtonToggleGroup"
+              [value]="imageType" [disabled]="getFormDisableStats('bannerForm')"
+              (valueChange)="imageType=imgType.value">
+              <mat-button-toggle value="jpg">JPG</mat-button-toggle>
+              <mat-button-toggle value="webp">WEBP</mat-button-toggle>
+              <mat-button-toggle value="png">PNG</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+          <!-- <div class="col-6 text-right" style="font-size: 12px">
+            <mat-hint align="end">All 3 Image formats are manadatory</mat-hint>
+          </div> -->
+        </div>
+        <!-- <span>{{imageType}}</span> -->
+        <div class="banner-image-upload">
+          <app-img-upload-aws [className]="'img-input'" [awsFolderName]="'bannerImage'" [accept]="getImageType()"
+            (imgUploaded)="setImage($event)"></app-img-upload-aws>
+          <div class="image-uploader-item">
+            <div class="image-upload-item-list">
+              <button type="button" [disabled]="getFormDisableStats('bannerForm')" matTooltip="Delete"
+                matTooltipPosition="above" class="delete-image" mat-icon-button color="warn" (click)="deleteImage()">
+                <mat-icon>cancel</mat-icon>
+              </button>
+              <img [src]="getImage()" *ngIf="getImage().length>0" />
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Height (px)</mat-label>
+          <input matInput type="number" formControlName="height" />
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Width (px)</mat-label>
+          <input matInput type="number" formControlName="width" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Product Link</mat-label>
+          <mat-select formControlName="linkable_type" (selectionChange)="onProductLinkChange($event)">
+            <mat-option value="Category">Collection</mat-option>
+            <mat-option value="ElasticQuery">ElasticQuery</mat-option>
+            <mat-option value="Product">Product</mat-option>
+            <mat-option value="Static">Static</mat-option>
+            <mat-option value="FlashSale">FlashSale</mat-option>
+            <mat-option value="LuckyWheel">Lucky Wheel</mat-option>
+            <mat-option value="ExternalUrl">External Url</mat-option>
+
+
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Default Sorting By</mat-label>
+          <mat-select [disabled]="getFormDisableStats('bannerForm')"
+            [value]="getCheckedValueForDefaultSorting(bannerForm.get('default_sorting_by').value)"
+            (selectionChange)="defaultSortingChange($event)">
+            <mat-option *ngFor="let item of defaultSortingByArr;let i=index" [value]="i">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <ng-container [ngSwitch]="bannerForm.get('linkable_type').value">
+          <!-- <ng-container *ngSwitchCase="'Category'">
+            <app-ng-select [selectData]="categories" [label]="'Select Category'" [selectedOption]="selectedOption"
+              [disabled]="getFormDisableStats('bannerForm')" [allCategory]=true (getSelectedValue)="categorySelectionValue($event)"></app-ng-select>
+          </ng-container> -->
+          <mat-form-field appearance="outline" *ngSwitchCase="'Category'">
+            <mat-label>Select Collection</mat-label>
+            <mat-select formControlName="linkable_id" [value]="selectedOption">
+              <mat-option>
+                <ngx-mat-select-search #myInput [formControl]="collectionFlterCtrl"
+                  [placeholderLabel]="'Find Collection ..'" [noEntriesFoundLabel]="'no matches  found'">
+                </ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let collection of collectionList| dropdownfilter:myInput.value:'name'"
+                [value]="collection.id">{{collection.id}} {{collection.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" *ngSwitchCase="'ElasticQuery'">
+            <mat-label>Enter Elastic Id</mat-label>
+            <input matInput placeholder="Enter Elastic Id" formControlName="linkable_id">
+          </mat-form-field>
+          <mat-form-field appearance="outline" *ngSwitchCase="'Product'">
+            <mat-label>Enter Product Id</mat-label>
+            <input matInput placeholder="Enter Product Id" formControlName="linkable_id">
+          </mat-form-field>
+          <mat-form-field appearance="outline" *ngSwitchCase="'ExternalUrl'">
+            <mat-label>Enter External Url</mat-label>
+            <input matInput placeholder="Enter Product Url" formControlName="linkable_id">
+          </mat-form-field>
+          <mat-form-field appearance="outline" *ngSwitchCase="'FlashSale'">
+            <mat-select formControlName="linkable_id">
+              <mat-option value="">Select</mat-option>
+              <mat-option *ngFor="let item of allFlashSalesList" [value]="item.id">{{item.title}} ({{item.id}})
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" *ngSwitchDefault>
+            <!-- <mat-label>Enter Product Id</mat-label> -->
+            <input matInput [placeholder]="getTextForSwitchDefaultCase()" disabled=true>
+          </mat-form-field>
+        </ng-container>
+        <ng-container [ngSwitch]="bannerForm.get('default_sorting_by').value">
+          <mat-form-field appearance="outline" *ngSwitchCase="'POSITION'">
+            <mat-label>Default Sorting By Order</mat-label>
+            <mat-select formControlName="default_sorting_by_order">
+              <mat-option value="ASC">ASC</mat-option>
+              <mat-option value="DESC">DESC</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" *ngSwitchCase="'ID'">
+            <mat-label>Default Sorting By Order</mat-label>
+            <mat-select formControlName="default_sorting_by_order">
+              <mat-option value="ASC">ASC</mat-option>
+              <mat-option value="DESC">DESC</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" *ngSwitchCase="'TOTAL_PRODUCT_VIEWS'">
+            <mat-label>Default Sorting By Order</mat-label>
+            <mat-select formControlName="default_sorting_by_order">
+              <mat-option value="ASC">ASC</mat-option>
+              <mat-option value="DESC">DESC</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" *ngSwitchCase="'PERCENT_OF_DISCOUNT'">
+            <mat-label>Default Sorting By Order</mat-label>
+            <mat-select formControlName="default_sorting_by_order">
+              <mat-option value="ASC">ASC</mat-option>
+              <mat-option value="DESC">DESC</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" *ngSwitchCase="'AGGS_PRICE'">
+            <!-- <mat-label>Default Sorting By Order</mat-label> -->
+            <input matInput [placeholder]="bannerForm.get('default_sorting_by_order').value" disabled=true />
+          </mat-form-field>
+          <mat-form-field appearance="outline" *ngSwitchDefault>
+            <!-- <mat-label>Enter Product Id</mat-label> -->
+            <input matInput placeholder="Select Default Sorting By to continue" disabled=true>
+          </mat-form-field>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="box-shadow bg-white padding-10 mt-3" *ngIf="openQueryBox">
+  <div class="content-head">
+    <div class="content-head-caption">
+      <h3>Query Builder</h3>
+    </div>
+    <div class="content-head-action" *ngIf="!getFormDisableStats('queryForm')">
+      <mat-form-field appearance="outline" *ngIf="queryList.length>0">
+        <mat-label>Elastic Query</mat-label>
+        <mat-select (selectionChange)="querySelection($event)">
+          <mat-option>
+            <ngx-mat-select-search #myQuerySearchInput [formControl]="querySearchInput"
+              [placeholderLabel]="'Find Elastic Query ..'" [noEntriesFoundLabel]="'no matches  found'">
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let item of queryList| dropdownfilter:myQuerySearchInput.value:'name'" [value]="item">
+            {{item.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-header-btn">
+      <ng-container *ngIf="getFormDisableStats('queryForm')">
+        <button type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+          (click)="toggleFormDisable('queryForm')">
+          <mat-icon>edit</mat-icon> Edit
+        </button>
+      </ng-container>
+      <ng-container *ngIf="!getFormDisableStats('queryForm')">
+        <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" color="default"
+          (click)="toggleFormDisable('queryForm')">
+          <mat-icon>cancel</mat-icon> Cancel
+        </button>
+      </ng-container>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-md-3 mt-2">
+      <mat-button-toggle-group [(ngModel)]="toggleValue" name="queryType" aria-label="Query Type">
+        <mat-button-toggle value="text">Text</mat-button-toggle>
+        <mat-button-toggle value="visual">Visual</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="col-md-9" [formGroup]="queryForm">
+      <div class="hoz-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Query Name</mat-label>
+          <input matInput placeholder="Enter Query Name" formControlName="name">
+          <button color="primary" class="matSuffix-text" matSuffix mat-flat-button [disabled]="!queryForm.valid"
+            (click)="submitQueryForm()">{{getStatsForUpdateOfQuery()?'Update':'Save'}}</button>
+          <!-- <mat-hint>Hint</mat-hint> -->
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="form-content-body mt-3">
+    <div *ngIf="toggleValue === 'visual'" style="min-height: 300px;" class="border">
+      <!-- <query-builder [(ngModel)]="query" [config]="config"></query-builder> -->
+      <ngx-json-viewer [json]="query"></ngx-json-viewer>
+    </div>
+    <div *ngIf="toggleValue === 'text'" class="query-text">
+      <!-- <textarea style="width: 100%; min-height: 300px;">{{query | json}}</textarea> -->
+      <ace-editor #editor style="height:750px;" mode="json" [options]="editorOptions" [(text)]="queryText"
+        [readOnly]="getFormDisableStats('queryForm')" (textChange)="editoChange($event)"></ace-editor>
+    </div>
+  </div>
+</div>

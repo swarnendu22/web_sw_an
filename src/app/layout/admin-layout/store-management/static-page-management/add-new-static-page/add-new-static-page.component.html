@@ -1,0 +1,100 @@
+<form [formGroup]="addStaticPageForm" autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">
+          {{ isEdit ? 'Update' : 'Add New' }} Static Page
+        </h3>
+      </div>
+      <div class="form-header-btn">
+        <ng-container>
+          <ng-container *ngIf="getFormDisableStats('addStaticPageForm')">
+            <button routerLink="/store/static-page-management" mat-raised-button
+              class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+              (click)="toggleFormDisable('addStaticPageForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('addStaticPageForm')">
+            <button *ngIf="isEdit" type="button" mat-raised-button class="noshadow top-btn-font" color="defalt"
+              (click)="toggleFormDisable('addStaticPageForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+
+            <button *ngIf="!isEdit" routerLink="/store/static-page-management" mat-raised-button
+              class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+
+            <button mat-raised-button class="noshadow top-btn-font" color="primary"
+              (keydown.enter)="$event.preventDefault()" (click)="submitStaticPage($event)">
+              <mat-icon>save</mat-icon> Save
+            </button>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="box-shadow bg-white padding-10 hoz-form">
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Page Code</mat-label>
+          <input matInput type="text" trim="blur" autocomplete="off" appBlockCopyPaste formControlName="pageCode" />
+        </mat-form-field>
+        <ng-container *ngIf="!addStaticPageForm.get('pageCode').valid && addStaticPageForm.get('pageCode').touched">
+          <mat-hint class="error" align="start" *ngIf="addStaticPageForm.get('pageCode').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+        <mat-form-field appearance="outline">
+          <mat-label>Active</mat-label>
+          <mat-select formControlName="active">
+            <mat-option [value]="true">Yes</mat-option>
+            <mat-option [value]="false">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <ng-container *ngIf="!addStaticPageForm.get('active').valid && addStaticPageForm.get('active').touched">
+          <mat-hint class="error" align="start" *ngIf="addStaticPageForm.get('active').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+        <!--
+        <mat-form-field appearance="outline">
+          <mat-label>Format</mat-label>
+          <mat-select formControlName="format">
+            <mat-option value="HTML">HTML</mat-option>
+            <mat-option value="FORMATED">Formated</mat-option>
+            <mat-option value="TEXT">Text</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Page Name</mat-label>
+          <input matInput type="text" trim="blur" autocomplete="off" appBlockCopyPaste
+            formControlName="staticPageName" />
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addStaticPageForm.get('staticPageName').valid && addStaticPageForm.get('staticPageName').touched">
+          <mat-hint class="error" align="start" *ngIf="addStaticPageForm.get('staticPageName').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+      </div>
+
+      <div class="col-12">
+        <!-- <textarea matInput formControlName="data"></textarea> -->
+        <angular-editor [placeholder]="'Enter Content'" formControlName="data" id="editor1" [config]="config">
+        </angular-editor>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,89 @@
+<form [formGroup]="addGroupNameForm" autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">
+          {{ isEdit ? 'Update' : 'Add New' }} Attribute Group Name
+        </h3>
+      </div>
+      <div class="form-header-btn">
+        <ng-container *ngIf="isEdit">
+          <ng-container *ngIf="getFormDisableStats('addGroupNameForm')">
+            <button routerLink="/store/product-attribute/attribute-group" mat-raised-button
+              class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+              (click)="toggleFormDisable('addGroupNameForm', 'edit')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('addGroupNameForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" color="defalt"
+              (click)="toggleFormDisable('addGroupNameForm', 'cancel')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button type="button" (keydown.enter)="$event.preventDefault()" (click)="addGroupName($event)"
+              mat-raised-button class="noshadow top-btn-font" color="primary">
+              <mat-icon>{{ isEdit ? 'loop' : 'save' }}</mat-icon> {{ isEdit ? 'Update' : 'Save' }}
+            </button>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="!isEdit">
+          <button [routerLink]="['/store/product-attribute']" mat-raised-button class="noshadow top-btn-font white-btn">
+            <mat-icon>arrow_back</mat-icon> Back
+          </button>
+          <button mat-raised-button class="noshadow top-btn-font" color="primary"
+            (keydown.enter)="$event.preventDefault()" (click)="addGroupName($event)">
+            <mat-icon>save</mat-icon> Save
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="box-shadow bg-white padding-10 hoz-form">
+    <div class="row">
+      <div class="col-12">
+        <div class="box-relative">
+          <mat-form-field appearance="outline">
+            <mat-label>Enter Unique Group Name
+              <span class="mandatory">*</span>
+            </mat-label>
+            <input matInput formControlName="groupName" trim="blur" />
+            <mat-hint align="start">
+              <span [style.color]="checkAvail ? 'green' : 'red'">{{ keywordStatus }}
+              </span>
+            </mat-hint>
+            <button *ngIf="!isEdit" mat-button matSuffix class="matSuffix-text" color="primary"
+              (click)="checkAvailibility()">
+              Check Availibility
+            </button>
+            <button *ngIf="isEdit" [disabled]="disable" mat-button matSuffix class="matSuffix-text" color="primary"
+              (click)="checkAvailibility()">
+              Check Availibility
+            </button>
+          </mat-form-field>
+          <span *ngIf="!addGroupNameForm.get('groupName').valid && addGroupNameForm.get('groupName').touched"
+            class="mandatory-alert" [tooltip]="uniqueGroup" content-type="template">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </div>
+        <ng-template #uniqueGroup>
+          <ng-container>
+            <p align="start" class="mb-1" *ngIf="addGroupNameForm.get('groupName').hasError('required')">Required Field
+            </p>
+            <p align="start" class="mb-1" *ngIf="addGroupNameForm.get('groupName').hasError('maxlength')">Invalid Value
+            </p>
+          </ng-container>
+        </ng-template>
+        <!-- <div *ngIf="!f.groupName.valid && f.groupName.touched" class="error">
+          <span class="text-danger" *ngIf="f.groupName.hasError('required')">Required</span>
+          <span class="text-danger" *ngIf="f.groupName.hasError('whitespace')">Please enter valid Group Name</span>
+
+        </div> -->
+      </div>
+      <div class="col-6">
+      </div>
+    </div>
+  </div>
+</form>

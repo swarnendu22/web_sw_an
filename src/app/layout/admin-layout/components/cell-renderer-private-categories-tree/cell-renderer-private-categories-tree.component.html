@@ -1,0 +1,23 @@
+<p>
+    {{requestData.businessCategoryName}}
+    <a href="javascript:void(0)" (click)="openModal()">See Details</a>
+</p>
+
+<ng-template #templateReferenceModal>
+    <mat-dialog-content class="mat-typography">
+        <ul class="hover-li">
+            <li>
+                <a href="javascript:void(0);">{{requestData.businessCategoryName}}</a>
+                <ul class="nested" *ngIf="requestData.categories">
+                    <li *ngFor="let item of requestData.categories"><a href="javascript:void(0);">{{item.category.categoryName}}</a>
+
+                        <ul class="nested" *ngIf="item.child">
+                            <li *ngFor="let subitem of item.child"><a href="javascript:void(0);">{{subitem.categoryName}}</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+        </ul>
+    </mat-dialog-content>
+</ng-template>

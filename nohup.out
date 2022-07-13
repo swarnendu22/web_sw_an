@@ -1,0 +1,822 @@
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /category/manage
+
+Date: 2019-07-23T20:35:47.562Z
+Hash: beb0dd5f971f7c1b0ab5
+Time: 55034ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 60.1 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.07 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.3 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 94.2 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.73 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 11.7 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /auth
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /
+
+Date: 2019-07-24T13:39:29.658Z
+Hash: beb0dd5f971f7c1b0ab5
+Time: 56502ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 60.1 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.07 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.3 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 94.2 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.73 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 11.7 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+[34mℹ[39m [90m｢wdm｣[39m: Compiling...
+
+Date: 2019-07-24T19:41:32.743Z - Hash: ef20d7b7ebcd14bce05a - Time: 56561ms
+4 unchanged chunks
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 65.3 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.16 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 86.9 kB  [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 90.8 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.73 MB [initial] [rendered]
+
+ERROR in ./src/app/layout/admin-layout/catalog-management/catalog-management.module.ts
+Module not found: Error: Can't resolve '@ng-bootstrap/ng-bootstrap' in '/home/rajiv/ndh_admin_web_angular/src/app/layout/admin-layout/catalog-management'
+ERROR in ./src/app/layout/admin-layout/catalog-management/create-new-master-catalog/create-new-master-catalog.component.ts
+Module not found: Error: Can't resolve '@ng-bootstrap/ng-bootstrap' in '/home/rajiv/ndh_admin_web_angular/src/app/layout/admin-layout/catalog-management/create-new-master-catalog'
+[34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+[34mℹ[39m [90m｢wdm｣[39m: Compiling...
+
+Date: 2019-07-24T19:41:47.838Z - Hash: 9dc327b47a441dca000a - Time: 14377ms
+7 unchanged chunks
+chunk {main} main.js, main.js.map (main) 2.16 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12 MB [initial] [rendered]
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+    
+    ERROR in src/app/layout/admin-layout/catalog-management/catalog-management.module.ts(21,27): error TS2307: Cannot find module '@ng-bootstrap/ng-bootstrap'.
+    src/app/layout/admin-layout/catalog-management/create-new-master-catalog/create-new-master-catalog.component.ts(9,42): error TS2307: Cannot find module '@ng-bootstrap/ng-bootstrap'.
+    
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /
+
+Date: 2019-07-24T19:44:28.843Z
+Hash: 367541019b0a78c354a7
+Time: 60615ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 65.3 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.16 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 86.9 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 90.8 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.73 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /
+
+Date: 2019-07-24T20:01:24.630Z
+Hash: 367541019b0a78c354a7
+Time: 55757ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 65.3 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.16 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 86.9 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 90.8 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.73 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /
+
+Date: 2019-07-25T13:14:03.552Z
+Hash: 367541019b0a78c354a7
+Time: 59279ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 65.3 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.16 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 86.9 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 90.8 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.73 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+[34mℹ[39m [90m｢wdm｣[39m: Compiling...
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+
+Date: 2019-07-25T20:54:54.452Z
+Hash: bb410777f0dcf70f3823
+Time: 33553ms
+chunk {main} main.js, main.js.map (main) 1.89 kB [initial] [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 119 kB [initial] [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 6.08 kB [entry] [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.16 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 327 kB [initial] [rendered]
+
+ERROR in ./src/styles.css (./node_modules/@angular-devkit/build-angular/src/angular-cli-files/plugins/raw-css-loader.js!./node_modules/postcss-loader/src??embedded!./src/styles.css)
+Module build failed (from ./node_modules/postcss-loader/src/index.js):
+Error: Failed to find 'saturn-datepicker/bundle.css'
+  in [
+    /home/rajiv/ndh_admin_web_angular/src
+  ]
+    at resolveModule.catch.catch (/home/rajiv/ndh_admin_web_angular/node_modules/postcss-import/lib/resolve-id.js:35:13)
+ERROR in src/app/layout/admin-layout/seller-panel/seller-catalog/seller-catalog.module.ts(14,58): error TS2307: Cannot find module 'saturn-datepicker'.
+src/app/layout/admin-layout/seller-panel/seller-panel.module.ts(16,58): error TS2307: Cannot find module 'saturn-datepicker'.
+src/app/layout/admin-layout/seller-panel/seller-payment/seller-payment.module.ts(9,58): error TS2307: Cannot find module 'saturn-datepicker'.
+
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+
+Date: 2019-07-25T21:50:43.434Z
+Hash: bb410777f0dcf70f3823
+Time: 36609ms
+chunk {main} main.js, main.js.map (main) 1.89 kB [initial] [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 119 kB [initial] [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 6.08 kB [entry] [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.16 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 327 kB [initial] [rendered]
+
+ERROR in ./src/styles.css (./node_modules/@angular-devkit/build-angular/src/angular-cli-files/plugins/raw-css-loader.js!./node_modules/postcss-loader/src??embedded!./src/styles.css)
+Module build failed (from ./node_modules/postcss-loader/src/index.js):
+Error: Failed to find 'saturn-datepicker/bundle.css'
+  in [
+    /home/rajiv/ndh_admin_web_angular/src
+  ]
+    at resolveModule.catch.catch (/home/rajiv/ndh_admin_web_angular/node_modules/postcss-import/lib/resolve-id.js:35:13)
+ERROR in src/app/layout/admin-layout/seller-panel/seller-catalog/seller-catalog.module.ts(14,58): error TS2307: Cannot find module 'saturn-datepicker'.
+src/app/layout/admin-layout/seller-panel/seller-panel.module.ts(16,58): error TS2307: Cannot find module 'saturn-datepicker'.
+src/app/layout/admin-layout/seller-panel/seller-payment/seller-payment.module.ts(9,58): error TS2307: Cannot find module 'saturn-datepicker'.
+
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /dashboard
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /auth
+
+Date: 2019-07-25T21:54:34.567Z
+Hash: 6193437c7a14fa63cb27
+Time: 58006ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 66.3 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.38 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 86 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 90.8 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.76 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12.5 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /robots.txt
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /
+
+Date: 2019-07-26T14:33:04.228Z
+Hash: 8d2d9ac7f11772e6006b
+Time: 88194ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 66 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.38 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 86.9 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 97.4 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.76 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12.5 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+events.js:167
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use 192.168.2.20:4000
+    at Server.setupListenHandle [as _listen2] (net.js:1294:14)
+    at listenInCluster (net.js:1342:12)
+    at doListen (net.js:1480:7)
+    at internalTickCallback (internal/process/next_tick.js:72:19)
+    at process._tickCallback (internal/process/next_tick.js:47:5)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:778:11)
+    at startup (internal/bootstrap/node.js:300:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:826:3)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1321:8)
+    at internalTickCallback (internal/process/next_tick.js:72:19)
+    [... lines matching original stack trace ...]
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:826:3)
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /
+
+Date: 2019-07-26T17:30:20.307Z
+Hash: 8d2d9ac7f11772e6006b
+Time: 56729ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 66 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.38 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 86.9 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 97.4 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.76 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12.5 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+[34mℹ[39m [90m｢wdm｣[39m: Compiling...
+
+Date: 2019-07-26T18:11:07.007Z - Hash: 446b3e7ca1fe73dea776 - Time: 7731ms
+7 unchanged chunks
+chunk {main} main.js, main.js.map (main) 2.38 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.3 kB  [rendered]
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+[34mℹ[39m [90m｢wdm｣[39m: Compiling...
+
+Date: 2019-07-26T20:19:10.425Z - Hash: e7f4cd6a871887b46653 - Time: 11086ms
+6 unchanged chunks
+chunk {main} main.js, main.js.map (main) 2.39 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.4 kB  [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 97.5 kB  [rendered]
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /
+
+Date: 2019-07-26T20:20:35.300Z
+Hash: e7f4cd6a871887b46653
+Time: 56909ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 66 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.39 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.4 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 97.5 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.76 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12.5 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /
+
+Date: 2019-07-26T21:45:17.602Z
+Hash: a4d83ce70ac92995cab0
+Time: 58356ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 66 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.39 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.4 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 97.9 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.76 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12.5 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Port 4000 is already in use. Use '--port' to specify a different port.
+Error: Port 4000 is already in use. Use '--port' to specify a different port.
+    at Server.server.once (/home/rajiv/ndh_admin_web_angular/node_modules/@angular-devkit/build-angular/src/angular-cli-files/utilities/check-port.js:27:28)
+    at Object.onceWrapper (events.js:273:13)
+    at Server.emit (events.js:182:13)
+    at emitErrorNT (net.js:1321:8)
+    at internalTickCallback (internal/process/next_tick.js:72:19)
+    at process._tickCallback (internal/process/next_tick.js:47:5)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:778:11)
+    at startup (internal/bootstrap/node.js:300:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:826:3)
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /
+
+Date: 2019-07-27T13:46:44.426Z
+Hash: 89777a4827d67caa5a33
+Time: 56776ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 66 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.39 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.6 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 97.9 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.76 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12.5 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /auth/login
+
+Date: 2019-07-27T13:53:48.804Z
+Hash: 89777a4827d67caa5a33
+Time: 58233ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 66 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.39 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.6 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 97.9 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.76 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12.5 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /
+
+Date: 2019-07-29T13:50:04.596Z
+Hash: 89777a4827d67caa5a33
+Time: 56916ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 66 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.39 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.6 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 97.9 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.76 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12.5 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+
+Date: 2019-07-29T16:39:20.826Z
+Hash: 89777a4827d67caa5a33
+Time: 56641ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 66 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.39 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.6 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 97.9 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.76 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12.5 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+Port 4000 is already in use. Use '--port' to specify a different port.
+Error: Port 4000 is already in use. Use '--port' to specify a different port.
+    at Server.server.once (/home/rajiv/ndh_admin_web_angular/node_modules/@angular-devkit/build-angular/src/angular-cli-files/utilities/check-port.js:27:28)
+    at Object.onceWrapper (events.js:273:13)
+    at Server.emit (events.js:182:13)
+    at emitErrorNT (net.js:1321:8)
+    at internalTickCallback (internal/process/next_tick.js:72:19)
+    at process._tickCallback (internal/process/next_tick.js:47:5)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:778:11)
+    at startup (internal/bootstrap/node.js:300:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:826:3)
+
+Date: 2019-07-29T18:50:38.516Z
+Hash: 3ec39923f8dce6d7d4eb
+Time: 37105ms
+chunk {main} main.js, main.js.map (main) 1.89 kB [initial] [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 119 kB [initial] [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 6.08 kB [entry] [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.16 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 327 kB [initial] [rendered]
+
+ERROR in ./src/styles.css (./node_modules/@angular-devkit/build-angular/src/angular-cli-files/plugins/raw-css-loader.js!./node_modules/postcss-loader/src??embedded!./src/styles.css)
+Module build failed (from ./node_modules/postcss-loader/src/index.js):
+Error: Failed to find '@ng-select/ng-select/themes/default.theme.css'
+  in [
+    /home/rajiv/ndh_admin_web_angular/src
+  ]
+    at resolveModule.catch.catch (/home/rajiv/ndh_admin_web_angular/node_modules/postcss-import/lib/resolve-id.js:35:13)
+ERROR in src/app/custom/custom.module.ts(14,32): error TS2307: Cannot find module '@ng-select/ng-select'.
+
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+
+Date: 2019-07-29T18:54:30.548Z
+Hash: 3ec39923f8dce6d7d4eb
+Time: 33869ms
+chunk {main} main.js, main.js.map (main) 1.89 kB [initial] [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 119 kB [initial] [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 6.08 kB [entry] [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.16 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 327 kB [initial] [rendered]
+
+ERROR in ./src/styles.css (./node_modules/@angular-devkit/build-angular/src/angular-cli-files/plugins/raw-css-loader.js!./node_modules/postcss-loader/src??embedded!./src/styles.css)
+Module build failed (from ./node_modules/postcss-loader/src/index.js):
+Error: Failed to find '@ng-select/ng-select/themes/default.theme.css'
+  in [
+    /home/rajiv/ndh_admin_web_angular/src
+  ]
+    at resolveModule.catch.catch (/home/rajiv/ndh_admin_web_angular/node_modules/postcss-import/lib/resolve-id.js:35:13)
+ERROR in src/app/custom/custom.module.ts(14,32): error TS2307: Cannot find module '@ng-select/ng-select'.
+
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /auth
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /auth/login
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+Port 4000 is already in use. Use '--port' to specify a different port.
+Error: Port 4000 is already in use. Use '--port' to specify a different port.
+    at Server.server.once (/home/rajiv/ndh_admin_web_angular/node_modules/@angular-devkit/build-angular/src/angular-cli-files/utilities/check-port.js:27:28)
+    at Object.onceWrapper (events.js:273:13)
+    at Server.emit (events.js:182:13)
+    at emitErrorNT (net.js:1321:8)
+    at internalTickCallback (internal/process/next_tick.js:72:19)
+    at process._tickCallback (internal/process/next_tick.js:47:5)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:778:11)
+    at startup (internal/bootstrap/node.js:300:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:826:3)
+events.js:167
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use 192.168.2.20:4000
+    at Server.setupListenHandle [as _listen2] (net.js:1294:14)
+    at listenInCluster (net.js:1342:12)
+    at doListen (net.js:1480:7)
+    at internalTickCallback (internal/process/next_tick.js:72:19)
+    at process._tickCallback (internal/process/next_tick.js:47:5)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:778:11)
+    at startup (internal/bootstrap/node.js:300:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:826:3)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1321:8)
+    at internalTickCallback (internal/process/next_tick.js:72:19)
+    [... lines matching original stack trace ...]
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:826:3)
+
+Date: 2019-07-29T18:57:40.828Z
+Hash: cd7b4b1d350f4d3cdbfc
+Time: 101687ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 66 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.47 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.6 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 97.9 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.79 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12.6 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /
+
+Date: 2019-07-29T19:06:54.838Z
+Hash: cd7b4b1d350f4d3cdbfc
+Time: 57717ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 66 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.47 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.6 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 97.9 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.79 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12.6 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+Port 4000 is already in use. Use '--port' to specify a different port.
+Error: Port 4000 is already in use. Use '--port' to specify a different port.
+    at Server.server.once (/home/rajiv/ndh_admin_web_angular/node_modules/@angular-devkit/build-angular/src/angular-cli-files/utilities/check-port.js:27:28)
+    at Object.onceWrapper (events.js:273:13)
+    at Server.emit (events.js:182:13)
+    at emitErrorNT (net.js:1321:8)
+    at internalTickCallback (internal/process/next_tick.js:72:19)
+    at process._tickCallback (internal/process/next_tick.js:47:5)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:778:11)
+    at startup (internal/bootstrap/node.js:300:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:826:3)
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /
+
+Date: 2019-07-30T13:44:29.860Z
+Hash: cd7b4b1d350f4d3cdbfc
+Time: 62170ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 66 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.47 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 87.6 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 97.9 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.79 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12.6 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Your global Angular CLI version (8.1.2) is greater than your local
+version (8.0.6). The local Angular CLI version is used.
+
+To disable this warning use "ng config -g cli.warnings.versionMismatch false".
+WARNING: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disableHostCheck" if that's the
+case.
+[34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /category/manage
+
+Date: 2019-07-30T17:04:24.460Z
+Hash: 74f8fd1390b3da0c2d3d
+Time: 57077ms
+chunk {commission-management-commission-management-module} commission-management-commission-management-module.js, commission-management-commission-management-module.js.map (commission-management-commission-management-module) 66 kB  [rendered]
+chunk {main} main.js, main.js.map (main) 2.49 MB [initial] [rendered]
+chunk {manage-categories-manage-categories-module} manage-categories-manage-categories-module.js, manage-categories-manage-categories-module.js.map (manage-categories-manage-categories-module) 88.6 kB  [rendered]
+chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 248 kB [initial] [rendered]
+chunk {product-attribute-product-attribute-module} product-attribute-product-attribute-module.js, product-attribute-product-attribute-module.js.map (product-attribute-product-attribute-module) 101 kB  [rendered]
+chunk {runtime} runtime.js, runtime.js.map (runtime) 9.08 kB [entry] [rendered]
+chunk {site-layout-site-layout-module} site-layout-site-layout-module.js, site-layout-site-layout-module.js.map (site-layout-site-layout-module) 20.6 kB  [rendered]
+chunk {styles} styles.js, styles.js.map (styles) 1.79 MB [initial] [rendered]
+chunk {vendor} vendor.js, vendor.js.map (vendor) 12.6 MB [initial] [rendered]
+** Angular Live Development Server is listening on 192.168.2.20:4000, open your browser on http://192.168.2.20:4000/ **
+[34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+Starting up http-server, serving ./gzipped/ndh-admin
+Available on:
+  http://127.0.0.1:4001
+  http://10.1.30.132:4001
+  http://172.16.10.102:4001
+Unhandled requests will be served from: http://127.0.0.1:4001?
+Hit CTRL-C to stop the server
+[Wed Nov 11 2020 18:06:33 GMT+0530 (India Standard Time)] "GET /styles.52612956de3985b7ca7a.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:34 GMT+0530 (India Standard Time)] "GET /vendor.c3fee311a2e484eeb263.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:34 GMT+0530 (India Standard Time)] "GET /main.d7121c2d883f5dabbfbd.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:34 GMT+0530 (India Standard Time)] "GET /polyfills.2e0f64d22b77b8d40b0e.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:34 GMT+0530 (India Standard Time)] "GET /runtime.197f752e309fdc853783.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:40 GMT+0530 (India Standard Time)] "GET /ngsw.json?ngsw-cache-bust=0.18171642533454935" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:40 GMT+0530 (India Standard Time)] "GET /index.html" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:40 GMT+0530 (India Standard Time)] "GET /ngsw.json?ngsw-cache-bust=0.9121856270595645" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:41 GMT+0530 (India Standard Time)] "GET /assets/img/user.jpg" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:41 GMT+0530 (India Standard Time)] "GET /MaterialIcons-Regular.570eb83859dc23dd0eec.woff2" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:41 GMT+0530 (India Standard Time)] "GET /assets/img/logo-white.svg" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:50 GMT+0530 (India Standard Time)] "GET /18.22e249d254deb5b40bae.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:50 GMT+0530 (India Standard Time)] "GET /runtime.7115b8a38187418fbd48.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:50 GMT+0530 (India Standard Time)] "GET /styles.842fc28c161184e3489e.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:50 GMT+0530 (India Standard Time)] "GET /main.955581c97630301dc99b.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:55 GMT+0530 (India Standard Time)] "GET /ngsw.json?ngsw-cache-bust=0.3614755401099674" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:57 GMT+0530 (India Standard Time)] "GET /assets/img/loging-bak.jpg" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:57 GMT+0530 (India Standard Time)] "GET /login-bg.6ecf79dbb9a59248510d.jpg" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:57 GMT+0530 (India Standard Time)] "GET /assets/img/logo.svg" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:58 GMT+0530 (India Standard Time)] "GET /manifest.webmanifest" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:58 GMT+0530 (India Standard Time)] "GET /?/manifest.webmanifest" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:58 GMT+0530 (India Standard Time)] "GET /favicon.ico" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:58 GMT+0530 (India Standard Time)] "GET /?/favicon.ico" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:06:59 GMT+0530 (India Standard Time)] "GET /ngsw-worker.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:07:11 GMT+0530 (India Standard Time)] "GET /ngsw.json?ngsw-cache-bust=0.7340478966500323" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:07:12 GMT+0530 (India Standard Time)] "GET /favicon.ico" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:07:12 GMT+0530 (India Standard Time)] "GET /?/favicon.ico" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:07:13 GMT+0530 (India Standard Time)] "GET /ngsw-worker.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:07:23 GMT+0530 (India Standard Time)] "GET /ngsw.json?ngsw-cache-bust=0.3005854690279781" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:07:24 GMT+0530 (India Standard Time)] "GET /favicon.ico" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:07:24 GMT+0530 (India Standard Time)] "GET /?/favicon.ico" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:07:26 GMT+0530 (India Standard Time)] "GET /ngsw-worker.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
+[Wed Nov 11 2020 18:07:55 GMT+0530 (India Standard Time)] "GET /ngsw-worker.js" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"

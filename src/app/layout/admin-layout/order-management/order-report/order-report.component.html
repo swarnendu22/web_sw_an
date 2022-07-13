@@ -1,0 +1,415 @@
+<div class="ndh-order-panel">
+    <div class="ndh-order-body">
+        <div class="row">
+            <div class="main-content">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="row m-t-25">
+                            <div class="col-sm-12 col-lg-12">
+                                <h3 class="ndh-order-h3" style="float: left;">Order Report</h3>
+                                <span class="date_input_span">
+                                    <input type="text" ngxDaterangepickerMd [(ngModel)]="selected" [showCustomRangeLabel]="true" [alwaysShowCalendars]="true" [keepCalendarOpeningWithRange]="true" [showRangeLabelOnInput]="true" [ranges]="ranges" [linkedCalendars]="true" [isInvalidDate] = "isInvalidDate" [showClearButton]="true" placeholder="Select please..." class="date_input datepicker-calendar-icon"/>
+                                    
+                                    <span class="material-icons date_icon ngx-daterangepicker-action" (click)="open($event)">
+                                        date_range
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="overview-item overview-item--c1">
+                                    <div class="overview__inner">
+                                        <span class="overview-box">
+                                            <span class="text">
+                                                <span>TOTAL STORE</span>
+                                                <h2 style="margin-top: 15px;"><span [CountTo]="1380" [from]="0" [duration]="1"></span></h2>
+                                            </span>
+                                        </span>
+                                        <span class="icon_custom">
+                                            <mat-icon fontSet="material-icons-outlined" style="font-size: 38px;">shopping_bag</mat-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="overview-item overview-item--c2">
+                                    <div class="overview__inner">
+                                        <span class="overview-box">
+                                            <span class="text">
+                                                <span>TOTAL ORDERS</span>
+                                                <h2><span [CountTo]="10368" [from]="0" [duration]="1"></span></h2>
+                                                <h2>₹<span [CountTo]="1060386" [from]="0" [duration]="1"></span></h2>
+                                            </span>
+                                        </span>
+                                        <span class="icon_custom">
+                                            <mat-icon fontSet="material-icons-outlined" style="font-size: 38px;">shopping_cart</mat-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="overview-item overview-item--c3">
+                                    <div class="overview__inner">
+                                        <span class="overview-box">
+                                            <span class="text">
+                                                <span>UNIQUE CUSTOMER ORDER</span>
+                                                <h2><span [CountTo]="166" [from]="0" [duration]="1"></span></h2>
+                                                <h2>₹<span [CountTo]="188688.50" [from]="0" [duration]="1" filter="number"></span></h2>
+                                            </span>
+                                        </span>
+                                        <span class="icon_custom">
+                                            <mat-icon fontSet="material-icons-outlined" style="font-size: 38px;">shopping_cart</mat-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="overview-item overview-item--c4">
+                                    <div class="overview__inner">
+                                        <span class="overview-box">
+                                            <span class="text">
+                                                <span>PREPAID ORDER</span>
+                                                <h2><span [CountTo]="1866" [from]="0" [duration]="1"></span></h2>
+                                                <h2>₹<span [CountTo]="1088688" [from]="0" [duration]="1"></span></h2>
+                                            </span>
+                                        </span>
+                                        <span class="icon_custom">
+                                            <mat-icon fontSet="material-icons-outlined" style="font-size: 38px;">shopping_cart</mat-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="overview-item overview-item--c5">
+                                    <div class="overview__inner">
+                                        <span class="overview-box">
+                                            <span class="text">
+                                                <span>COD ORDER</span>
+                                                <h2><span [CountTo]="368" [from]="0" [duration]="1"></span></h2>
+                                                <h2>₹<span [CountTo]="388688" [from]="0" [duration]="1"></span></h2>
+                                            </span>
+                                        </span>
+                                        <span class="icon_custom">
+                                            <mat-icon fontSet="material-icons-outlined" style="font-size: 38px;">shopping_cart</mat-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="overview-item overview-item--c6">
+                                    <div class="overview__inner">
+                                        <span class="overview-box">
+                                            <span class="text">
+                                                <span>CANCELLED ORDER</span>
+                                                <h2><span [CountTo]="186" [from]="0" [duration]="1"></span>186</h2>
+                                                <h2>₹<span [CountTo]="388688" [from]="0" [duration]="1"></span></h2>
+                                            </span>
+                                        </span>
+                                        <span class="icon_custom">
+                                            <mat-icon fontSet="material-icons-outlined" style="font-size: 38px;">shopping_cart</mat-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="overview-item overview-item--c7">
+                                    <div class="overview__inner">
+                                        <span class="overview-box">
+                                            <span class="text">
+                                                <span>UNFULFILLED ORDER</span>
+                                                <h2><span [CountTo]="186" [from]="0" [duration]="1"></span></h2>
+                                                <h2>₹<span [CountTo]="388688" [from]="0" [duration]="1"></span></h2>
+                                            </span>
+                                        </span>
+                                        <span class="icon_custom">
+                                            <mat-icon fontSet="material-icons-outlined" style="font-size: 38px;">shopping_cart</mat-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="overview-item overview-item--c8">
+                                    <div class="overview__inner">
+                                        <span class="overview-box">
+                                            <span class="text">
+                                                <span>TOTAL CUSTOMER</span>
+                                                <h2 style="margin-top: 15px;"><span [CountTo]="1368" [from]="0" [duration]="1"></span></h2>
+                                            </span>
+                                        </span>
+                                        <span class="icon_custom">
+                                            <mat-icon fontSet="material-icons-outlined" style="font-size: 38px;">person</mat-icon>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="row" style="padding: 40px 0px 60px;">
+                            <div class="col-sm-6 col-lg-6">
+                                <h5 class="title-1 m-b-25">Store Orders By Business Category</h5>
+                                <div style="display: block;">
+                                    <canvas baseChart 
+                                      [datasets]="sBusinessChartData"
+                                      [labels]="sBusinessChartLabels"
+                                      [options]="sBusinessChartOptions"
+                                      [plugins]="sBusinessChartPlugins"
+                                      [legend]="sBusinessChartLegend"
+                                      [colors]="sBusinessColors"
+                                      [chartType]="sBusinessChartType">
+                                    </canvas>
+                                  </div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-6">
+                                <h5 class="title-1 m-b-25">Store Orders By Region</h5>
+                                <div style="display: block;">
+                                    <canvas baseChart 
+                                      [datasets]="sRegionChartData"
+                                      [labels]="sRegionChartLabels"
+                                      [options]="sRegionChartOptions"
+                                      [plugins]="sRegionChartPlugins"
+                                      [legend]="sRegionChartLegend"
+                                      [colors]="sRegionColors"
+                                      [chartType]="sRegionChartType">
+                                    </canvas>
+                                  </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-12">
+                                <h5 class="title-1 m-b-25">Earnings By Store</h5>
+                                <div class="table-responsive table--no-card m-b-40">
+                                    <table class="table table-borderless table-striped table-earning">
+                                        <thead>
+                                            <tr>
+                                                <th>Store Name</th>
+                                                <th>Region</th>
+                                                <th>Business Category</th>
+                                                <th>Total Order</th>
+                                                <th class="text-right">Total Order price</th>
+                                                <th>Prepaid Order</th>
+                                                <th class="text-right">Prepaid Price</th>
+                                                <th>COD Order</th>
+                                                <th class="text-right">COD Order Price</th>
+                                                <th>Rating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Grofers</td>
+                                                <td>West Bengal</td>
+                                                <td>Grofers</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star_border
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Kaka Canteen</td>
+                                                <td>West Bengal</td>
+                                                <td>Tea</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star_border
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Grocery Mart</td>
+                                                <td>West Bengal</td>
+                                                <td>Grocery</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star_border
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Grocery Platform</td>
+                                                <td>West Bengal</td>
+                                                <td>Grocery</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star_border
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Store from web</td>
+                                                <td>West Bengal</td>
+                                                <td>Store</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>100</td>
+                                                <td class="text-right">₹999.00</td>
+
+                                                <td>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star
+                                                    </span>
+                                                    <span class="material-icons">
+                                                        star_border
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding: 40px 0px 60px;">
+                            <div class="col-sm-6 col-lg-4">
+                                <div style="display: block;">
+                                    <canvas baseChart 
+                                      [data]="paymentChartData" 
+                                      [labels]="paymentChartLabels" 
+                                      [chartType]="paymentChartType"
+                                      [options]="paymentChartOptions"
+                                      [plugins]="paymentChartPlugins"
+                                      [legend]="paymentChartLegend">
+                                    </canvas>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
+                                <div style="display: block;">
+                                    <canvas baseChart 
+                                      [data]="deliveryTypeChartData" 
+                                      [labels]="deliveryTypeChartLabels" 
+                                      [chartType]="deliveryTypeChartType"
+                                      [options]="deliveryTypeChartOptions"
+                                      [plugins]="deliveryTypeChartPlugins"
+                                      [legend]="deliveryTypeChartLegend">
+                                    </canvas>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
+                                <div style="display: block;">
+                                    <canvas baseChart 
+                                      [data]="orderTypeChartData" 
+                                      [labels]="orderTypeChartLabels" 
+                                      [chartType]="orderTypeChartType"
+                                      [options]="orderTypeChartOptions"
+                                      [plugins]="orderTypeChartPlugins"
+                                      [legend]="orderTypeChartLegend">
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+<div mat-dialog-content>
+  Are you sure you want to remove the document?
+</div>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onSave(false)">Cancel</button>
+  <button mat-raised-button class="btn-danger" (click)="onSave(true)" cdkFocusInitial>Delete</button>
+</mat-dialog-actions>

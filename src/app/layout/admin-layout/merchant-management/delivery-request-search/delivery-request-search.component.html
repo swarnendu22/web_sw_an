@@ -1,0 +1,41 @@
+
+      <div class="filter-modal-form">
+        <div class="form-group">
+          <label *ngIf="payLoadForSearch.isAccending">
+             Accending (Created On)
+          </label>
+          <label *ngIf="!payLoadForSearch.isAccending">
+            Decending (Created On)
+         </label>
+          <mat-slide-toggle class="ml-2" [(ngModel)]="payLoadForSearch.isAccending"></mat-slide-toggle>
+        </div>
+  
+        <div class="form-group">
+          <input type="text"  [(ngModel)]="payLoadForSearch.storeName" class="form-control width-class-90" id="storeName" placeholder="Store Name">
+          <a href="javascript:void(0);" *ngIf="payLoadForSearch.storeName" (click)="payLoadForSearch.storeName = null"> <mat-icon>cancel</mat-icon> </a>
+        </div>
+        
+        <div class="form-group">
+            <input type="text" [(ngModel)]="payLoadForSearch.contactNo" class="form-control width-class-90" id="contactNo" placeholder="Contact No">
+            <a href="javascript:void(0);" *ngIf="payLoadForSearch.contactNo" (click)="payLoadForSearch.contactNo = null"> <mat-icon>cancel</mat-icon> </a>
+        </div>
+  
+        <div class="form-group">
+          <input type="text" [(ngModel)]="payLoadForSearch.zipCode" class="form-control width-class-90" id="payLoadForSearch.zipCode" placeholder="Pin Code">
+          <a href="javascript:void(0);" *ngIf="payLoadForSearch.zipCode" (click)="payLoadForSearch.zipCode=null"> <mat-icon>cancel</mat-icon> </a>
+        </div>
+  
+        <div class="form-group">
+          <mat-select class="form-control width-class-90" [(ngModel)]="payLoadForSearch.regionName"  placeholder="Region" id="region">
+            <mat-option style="color: #2AACD8" *ngFor="let region of regionList" [value]="region.name">{{region.name}}</mat-option>
+          </mat-select>
+          <a href="javascript:void(0);" *ngIf="payLoadForSearch.regionName" (click)="payLoadForSearch.regionName = null"> <mat-icon>cancel</mat-icon> </a>
+        </div>
+  
+        </div>
+
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="process('cancel')">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="process('process')">Search</button>
+</div>

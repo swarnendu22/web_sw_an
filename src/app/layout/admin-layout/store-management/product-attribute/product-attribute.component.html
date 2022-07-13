@@ -1,0 +1,13 @@
+<app-attributes-page></app-attributes-page>
+<div class="form-header-btn">
+  <button routerLink="add-product-attribute" mat-raised-button class="noshadow btn-ontab-attribute top-btn-font" color="primary">
+    <mat-icon>add</mat-icon> Add New Product Attribute
+  </button>
+</div>
+
+<div class="bg-white grid-box-area" style="height: calc(100vh - 80px)">
+  <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs"
+    (firstDataRendered)="onFirstDataRendered($event)" (gridReady)="onGridReady($event)" [pagination]="true" [enableFilter]="true"
+    [animateRows]="true" [enableSorting]="true" [floatingFilter]="true" (gridSizeChanged)="onGridSizeChanged($event)">
+  </ag-grid-angular>
+</div>

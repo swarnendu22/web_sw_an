@@ -1,0 +1,184 @@
+<div class="sb-container nav-header" [ngClass]="changecolor ? 'dark' : 'light'">
+  <!-- <mat-toolbar class="toolbar" *ngIf="!hideToolbar">
+
+    <div class="logo">
+      <a routerLink="/dashboard" mat-list-item>
+        <img src="../../assets/img/logo-white.svg" height="38" />
+      </a>
+    </div>
+
+    <div class="top-menu header-topnav">
+     
+      <ul>
+        <li *ngFor="let option of sideMenuObjKeys;let i=index;">
+          <button mat-stroked-button [matMenuTriggerFor]="menu">
+            <mat-icon fontSet="material-icons-outlined">{{sideMenuObj[sideMenuObjKeys[i]]['icon']}}</mat-icon> {{ sideMenuObjKeys[i] }}
+            <mat-icon fontSet="material-icons-outlined" class="angle-down">keyboard_arrow_down</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <div *ngFor="let optionItem of sideMenuObj[sideMenuObjKeys[i]]['sidenavmenu']">
+              <div *ngIf="optionItem['subMenuName'] != 'Manage Private Categories'">
+                <button mat-menu-item (click)="routeMethod(optionItem['link'])">{{optionItem['subMenuName']}}
+                </button>
+                <mat-divider *ngIf="optionItem['separator']!=''"></mat-divider>
+              </div>
+            </div>
+          </mat-menu>
+        </li>
+      </ul>
+    </div>
+    <span class="spacer"></span>
+
+    <div class="gap"></div>
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="profile-icon">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <div class="user-details">
+        <div class="row align-items-center">
+          <div class="col-4" style="padding-right: 0;">
+            <div class="user-pic">
+              <img src="../../assets/img/user.jpg" />
+            </div>
+          </div>
+          <div class="col-8 user-name">
+            <h4>{{ userName }}</h4>
+            {{currentApplicationVersion }}
+          </div>
+        </div>
+      </div>
+
+      <button mat-menu-item [routerLink]="['/reset-password']">
+        <mat-icon>autorenew</mat-icon>
+        Change Password
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>power_settings_new</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar> -->
+
+
+  <mat-sidenav-container class="sidenav-container" autosize>  
+    <mat-sidenav [class.smallSidenav]="!toggleSlide" class="main-menu" #sidenav mode="side" [(opened)]="opened">
+
+      <ng-container *ngIf="toggleSlide">
+        <div class="logo">
+          <a routerLink="/dashboard" (click)="getSubMenu('', 100 )">
+            <img src="../../assets/img/NDHGO-logo.png" height="40" />
+          </a>
+        </div>
+        <div class="fxd-collapse">
+          <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" (click)="toggle($event)">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+        </div>
+        <mat-accordion *ngFor="let option of sideMenuObjKeys;let i=index;">
+          <mat-expansion-panel style="box-shadow:none; background: none; margin-top: 15px;">
+            <mat-expansion-panel-header [class.selectedMenu] = "i == selectedMenuIndex">
+              <mat-panel-title class="menu-title-text">
+                <mat-icon fontSet="material-icons-outlined">
+                  {{sideMenuObj[sideMenuObjKeys[i]]['icon']}}</mat-icon>
+                {{ sideMenuObjKeys[i] }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list>
+              <ng-container *ngFor="let optionItem of sideMenuObj[sideMenuObjKeys[i]]['sidenavmenu']">
+                <mat-list-item [class.listSelected]="selectedSubmenu == optionItem['subMenuName']" *ngIf="optionItem['subMenuName'] != 'Manage Private Categories'"
+                  (click)="routeMethod(optionItem['link']); getSubMenu( optionItem['subMenuName'], i )">
+                  {{optionItem['subMenuName']}}
+                  <!-- <mat-divider *ngIf="optionItem['separator']!=''"></mat-divider> -->
+                </mat-list-item>
+              </ng-container>
+            </mat-list>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <mat-accordion>
+          <mat-expansion-panel style="box-shadow:none; background: none; margin-top: 22px;">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="menu-title-text">
+                <mat-icon style="margin-right: 10px;" fontSet="material-icons-outlined">account_circle</mat-icon> Profile
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list>
+              <mat-list-item style="color: white;">
+                Version: {{currentApplicationVersion }}
+              </mat-list-item>
+              <mat-list-item style="color: white;" [routerLink]="['/reset-password']">
+                <mat-icon>autorenew</mat-icon>
+                Change Password
+              </mat-list-item>
+              <mat-list-item style="color: white;" (click)="logout()">
+                <mat-icon>power_settings_new</mat-icon>
+                Logout
+              </mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+        </mat-accordion>
+        
+      </ng-container>
+
+      <ng-container *ngIf="!toggleSlide">
+        <div class="logo justify-content-center">
+          <a routerLink="/dashboard" (click)="getSubMenu('', 100)">
+            <img src="../../assets/img/logo-sm.png" height="40" />
+          </a>
+        </div>
+        <div class="fxd-collapse sm">
+          <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" (click)="toggle($event)">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+        <div style="display: flex; flex-direction: column; margin-top: 20px;align-items: center;">
+          <ng-container *ngFor="let option of sideMenuObjKeys;let i=index;">
+            <div class="optionSelected" [class.optionSelected_div] = "i == selectedMenuIndex">
+              <button mat-fab color="primary" [matMenuTriggerFor]="menu"  yPosition="above" matTooltip="{{sideMenuObjKeys[i]}}" [matTooltipPosition]="'above'">
+                <mat-icon style="line-height: 0.5; font-size: 19px;" fontSet="material-icons-outlined">{{sideMenuObj[sideMenuObjKeys[i]]['icon']}}</mat-icon>
+              </button>
+            </div>          
+
+          <mat-menu #menu="matMenu">
+            <div *ngFor="let optionItem of sideMenuObj[sideMenuObjKeys[i]]['sidenavmenu']">
+              <div *ngIf="optionItem['subMenuName'] != 'Manage Private Categories'">
+                <button mat-menu-item (click)="routeMethod(optionItem['link']); getSubMenu( optionItem['subMenuName'], i )">{{optionItem['subMenuName']}}
+                </button>
+                <mat-divider *ngIf="optionItem['separator']!=''"></mat-divider>
+              </div>
+            </div>
+          </mat-menu>
+        </ng-container>
+
+        <button mat-fab color="primary" [matMenuTriggerFor]="profile"  yPosition="above" matTooltip="profile" [matTooltipPosition]="'above'">
+          <mat-icon style="line-height: 0.5; font-size: 19px;" fontSet="material-icons-outlined">account_circle</mat-icon>
+        </button>
+        <mat-menu #profile="matMenu">
+              <button mat-menu-item >Version: {{currentApplicationVersion }}</button>
+              <button mat-menu-item [routerLink]="['/reset-password']">
+                <mat-icon>autorenew</mat-icon>
+                Change Password
+              </button>
+              <button mat-menu-item (click)="logout()">
+                <mat-icon>power_settings_new</mat-icon>
+                Logout
+              </button>
+        </mat-menu>          
+        </div>
+
+      </ng-container>
+      
+    </mat-sidenav>
+      
+    <mat-sidenav-content>
+      <div class="sidenav-content">
+        <div class="container-fluid" style="padding: 0">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      <!-- <footer class="bottom-footer">
+        <p>© 2020 www.senrysa.com All Rights Reserved</p>
+      </footer> -->
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>

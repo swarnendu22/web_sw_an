@@ -1,0 +1,430 @@
+<form [formGroup]="updateCategoryForm" (keydown.enter)="$event.preventDefault()" (ngSubmit)="onSubmit($event)" autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">Edit Category</h3>
+      </div>
+      <div class="form-header-btn">
+        <input type="hidden" formControlName="createdAt">
+        <input type="hidden" formControlName="createdBy">
+        
+        <ng-container *ngIf="getFormDisableStats('updateCategoryForm')">
+          <button type="button" appDoubleSubmit (click)="routeMethod()" mat-raised-button class="noshadow top-btn-font white-btn">
+            <mat-icon>arrow_back</mat-icon> Back
+          </button>
+          <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" appDoubleSubmit (click)="toggleFormEnable('updateCategoryForm')">
+            <mat-icon>edit</mat-icon> Edit
+          </button>
+        </ng-container>
+        <ng-container *ngIf="!getFormDisableStats('updateCategoryForm')">
+          <button type="button" mat-raised-button class="noshadow top-btn-font" color="defalt" (click)="toggleFormDisable('updateCategoryForm')">
+            <mat-icon>cancel</mat-icon> Cancel
+          </button>
+          <button type="submit" mat-raised-button class="noshadow top-btn-font" color="primary">
+            <mat-icon>save</mat-icon> Save
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="box-shadow bg-white padding-10">
+    <div class="row">
+      <div class="{{url != ''?'col-8':'col-10'}}">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="hoz-form">
+              <mat-form-field appearance="outline">
+                <mat-label>Category Name</mat-label>
+                <input matInput autocomplete="off" formControlName="name" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" trim='blur'
+                  (input)="transformAlias($event)" />
+                <span *ngIf="!f.name.valid && f.name.touched && f.name.errors" class="mandatory-alert" [tooltip]="categoryName" content-type="template">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </span>
+              </mat-form-field>
+              <ng-template #categoryName>
+                <div>
+                  <p class="mb-1" *ngIf="f.name.errors.required">Required</p>
+                  <p class="mb-1" *ngIf="f.name.errors.maxlength">Max Length 100 characters</p>
+                </div>
+              </ng-template>
+              <div class="tree-view-valid">
+                <div [ngClass]="{ 'disable-tree': getFormDisableStats('updateCategoryForm')==true }">
+                  <tree-select name="simpleSelect" [items]="items" idField="id" textField="name" childrenField="childList" required=true [(ngModel)]="selectedItem"
+                    [ngModelOptions]="{standalone: true}" (ngModelChange)="changeCategory($event)" [filterPlaceholder]="FilterPlaceholder"
+                    [allowFilter]="ShowFilter" [disabled]="Disabled" [allowParentSelection]="AllowParentSelection" [restructureWhenChildSameName]="RestructureWhenChildSameName"></tree-select>
+                </div>
+                <span *ngIf="!f.parentId.valid && f.parentId.touched && f.parentId.errors" class="mandatory-alert" [tooltip]="parentId" content-type="template">
+
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </span>
+              </div>
+              <ng-template #parentId>
+                <div>
+                  <p class="mb-1" *ngIf="f.name.errors.required">Required</p>
+                </div>
+              </ng-template>
+              <mat-form-field appearance="outline">
+                <mat-label>Default Sorting</mat-label>
+                <mat-select formControlName="defaultSortingBy" [ngClass]="{
+                    'is-invalid': submitted && f.defaultSortingBy.errors
+                  }">
+                  <mat-option [value]="defaultSortingByOption.id" *ngFor="
+                      let defaultSortingByOption of defaultSortingByOptions
+                    ">{{ defaultSortingByOption.name }}</mat-option>
+                </mat-select>
+                <span *ngIf="!f.defaultSortingBy.valid && f.defaultSortingBy.touched && f.defaultSortingBy.errors" class="mandatory-alert"
+                  [tooltip]="defaultSorting" content-type="template">
+
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </span>
+              </mat-form-field>
+              <ng-template #defaultSorting>
+                <div>
+                  <p class="mb-1" *ngIf="f.defaultSortingBy.errors.required">Required</p>
+                </div>
+              </ng-template>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Business Category</mat-label>
+                <mat-select multiple formControlName="businessCatId" [disabled] = "disabledBusinessCategory" [ngClass]="{ 'ng-invalid ng-touched': !f.businessCatId.valid }">
+                  <mat-option [value]="item.id" *ngFor="let item of businessCategoryList">{{item.businessCategoryName}}</mat-option>
+
+                </mat-select>
+                <span [tooltip]="businessCatId" *ngIf="!f.businessCatId.valid && f.businessCatId.touched" class="mandatory-alert" content-type="template">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </span>
+              </mat-form-field>
+              <ng-template #businessCategoryId>
+                <div>
+                  <p class="mb-1" *ngIf="f.businessCatId.errors.required">Required</p>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="hoz-form">
+              <mat-form-field appearance="outline">
+                <mat-label>Alias</mat-label>
+                <input formControlName="alias" matInput [value]="alias | lowercase | formatString" readonly />
+              </mat-form-field>
+              <mat-form-field appearance="outline" *ngIf="!pos">
+                <mat-label>Attribute Set</mat-label>
+                <mat-select [disabled]="f.products.value==false || disable==true" formControlName="attributeSetIds" [ngClass]="{ 'is-invalid': submitted && f.attributeSetIds.errors }" multiple>
+                  <mat-option>
+                    <ngx-mat-select-search #myInput [formControl]="attributeSetFilterCtrl" [placeholderLabel]="'Find Attribute Set...'" [noEntriesFoundLabel]="'no matches  found'">
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option [value]="attribute.id" *ngFor="let attribute of attributeSet | dropdownfilter:myInput.value">{{attribute.name}}
+                  </mat-option>
+                </mat-select>
+                <span *ngIf="!f.attributeSetIds.valid && f.attributeSetIds.touched && f.attributeSetIds.errors" class="mandatory-alert" [tooltip]="attributeSetError"
+                  content-type="template">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </span>
+              </mat-form-field>
+              <ng-template #attributeSetError>
+                <div>
+                  <p class="mb-1" *ngIf="f.attributeSetIds.errors.required">Required</p>
+                  <p class="mb-1" *ngIf="f.attributeSetIds.errors.customRequired">Required</p>
+                </div>
+              </ng-template>
+              <div class="row">
+                <div class="col-6">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Display Mode</mat-label>
+                    <mat-select formControlName="displayMode" [ngClass]="{
+                        'is-invalid': submitted && f.displayMode.errors
+                      }">
+                      <mat-option [value]="displayMode.id" *ngFor="let displayMode of displayModes">
+                        {{ displayMode.name }}
+                      </mat-option>
+                    </mat-select>
+                    <span *ngIf="!f.displayMode.valid && f.displayMode.touched && f.displayMode.errors" class="mandatory-alert" [tooltip]="displayMode"
+                      content-type="template">
+
+                      <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                    </span>
+                  </mat-form-field>
+                  <ng-template #displayMode>
+                    <div>
+                      <p class="mb-1" *ngIf="f.displayMode.errors.required">Required</p>
+                    </div>
+                  </ng-template>
+                </div>
+                <div class="col-6">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Menu Position</mat-label>
+                    <input matInput autocomplete="off" formControlName="position" [ngClass]="{
+                          'is-invalid': submitted && f.position.errors
+                        }" numbersOnly />
+
+                    <span *ngIf="!f.position.valid && f.position.touched  && f.position.errors" class="mandatory-alert" [tooltip]="menuPosition"
+                      content-type="template">
+
+                      <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                    </span>
+                  </mat-form-field>
+                  <ng-template #menuPosition>
+                    <div>
+                      <p class="mb-1" *ngIf="f.position.errors.required">Required</p>
+                      <p class="mb-1" *ngIf="f.position.errors.maxlength">Invalid Value</p>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row  mt-3">
+          <div class="col-sm-4" *ngIf="!pos">
+            <mat-slide-toggle formControlName="products" color="primary" [checked]="f.products">Allow Product Link</mat-slide-toggle>
+          </div>
+          <div class="col-sm-4">
+            <mat-slide-toggle formControlName="cropListImage" color="primary" [checked]="f.cropListImage">Crop Image List
+            </mat-slide-toggle>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="upload-image-view">
+          <img [src]="url" *ngIf="url" height="200" />
+          <br />
+        </div>
+        <div class="btn-upload-image">
+          <input [disabled]="getFormDisableStats('updateCategoryForm')" type='file' accept="image/png" (change)="onSelectFile($event)"
+            class="custom-input">
+        </div>
+      </div>
+      <div class="col-2 text-center" *ngIf="url && editImageUrl">
+        <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="3 / 3" format="png" (imageCropped)="imageCropped($event)"
+          (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+        <button type="button" matTooltip="Crop Image" aria-label="Crop Image" class="btn btn-crop" (click)="imageCroppedDone()">
+          <mat-icon>crop</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="box-shadow bg-white padding-10 mt-3">
+    <div class="content-head">
+      <div class="content-head-caption">
+        <h3>Search Engine Optimization</h3>
+      </div>
+    </div>
+    <div class="form-content-body">
+      <div class="hoz-form mt-3">
+        <mat-form-field appearance="outline">
+          <mat-label>Meta Title</mat-label>
+          <input autocomplete="off" matInput formControlName="metaTitle" trim='blur' />
+
+          <span *ngIf="!f.metaTitle.valid && f.metaTitle.touched  && f.metaTitle.errors" class="mandatory-alert" [tooltip]="metaTitle"
+            content-type="template">
+
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #metaTitle>
+          <div>
+            <p class="mb-1" *ngIf="f.metaTitle.errors.maxlength">Max Length 100 characters</p>
+          </div>
+        </ng-template>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Meta keyword</mat-label>
+          <input autocomplete="off" matInput formControlName="metaKeyword" trim='blur' />
+          <span *ngIf="!f.metaKeyword.valid && f.metaKeyword.touched && f.metaKeyword.errors" class="mandatory-alert" [tooltip]="metaKeyword"
+            content-type="template">
+
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #metaKeyword>
+          <div>
+            <p class="mb-1" *ngIf="f.metaKeyword.errors.maxlength">Max Length 100 characters</p>
+          </div>
+        </ng-template>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Meta Description</mat-label>
+          <textarea autocomplete="off" matInput formControlName="metaDesc" trim='blur'>
+          </textarea>
+
+          <span *ngIf="!f.metaDesc.valid && f.metaDesc.touched  && f.metaDesc.errors" class="mandatory-alert" [tooltip]="metaDescription"
+            content-type="template">
+
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+        <ng-template #metaDescription>
+          <div>
+            <p class="mb-1" *ngIf="f.metaDesc.errors.maxlength">Max Length 100 characters</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="box-shadow bg-white padding-10 mt-3" *ngIf="updateCategoryForm.get('products').value==true && updateCategoryForm.get('commissionItems')">
+    <div class="content-head">
+      <div class="content-head-caption">
+        <h3>Commission</h3>
+      </div>
+    </div>
+    <div class="form-content-body mt-2">
+      <div class="" formArrayName="commissionItems">
+        <table class="table layout-fixed box-shadow">
+          <thead>
+            <tr>
+              <th class="widthP25">Merchant Group</th>
+              <th class="widthP15">Effect From</th>
+              <th class="widthP15">Effect Upto</th>
+              <th class="widthP10">Price Start</th>
+              <th class="widthP10">Price End</th>
+              <th class="widthP10">Value</th>
+              <th class="widthP15"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of updateCategoryForm.get('commissionItems')['controls']; let i = index;" [formGroupName]="i">
+              <td>
+                <mat-form-field appearance="outline">
+                  <input autocomplete="off" readonly matInput placeholder="Group Name" formControlName="groupName" />
+                  <span *ngIf="!formArrControls(i).get('groupName').valid && formArrControls(i).get('groupName').touched && formArrControls(i).get('groupName').errors"
+                    class="mandatory-alert" [tooltip]="groupName" content-type="template">
+
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+                <ng-template #groupName>
+                  <div>
+                    <p class="mb-1" *ngIf="formArrControls(i).get('groupName').errors.required">Required</p>
+                  </div>
+                </ng-template>
+              </td>
+              <td>
+                <div class="box-relative">
+                  <mat-form-field appearance="outline">
+                    <input autocomplete="off" matInput [readonly]="true" placeholder="MM/DD/YYYY" [matDatepicker]="fpicker" formControlName="affectFrom"
+                      [ngClass]="{ 'ng-invalid ng-touched': !formArrControls(i).get('affectFrom').valid }" (dateInput)="checkDates(i)"
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="fpicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fpicker></mat-datepicker>
+                  </mat-form-field>
+                  <span *ngIf="!formArrControls(i).get('affectFrom').valid && formArrControls(i).get('affectFrom').touched && formArrControls(i).get('affectFrom').errors"
+                    class="mandatory-alert" [tooltip]="dateFrom" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </div>
+                <ng-template #dateFrom>
+                  <div>
+                    <p class="mb-1" *ngIf="formArrControls(i).get('affectFrom').errors.required">Required</p>
+                    <p class="mb-1" *ngIf="formArrControls(i).get('affectFrom').errors.lessthan">Effect From cannot be greater than Effect Upto</p>
+                  </div>
+                </ng-template>
+              </td>
+              <td>
+                <div class="box-relative">
+                  <mat-form-field appearance="outline">
+                    <input autocomplete="off" matInput [readonly]="true" placeholder="MM/DD/YYYY" [matDatepicker]="upicker" formControlName="expiryDate"
+                      [ngClass]="{ 'ng-invalid ng-touched': !formArrControls(i).get('expiryDate').valid }" (dateInput)="checkDates(i)"
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="upicker"></mat-datepicker-toggle>
+                    <mat-datepicker #upicker></mat-datepicker>
+                  </mat-form-field>
+                  <span *ngIf="!formArrControls(i).get('expiryDate').valid && formArrControls(i).get('expiryDate').touched && formArrControls(i).get('expiryDate').errors"
+                    class="mandatory-alert" [tooltip]="dateTo" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </div>
+                <ng-template #dateTo>
+                  <div>
+                    <p class="mb-1" *ngIf="formArrControls(i).get('expiryDate').errors.required">Required</p>
+                  </div>
+                </ng-template>
+              </td>
+              <td>
+                <mat-form-field appearance="outline">
+                  <input autocomplete="off" matInput placeholder="" numbersOnly formControlName="sellingPriceFrom" (change)="makeDecimalFormArrayControl(i,$event);changePriceFrom(i)"
+                  />
+                  <span *ngIf="!formArrControls(i).get('sellingPriceFrom').valid && formArrControls(i).get('sellingPriceFrom').touched  && formArrControls(i).get('sellingPriceFrom').errors"
+                    class="mandatory-alert" [tooltip]="priceStart" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+
+                <ng-template #priceStart>
+                  <div>
+                    <p class="mb-1" *ngIf="formArrControls(i).get('sellingPriceFrom').errors.required">Required</p>
+                    <p class="mb-1" *ngIf="formArrControls(i).get('sellingPriceFrom').errors.lessthan">Price Start cannot be greater than Price End</p>
+                    <p class="mb-1" *ngIf="formArrControls(i).get('sellingPriceFrom').errors.max">Max 8 digit decimal Number
+                    </p>
+                  </div>
+                </ng-template>
+              </td>
+              <td>
+                <mat-form-field appearance="outline">
+                  <input autocomplete="off" matInput placeholder="" numbersOnly formControlName="sellingPriceTo" (change)="makeDecimalFormArrayControl(i,$event);changePriceFrom(i)"
+                  />
+                  <span *ngIf="!formArrControls(i).get('sellingPriceTo').valid && formArrControls(i).get('sellingPriceTo').touched && formArrControls(i).get('sellingPriceTo').errors"
+                    class="mandatory-alert" [tooltip]="priceEnd" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+                <ng-template #priceEnd>
+                  <div>
+                    <p class="mb-1" *ngIf="formArrControls(i).get('sellingPriceTo').errors.required">Required</p>
+                    <p class="mb-1" *ngIf="formArrControls(i).get('sellingPriceTo').errors.lessthan">Price Start cannot be greater than Price End</p>
+                    <p class="mb-1" *ngIf="formArrControls(i).get('sellingPriceTo').errors.max">Max 8 digit decimal Number
+                    </p>
+                  </div>
+                </ng-template>
+              </td>
+              <td>
+                <mat-form-field appearance="outline">
+                  <input autocomplete="off" matInput placeholder="Value" numbersOnly formControlName="value" (change)="makeDecimalFormArrayControl(i,$event)"
+                  />
+                  <span *ngIf="!formArrControls(i).get('value').valid && formArrControls(i).get('value').touched && formArrControls(i).get('value').errors"
+                    class="mandatory-alert" [tooltip]="priceValue" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+                <ng-template #priceValue>
+                  <div>
+                    <p class="mb-1" *ngIf="formArrControls(i).get('value').errors.required">Required</p>
+                    <p class="mb-1" *ngIf="formArrControls(i).get('value').errors.max">{{ this.formArrControls(i).get('type').value=='p'?'Invalid Input, Value should be in between 0-100':'Max
+                      8 digit decimal Number'}}</p>
+                  </div>
+                </ng-template>
+              </td>
+              <td class="input-min">
+                <mat-form-field appearance="outline">
+                  <mat-select placeholder="Select" formControlName="type" (selectionChange)="changeValue(i)">
+                    <mat-option value="">Select Type</mat-option>
+                    <mat-option value="f">Fixed</mat-option>
+                    <mat-option value="p">%</mat-option>
+                  </mat-select>
+                  <span *ngIf="!formArrControls(i).get('type').valid && formArrControls(i).get('type').touched  && formArrControls(i).get('type').errors"
+                    class="mandatory-alert" [tooltip]="valueType" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                  </span>
+                </mat-form-field>
+                <button type="button" [disabled]="getFormDisableStats('updateCategoryForm')" href="javascript:void(0);" title="copy" class="btn-clone"
+                  (click)="copyRow(i)">
+                  <i class="fa fa-clone" aria-hidden="true"></i>
+                </button>
+                <button type="button" title="copy" [disabled]="(formArrControls(i).get('isFixed') && formArrControls(i).get('isFixed').value==1) || getFormDisableStats('updateCategoryForm')"
+                  title="delete" class="btn-clone ml-1 red" (click)="deleteRow(i)">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+                <ng-template #valueType>
+                  <div>
+                    <p class="mb-1" *ngIf="formArrControls(i).get('type').errors.required">Required</p>
+                  </div>
+                </ng-template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</form>

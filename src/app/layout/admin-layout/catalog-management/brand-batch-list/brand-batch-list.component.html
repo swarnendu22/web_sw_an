@@ -1,0 +1,44 @@
+<div style="position: relative;">
+    <div style="position: absolute;right: -15px;top: -15px;">
+        <button type="button" mat-raised-button class="top-btn-font" color="primary"
+            (click)="onFormSubmit()" style="margin-right: 20px;" *ngIf="isBrandChanged">
+            <mat-icon>save</mat-icon> Save
+        </button>
+        <button mat-mini-fab color="warn" mat-dialog-close style="float: right;">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div style="padding-bottom: 10px; font-weight: bold;
+    font-size: 18px;">
+        <span style="margin-right: 10px">Brand List</span>
+    </div>
+    <table class="table ndh-order-tran" *ngIf="allBrandBatchList.length">
+        <tbody>
+          <tr *ngFor="let brand of allBrandBatchList;">
+            <td>
+                {{brand.brandName}}
+                <a (click)="createNewBand(brand.brandName)" style="margin-left: 20px; color: #007bff; text-decoration: underline !important;" *ngIf="brand.isDisabled==false">Add Band</a>
+            </td>
+            <td class="text-center">
+                <mat-form-field appearance="outline">
+                    <mat-label>Brands
+                        <span style="color: grey; font-size: 10px">*</span>
+                    </mat-label>
+                    <mat-select tabindex="3" [value]="brand.brandId" [disabled]="brand.isDisabled" (selectionChange)="brandChange($event, brand.brandName)">
+                        <div class="custom-panel" style="position: relative;overflow-x: hidden;">
+                            <mat-option>
+                                <ngx-mat-select-search #myInput [placeholderLabel]="'Find Brand ..'">
+                                </ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let brandItem of brandsList| dropdownfilter:myInput.value:'brandName'"
+                                [value]="brandItem.id">{{brandItem.brandName}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+    <div *ngIf="allBrandBatchList.length==0 && isBrandListFetch == true" style="text-align: center;padding-top: 200px;">No Brand Found !!!</div>
+</div>

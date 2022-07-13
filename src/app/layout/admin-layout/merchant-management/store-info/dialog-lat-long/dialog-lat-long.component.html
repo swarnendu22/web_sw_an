@@ -1,0 +1,33 @@
+<h3>Selet Address</h3>
+<div mat-dialog-content>
+
+  <div class="store-location-address hoz-form">
+
+    <!-- <mat-form-field appearance="outline">
+      <mat-label>Enter Address</mat-label> -->
+    <mat-google-maps-autocomplete autocomplete="off" country="in" (onAutocompleteSelected)="onAutocompleteSelected($event)" (onLocationSelected)="onLocationSelected($event)"></mat-google-maps-autocomplete>
+    <!-- <input matInput autocomplete="off" matGoogleMapsAutocomplete [country]="in" (onAutocompleteSelected)="onAutocompleteSelected($event)"
+        (onLocationSelected)="onLocationSelected($event)"> -->
+    <!-- </mat-form-field> -->
+    <div class="address-relative">
+      <agm-map [scrollwheel]="true" [zoom]="zoom" [latitude]="map.lat" [longitude]="map.lng" style="height: 200px">
+        <agm-marker [latitude]="map.lat" [longitude]="map.lng" [markerDraggable]="true" (dragEnd)="markerDragEnd(map, $event)"></agm-marker>
+      </agm-map>
+      <div class="current-location">
+        <button mat-raised-button color="primary" class="" (click)="setCurrentPosition()">
+          <mat-icon>my_location</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="show-current-address mt-2">
+      <mat-form-field appearance="outline">
+        <mat-icon matPrefix>location_on</mat-icon>
+        <input matInput type="text" [(ngModel)]="address">
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button class="btn-primary" (click)="onSave()" cdkFocusInitial>Save</button>
+</mat-dialog-actions>

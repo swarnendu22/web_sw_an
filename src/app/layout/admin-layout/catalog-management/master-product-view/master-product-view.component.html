@@ -1,0 +1,182 @@
+<div class="master-product-view">
+  <div class="row">
+    <div class="col-3">
+      <div class="master-product-filter">
+        <div class="filter-area-box">
+          <mat-form-field appearance="outline">
+            <mat-label>Search Category</mat-label>
+            <input matInput [(ngModel)]="categoryName" (keyup)="catListByName()">
+            <mat-icon matPrefix>search</mat-icon>
+          </mat-form-field>
+          <mat-tree [dataSource]="dataSource" class="tree-item-box" [treeControl]="treeControl">
+            <mat-tree-node matTreeNodePaddingIndent="10" [ngClass]="{'active': checkedSelected(node.key)}"
+              class="tree-item" (click)="selectedCategory(node.key, node.levelCat)" *matTreeNodeDef="let node"
+              matTreeNodePadding>
+              <button mat-icon-button disabled></button>
+
+              <div class="product-cat-name">
+
+                <img src="https://ndh.imgix.net/ndh-assets/categories-images/{{node.id}}.png"
+                  (error)="changeSource($event)" />
+
+                <p class="single-item">{{node.name}}</p>
+
+              </div>
+            </mat-tree-node>
+            <mat-tree-node matTreeNodePaddingIndent="10" *matTreeNodeDef="let node;when: hasChild" class="tree-item"
+              matTreeNodePadding>
+              <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+                <mat-icon class="mat-icon-rtl-mirror">
+                  {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+              </button>
+              <div class="product-cat-name" (click)="selectedCategory(node.key, node.levelCat)">
+                <img src="https://ndh.imgix.net/ndh-assets/categories-images/{{node.id}}.png"
+                  (error)="changeSource($event)" />
+
+                <p>{{node.name}}</p>
+              </div>
+              <span class="category-count"
+                (click)="selectedCategory(node.key, node.levelCat)">{{node.countProduct}}</span>
+            </mat-tree-node>
+          </mat-tree>
+        </div>
+        <div class="filter-area-box">
+          <mat-form-field appearance="outline">
+            <mat-label>Search Brands</mat-label>
+            <input matInput [(ngModel)]="brandName" (keyup)="brandListByName()">
+            <mat-icon matPrefix>search</mat-icon>
+          </mat-form-field>
+          <ul class="product-brand-box" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+            (scrolled)="onScrollDown()" [scrollWindow]="false">
+            <li *ngFor="let brand of brandsList" [ngClass]="{'active':selectedBrandName == brand.key.brand_name }"
+              (click)="selectedBrand(brand.key.brand_name)">
+              <div class="data-name">
+                <!-- <img src="https://images.all-free-download.com/images/graphiclarge/itc_limited_126151.jpg" alt="brand image" /> -->
+
+                <p>{{brand.key.brand_name}}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-9 pl-0">
+      <div class="master-product-list">
+        <div class="master-product-header">
+          <h1>Master Product</h1>
+          <div class="search-sort-filter">
+            <mat-form-field appearance="outline" style="width: 185px;" class="mp-search-filter">
+              <mat-label>Search by product name</mat-label>
+              <input matInput [(ngModel)]="productName" (keyup)="seearchProductKey()">
+              <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="width: 145px;" class="mp-search-filter">
+              <mat-label>Search by barcode</mat-label>
+              <input matInput [(ngModel)]="ean" (keyup)="seearchProductKey()">
+              <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="mp-sort-filter">
+              <mat-label>Sort by</mat-label>
+              <mat-select [(ngModel)]="order_by" (selectionChange)="onStatusChange()">
+                <mat-option value="product_name_asc">Product Name A to Z</mat-option>
+                <mat-option value="product_name_desc">Product Name Z to A</mat-option>
+                <mat-option value="selling_price_desc">Price High to Low</mat-option>
+                <mat-option value="selling_price_asc">Price Low to High</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="form-header-btn">
+              <button type="button" mat-raised-button (click)="openAddNewProductDialogNew()" class="top-btn-font drop"
+                color="primary">
+                <mat-icon>add</mat-icon> Add Master Product
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="master-product-table">
+          <mat-chip-list #chipList aria-label="Product Search" style="margin: 20px 0px 10px; display: block"
+            *ngIf="selectedBrandName != '' || productName != '' || ean != '' || selectedCateId.length > 0 || order_by != ''">
+
+            <mat-chip *ngIf="productName != ''" (removed)="removeProduct()" style="background: #afbcf2;">
+              {{productName}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+
+            <mat-chip *ngIf="ean != ''" (removed)="removeEan()" style="background: #afbcf2;">
+              {{ean}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+
+            <mat-chip *ngIf="selectedCateId.length > 0" (removed)="removeCat()" style="background: #afbcf2;">
+              {{getCateName(selectedCateId[0])}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+
+            <mat-chip *ngIf="selectedBrandName != ''" (removed)="removeBrand()" style="background: #afbcf2;">
+              {{selectedBrandName}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+
+            <mat-chip *ngIf="order_by != ''" (removed)="removeShort()" style="background: #afbcf2;">
+              {{getProductShort(order_by)}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+
+          <table mat-table [dataSource]="rowData">
+            <ng-container matColumnDef="base_image_url">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element">
+                <img *ngIf="element._source.base_image_url" class="mp-img" src="{{element._source.base_image_url}}" />
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="product_name">
+              <th mat-header-cell *matHeaderCellDef style="width: 30%;"> Product Name </th>
+              <td mat-cell *matCellDef="let element">
+                {{element._source.product_name}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="category_name">
+              <th mat-header-cell *matHeaderCellDef> Category </th>
+              <td mat-cell *matCellDef="let element"> {{element._source.category_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="brand_name">
+              <th mat-header-cell *matHeaderCellDef> Brand </th>
+              <td mat-cell *matCellDef="let element"> {{element._source.brand_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="maximum_retail_price">
+              <th mat-header-cell *matHeaderCellDef style="width: 10%;"> MRP </th>
+              <td mat-cell *matCellDef="let element"> ₹{{element._source.maximum_retail_price}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="selling_price">
+              <th mat-header-cell *matHeaderCellDef> Selling Price </th>
+              <td mat-cell *matCellDef="let element"> ₹{{element._source.selling_price}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef style="text-align: right;"></th>
+              <td mat-cell *matCellDef="let element" style="text-align: right;">
+                <div (click)="openEditNewProductDialog(element._source.product_id)"
+                  style="padding: 5px 25px;display: inline-block;line-height: 22px;background: #f2f2f2f2;color: #46b920;border-radius: 3px;margin-right: 10px;cursor: pointer;">
+                  Edit</div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <mat-paginator style-paginator [length]="totalRecords" pageIndex="{{pageNo}}" pageSize="{{pageSize}}"
+            [pageSizeOptions]="[5, 10, 20, 50, 100]" (page)="onPaginateChange($event)" showFirstLastButtons>
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

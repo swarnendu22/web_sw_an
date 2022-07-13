@@ -1,0 +1,39 @@
+<div class="loading" *ngIf="loading">
+  <mat-spinner [diameter]="50"></mat-spinner>
+</div>
+<div class="top-bar box-shadow">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title">Catalog File Status List </h3>
+    </div>
+    <!-- <div class="form-header-btn" style="float: right;">
+      <mat-icon (click)="iniciate_product_bulk()" style="margin-right: 20px; cursor: pointer;">perm_data_setting</mat-icon>
+    </div> -->
+    <div class="form-header-btn">
+      <mat-form-field appearance="outline">
+        <mat-label>FILE STATUS</mat-label>
+        <mat-select [(ngModel)]="status" (selectionChange)="onStatusChange()">
+          <mat-option value="MASTERPRODUCT">MASTER PRODUCT UPLOAD</mat-option>
+          <mat-option value="MASTER_PRODUCT_UPDATE">MASTER PRODUCT UPDATE</mat-option>
+          <mat-option value="STOREPRODUCT">STORE PRODUCT UPLOAD</mat-option>
+          <mat-option value="STORE_PRODUCT_UPDATE">STORE PRODUCT UPDATE</mat-option>
+          <mat-option value="MASTER_TO_STORE">MASTER TO STORE</mat-option>
+          <!-- <mat-option value="BULK_PRODUCT_IDS">BULK PRODUCTS(ID)</mat-option>
+          <mat-option value="BULK_PRODUCT_BARCODE">BULK PRODUCTS(BARCODE)</mat-option> -->
+        </mat-select>
+      </mat-form-field>
+      <button routerLink="/catalog/admin-file-process" type="button" mat-raised-button class="top-btn-font d-inline-block" style="vertical-align: super;"
+        color="primary">
+        <mat-icon>add</mat-icon> Add Bulk Products
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<div class="bg-white" style="height: calc(100% - 20px)">
+  <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData" [defaultColDef]="defaultColDef"
+    [columnDefs]="columnDefs" (firstDataRendered)="onFirstDataRendered($event)" [pagination]="true" (gridReady)="onGridReady($event)"
+    [floatingFilter]="true" [enableFilter]="true" (gridSizeChanged)="onGridSizeChanged($event)">
+  </ag-grid-angular>
+</div>

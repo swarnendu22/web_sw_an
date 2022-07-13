@@ -1,0 +1,12 @@
+<mat-dialog-content class="store-profile-manage mat-typography">
+    <p>Select Quick Link</p>
+    <mat-selection-list class="business-category-list" #selectionList>
+        <mat-list-option [selected]="check(item.id)" [disabled]="check(item.id)" [value]="item" *ngFor="let item of storeMasterQuickLinks"
+            (click)="clickItem(item)">{{item.quicklinkName}}
+        </mat-list-option>
+    </mat-selection-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>No Thanks</button>
+    <button mat-button cdkFocusInitial class="btn-primary" (click)="onSave()">Save</button>
+</mat-dialog-actions>

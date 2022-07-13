@@ -1,0 +1,145 @@
+<form [formGroup]="newBrandForm" autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">Pending Brand</h3>
+      </div>
+      <div class="form-header-btn">
+        <ng-container *ngIf="getFormDisableStats('newBrandForm')">
+          <button (click)="goBack()" mat-raised-button class="noshadow top-btn-font white-btn">
+            <mat-icon>arrow_back</mat-icon> Back
+          </button>
+          <button type="button" mat-raised-button class="noshadow top-btn-font" color="warn"
+            (click)="openRejectRequestDialog()">
+            <mat-icon>save</mat-icon> Reject
+          </button>
+          <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary"
+            (click)="approveRequest()">
+            <mat-icon>save</mat-icon> Approve
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="brandRequest && brandRequest['id']" class="alert alert-danger alert-dismissible fade show text-center"
+    role="alert">
+    Edit Brand request by
+    <strong>{{brandRequest['createdBy']}}</strong>
+  </div>
+  <div *ngIf="brandRequest && !brandRequest['id']" class="alert alert-danger alert-dismissible fade show text-center"
+    role="alert">
+    New Brand request by
+    <strong>{{brandRequest['createdBy']}}</strong>
+  </div>
+
+  <div class="box-shadow bg-white padding-10">
+    <div class="row">
+      <div class="col-sm-10">
+        <div class="hoz-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Brand Name</mat-label>
+            <input matInput formControlName="brandName" [ngClass]="{ 'is-invalid': submitted && f.brandName.errors }" />
+            <button matSuffix color="warn" mat-icon-button
+              *ngIf="brandRequest && brandRequest['id'] && brandDetails && brandDetails[0].brandName !== brandRequest.brandName"
+              [matTooltip]="brandDetails[0].brandName" matTooltipPosition="above">
+              <mat-icon>history</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Short Name</mat-label>
+            <input matInput formControlName="brandShortName" />
+            <button matSuffix color="warn" mat-icon-button
+              *ngIf="brandRequest && brandRequest['id'] && brandDetails && brandDetails[0].brandShortName !== brandRequest.brandShortName"
+              [matTooltip]="brandDetails[0].brandShortName" matTooltipPosition="above">
+              <mat-icon>history</mat-icon>
+            </button>
+          </mat-form-field>
+          <!-- <mat-hint align="start" >
+            <span class="request_class">Old value {{}}</span>
+          </mat-hint> -->
+          <div class="row">
+            <div class="col-4">
+              <app-ng-multiselect *ngIf="categories" [selectData]="categories"
+                (getSelectedValue)="categorySelectionItem($event)" [leafCategory]=true
+                [disabled]="getFormDisableStats('newBrandForm')" [selectedOption]="selectedCategoryIds"
+                [label]="'Select categories'">
+              </app-ng-multiselect>
+              <!-- <mat-hint align="start" *ngIf="brandRequest && brandRequest.categoryIdList && brandRequest['id'] && prevCategorySetIds && JSON.stringify(prevCategorySetIds) !== JSON.stringify(brandRequest.categoryIdList)">
+                  <span class="request_class">Old value {{brandDetails[0].brandShortName}}</span>
+              </mat-hint> -->
+            </div>
+            <div class="col-8">
+              <!-- <angular2-multiselect
+                  [data]="itemList"
+                  formControlName="category"
+                  [ngClass]="{
+                    'is-invalid': submitted && f.category.errors
+                  }"
+                  [(ngModel)]="selectedItems"
+                  [settings]="settings"
+                >
+                </angular2-multiselect> -->
+            </div>
+          </div>
+          <div class="mt-2">
+            <mat-slide-toggle color="primary" formControlName="isPrimiumBrand">Is Premium Brand
+              <button color="warn" mat-icon-button
+                *ngIf="brandRequest && brandRequest['id'] && brandDetails && brandDetails[0].isPrimiumBrand !== brandRequest.isPrimiumBrand"
+                [matTooltip]="brandDetails[0].isPrimiumBrand === 1 ? 'selected' : 'not selected'"
+                matTooltipPosition="above">
+                <mat-icon>history</mat-icon>
+              </button>
+            </mat-slide-toggle>
+          </div>
+          <!-- <mat-hint align="start" >
+            <span class="request_class">Old value {{}}</span>
+          </mat-hint> -->
+          <div class="mt-3">
+            <mat-slide-toggle color="primary" formControlName="isRequiredAuthorisation">Is Authorized Register
+              <button color="warn" mat-icon-button
+                *ngIf="brandRequest && brandRequest['id'] && brandDetails && brandDetails[0].isRequiredAuthorisation !== brandRequest.isRequiredAuthorisation"
+                [matTooltip]="brandDetails[0].isRequiredAuthorisation === 1 ? 'selected' : 'not selected'"
+                matTooltipPosition="above">
+                <mat-icon>history</mat-icon>
+              </button>
+            </mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div style="position: relative">
+          <div class="upload-image-view">
+            <img [src]="brandLogoUrl" height="200" />
+          </div>
+          <ng-template #oldImage>
+            Previous Image <br>
+            <img [src]="brandDetails[0].brandLogoUrl" height="100" />
+          </ng-template>
+          <button class="imgHistoryBtn"
+            *ngIf="brandRequest && brandRequest['id'] && selectedPendingBrand && brandDetails &&  brandRequest.brandLogoUrl !== brandDetails[0].brandLogoUrl"
+            mat-icon-button color="warn" [ngbTooltip]="oldImage">
+            <mat-icon>history</mat-icon>
+          </button>
+        </div>
+        <!-- <div class="btn-upload-image">
+            <input
+              formControlName="brandLogoUrl"
+              [ngClass]="{ 'is-invalid': submitted && f.brandLogoUrl.errors }"
+              type="file"
+              accept="image/jpeg, image/png"
+              (change)="onSelectFile($event)"
+              class="custom-input logo-upload"
+            />
+          </div> -->
+        <!-- <div class="btn-upload-image">
+          <app-img-upload-aws [className]="'custom-input'" [disable]="true" [awsFolderName]="'brand-icon'" (imgUploaded)="onIconUpload($event)"></app-img-upload-aws>
+        </div> -->
+      </div>
+    </div>
+    <!-- <div class="text-center">
+      <button type="button" mat-raised-button color="primary" class="noshadow">
+        <mat-icon>view_quilt</mat-icon> View Profile Page</button>
+    </div> -->
+  </div>
+</form>

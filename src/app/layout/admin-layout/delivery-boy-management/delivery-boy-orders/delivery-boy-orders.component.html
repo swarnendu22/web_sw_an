@@ -1,0 +1,379 @@
+<div class="loading" *ngIf="loading">
+    <mat-spinner [diameter]="50"></mat-spinner>
+</div>
+<div class="top-bar box-shadow" style="height: 60px;">
+    <div class="d-flex">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title">Order Fullfillment Dashboard </h3>
+        </div>
+
+        <div class="form-header-btn" style="display: flex; flex-direction: row;">
+            <div class="input-group mr-2" style="width: 420px;">
+                <input [formControl]="searchKeyword" type="text" class="form-control" placeholder="Search by order id/ customer number/ email id">
+                <div class="input-group-append">
+                    <button class="btn btn-info" style="height: 38px;" type="button" (click)="search()">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <mat-form-field>
+                <mat-label>Status:</mat-label>
+                <mat-select [formControl]="status" (selectionChange)="searchByStatus($event)">
+                    <mat-option value="ndh_go_active_orders">Active Orders</mat-option>
+                    <mat-option value="ndh_go_delivered_orders">Delivered Orders</mat-option>
+                    <!-- <mat-option value="cancelled_orders">Cancelled Orders</mat-option> -->
+                    <mat-option value="ndh_go_sla_breach_orders">SLA Breached Orders</mat-option>
+                    <!-- <mat-option value="unassigned_orders">Unassigned Orders</mat-option> -->
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+<!-- <app-delivery-boy-order-table></app-delivery-boy-order-table> -->
+<!-- GRID ACCORDIAN -->
+
+<mat-accordion displayMode="flat" multi class="mat-table">
+    <section matSort class="mat-elevation-z2 mat-header-row fullfillment-table-header">
+        <span class="mat-header-cell" mat-sort-header="sub_order_no">Order ID</span>
+        <span class="mat-header-cell" mat-sort-header="store_info">Store Name</span>
+        <span class="mat-header-cell" mat-sort-header="customer_info">Customer Name</span>
+        <span class="mat-header-cell" mat-sort-header="total_order_items">SLA</span>
+        <span class="mat-header-cell" mat-sort-header="status">Current State</span>
+        <!-- <span class="mat-header-cell" mat-sort-header="seller_order_delivery_agent">Order Status</span> -->
+    </section>
+
+    <mat-expansion-panel *ngFor="let item of totalOrderListing" (afterExpand)="setOpendDeliveryBoy(item)">
+        <mat-expansion-panel-header class="mat-row">
+            <span class="mat-cell">{{item.sub_order_no}}</span>
+            <span class="mat-cell">{{item.store_name}}
+                <!-- <span *ngIf="item.status === 'Accepted'" class="badge badge-success">ACCEPTED</span>
+                <span *ngIf="item.status !== 'Accepted'" class="badge badge-secondary"> NOT ACCEPTED</span> -->
+            </span>
+            <span class="mat-cell">{{item.customer_info['name']}}</span>
+            <span class="mat-cell">{{item.total_order_items.length}}</span>
+            <span class="mat-cell">{{item.state}}</span>
+            <!-- <span class="mat-cell">{{item.seller_order_delivery_agent['status']}}</span> -->
+
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <div style="border-width: 1px; border-color: gray; border-radius: 4px;margin-top: 10px;">
+            <div style="display: flex; flex-direction: row;">
+                <div style="display: inline;">
+                    <mat-label>Order Stages:</mat-label>
+                    <mat-form-field class="ml-2 mr-4">
+                        <mat-select [formControl]="orderStatus" (selectionChange)="orderStatusChanged($event, item.id)">
+                            <mat-option value="approaching_pickup">Approaching For Pickup</mat-option>
+                            <mat-option value="reached_pickup_location">Reached Pickup Location</mat-option>
+                            <mat-option value="picked_up">Picked Up</mat-option>
+                            <mat-option value="approaching_delivery">Approaching For Delivery</mat-option>
+                            <mat-option value="reached_delivery_location">Reached Delivery Location</mat-option>
+                            <mat-option value="delivered">Delivered</mat-option>
+                            <mat-option value="delivery_failed">Failed Delivery</mat-option>
+                            <!-- <mat-option value="return_to_origin">Return to Origin</mat-option> -->
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="form-header-btn mb-3" style="align-self: center;flex:1">
+                    <button type="button" mat-raised-button class="top-btn-font drop mr-2" color="primary" (click)="orderStatusSubmit(item.id)">
+                        Submit
+                    </button>
+                    <button style="position: relative; float: right;" type="button" mat-raised-button class="top-btn-font drop" color="primary"
+                        (click)="deliveryLogs(item)">
+                        Delivery Logs
+                        <mat-icon>list_alt</mat-icon>
+                    </button>
+                </div>
+                <mat-divider></mat-divider>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <div class="fullfillment-user-info">
+                        <h4>Customer Details</h4>
+                        <div class="fullfillment-user-box">
+                            <div class="fullfillment-user-info-img">
+                                <img [src]="item.customer_info['avatar']">
+                            </div>
+                            <div class="fullfillment-user-info-text">
+                                <p class="block">{{item.customer_info['name']}}</p>
+                                <p>{{item.customer_info['address1']}}</p>
+                                <!-- <p><span>Landmark:</span> {{item.customer_info['address2']}}</p>
+                                <p><span>Area:</span> {{item.customer_info['city']}}</p> -->
+                                <p>{{item.customer_info['phone']}}
+                                    <span class="callto">
+                                        <mat-icon>call</mat-icon>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <h4>Delivery Executive Details</h4>
+                        <div class="fullfillment-user-box">
+                            <div class="fullfillment-user-info-img">
+                                <img [src]="item.delivery_boy_details.photo_url">
+                            </div>
+                            <div class="fullfillment-user-info-text">
+                                <p class="block">
+                                    {{item.delivery_boy_details['registration_number'] ? item.delivery_boy_details['registration_number'] : ''}}
+                                </p>
+                                <p class="block">
+                                    {{item.delivery_boy_details['name']? item.delivery_boy_details['name']: ''}}
+                                </p>
+                                <!-- <p><span>Area:</span> Rashmoni Ghat</p> -->
+                                <p>{{item.delivery_boy_details['delivery_agent'] ? item.delivery_boy_details['phone'] : ''}}
+                                    <span class="callto">
+                                        <mat-icon>call</mat-icon>
+                                    </span>
+                                </p>
+                                <!-- <p><span>Failed Attempted Status:</span> Attempt 1 failed</p> -->
+                            </div>
+                        </div>
+                        <div class="form-header-btn mb-2" style="align-self: center;">
+                            <button type="button" mat-raised-button class="top-btn-font drop" color="primary" (click)="resetDeliveryBoy()">
+                                Reset Delivery
+                                <mat-icon>undo</mat-icon>
+                            </button>
+                            <button type="button" mat-raised-button class="top-btn-font drop" color="primary" (click)="assignDeliveryBoy(item)">
+                                Assigned
+                                <mat-icon>done</mat-icon>
+                            </button>
+                        </div>
+                        <div>
+                            <mat-form-field class="mb-3 full-width" appearance="outline">
+                                <mat-label>Comment</mat-label>
+                                <textarea [(ngModel)]="comment" matInput></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-header-btn" style="align-self: center;flex:1">
+                            <button type="button" mat-raised-button class="top-btn-font drop" color="primary" [disabled]="!comment" (click)="addComment(item.id)">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="fullfillment-order-info">
+                        <div class="seller-panel-header">
+                            <h4>Seller Panel Details</h4>
+                            <div class="form-header-btn text-right">
+                                <button type="button" mat-raised-button class="top-btn-font drop" color="primary" (click)="resetDeliveryBoy()">
+                                    Cancel Order
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <!-- <div class="seller-order-info">
+                                    <p class="seller-name">{{item.store_info['store_name']}}</p>
+                                    <p>{{item.store_info['address']}}</p>
+                                    <p>{{item.store_info['contact_number']}}<span class="callto">
+                                            <mat-icon>call</mat-icon>
+                                        </span></p>
+                                </div> -->
+                            </div>
+                            <div class="col-6">
+                                <div class="fullfillment-payment-details">
+                                    <h5>Transaction ID:
+                                        <span>#886675675</span>
+                                    </h5>
+                                    <h5>Payment Mode:
+                                        <span>COD</span>
+                                    </h5>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="product-fullfillment-table" style="">
+                                    <table class="">
+                                        <thead>
+                                            <tr>
+                                                <!-- <th style="width: 10%;"></th> -->
+                                                <th style="width: 50%;">Item</th>
+                                                <th style="width: 15%;text-align: center;">Qty</th>
+                                                <th style="width: 15%;text-align: center;">Amount</th>
+                                                <!-- <th style="width: 10%;"></th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let product of item.total_order_items">
+                                                <!-- <td>
+                                                    <img class="product-fullfillment-img"
+                                                        src="https://pauliusmusteikis.com/wp-content/uploads/2015/04/commercial_product_photography_Madison_WI_by_Paulius_Musteikis_Photography-1146.jpg">
+                                                </td> -->
+                                                <td>
+                                                    <mat-form-field style="" appearance="outline">
+                                                        <input [value]="product.name" [title]="product.name" readonly=true matInput placeholder="Item" />
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field appearance="outline">
+
+                                                        <input [value]="product.qty_ordered" readonly=true matInput placeholder="Item" />
+                                                        <!-- <mat-select placeholder="QTY">
+                                                            <mat-option value="1.0">1</mat-option>
+                                                            <mat-option value="2.0">2</mat-option>
+                                                            <mat-option value="3.0">3</mat-option>
+                                                            <mat-option value="4.0">4</mat-option>
+                                                        </mat-select> -->
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field class="text-center" appearance="outline">
+                                                        <input readonly=true matInput placeholder="Amount" [value]="product.final_total" />
+                                                    </mat-form-field>
+
+                                                </td>
+                                                <!-- <td>
+                                                    <button style="width: 20px;height: 32px;" class="mat-cell mr-1" mat-icon-button>
+                                                        <mat-icon style="font-size: 18px;color: #2eafd9;">edit
+                                                        </mat-icon>
+                                                    </button>
+                                                    <button style="width: 20px;height: 32px;" class="mat-cell" mat-icon-button>
+                                                        <mat-icon style="font-size: 18px;color: #2b0404;">delete
+                                                        </mat-icon>
+                                                    </button>
+                                                </td> -->
+                                            </tr>
+                                            <!-- <tr>
+                                                <td>
+                                                    <img class="product-fullfillment-img"
+                                                        src="https://pauliusmusteikis.com/wp-content/uploads/2015/04/commercial_product_photography_Madison_WI_by_Paulius_Musteikis_Photography-1146.jpg">
+                                                </td>
+                                                <td>
+                                                    <mat-form-field style="" appearance="outline">
+                                                        <input value="electric fan" title="electric fan" readonly=true
+                                                            matInput placeholder="Item" />
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-select placeholder="QTY">
+                                                            <mat-option selected value="1">1</mat-option>
+                                                            <mat-option value="2">2</mat-option>
+                                                            <mat-option value="3">3</mat-option>
+                                                            <mat-option value="4">4</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field class="text-center" appearance="outline">
+                                                        <input readonly=true matInput placeholder="Amount"
+                                                            value="100" />
+                                                    </mat-form-field>
+
+                                                </td>
+                                                <td>
+                                                    <button style="width: 20px;height: 32px;" class="mat-cell mr-1"
+                                                        mat-icon-button>
+                                                        <mat-icon style="font-size: 18px;color: #2eafd9;">edit
+                                                        </mat-icon>
+                                                    </button>
+                                                    <button style="width: 20px;height: 32px;" class="mat-cell"
+                                                        mat-icon-button>
+                                                        <mat-icon style="font-size: 18px;color: #2b0404;">delete
+                                                        </mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <img class="product-fullfillment-img"
+                                                        src="https://pauliusmusteikis.com/wp-content/uploads/2015/04/commercial_product_photography_Madison_WI_by_Paulius_Musteikis_Photography-1146.jpg">
+                                                </td>
+                                                <td>
+                                                    <mat-form-field style="" appearance="outline">
+                                                        <input value="electric fan" title="electric fan" readonly=true
+                                                            matInput placeholder="Item" />
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-select placeholder="QTY">
+                                                            <mat-option selected value="1">1</mat-option>
+                                                            <mat-option value="2">2</mat-option>
+                                                            <mat-option value="3">3</mat-option>
+                                                            <mat-option value="4">4</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field class="text-center" appearance="outline">
+                                                        <input readonly=true matInput placeholder="Amount"
+                                                            value="100" />
+                                                    </mat-form-field>
+
+                                                </td>
+                                                <td>
+                                                    <button style="width: 20px;height: 32px;" class="mat-cell mr-1"
+                                                        mat-icon-button>
+                                                        <mat-icon style="font-size: 18px;color: #2eafd9;">edit
+                                                        </mat-icon>
+                                                    </button>
+                                                    <button style="width: 20px;height: 32px;" class="mat-cell"
+                                                        mat-icon-button>
+                                                        <mat-icon style="font-size: 18px;color: #2b0404;">delete
+                                                        </mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <img class="product-fullfillment-img"
+                                                        src="https://pauliusmusteikis.com/wp-content/uploads/2015/04/commercial_product_photography_Madison_WI_by_Paulius_Musteikis_Photography-1146.jpg">
+                                                </td>
+                                                <td>
+                                                    <mat-form-field style="" appearance="outline">
+                                                        <input value="electric fan" title="electric fan" readonly=true
+                                                            matInput placeholder="Item" />
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-select placeholder="QTY">
+                                                            <mat-option selected value="1">1</mat-option>
+                                                            <mat-option value="2">2</mat-option>
+                                                            <mat-option value="3">3</mat-option>
+                                                            <mat-option value="4">4</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field class="text-center" appearance="outline">
+                                                        <input readonly=true matInput placeholder="Amount"
+                                                            value="100" />
+                                                    </mat-form-field>
+
+                                                </td>
+                                                <td>
+                                                    <button style="width: 20px;height: 32px;" class="mat-cell mr-1"
+                                                        mat-icon-button>
+                                                        <mat-icon style="font-size: 18px;color: #2eafd9;">edit
+                                                        </mat-icon>
+                                                    </button>
+                                                    <button style="width: 20px;height: 32px;" class="mat-cell"
+                                                        mat-icon-button>
+                                                        <mat-icon style="font-size: 18px;color: #2b0404;">delete
+                                                        </mat-icon>
+                                                    </button>
+                                                </td>
+                                            </tr> -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="fullfillment-payment">
+                                    <!-- <p>lorem ispum: <span>₹10</span></p>
+                                    <p>lorem ispum: <span>₹10</span></p>
+                                    <p>lorem ispum: <span>₹10</span></p> -->
+                                    <h5>Total:
+                                        <span>₹{{item.order_value}}</span>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-expansion-panel>
+
+</mat-accordion>
+<mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>

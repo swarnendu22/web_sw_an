@@ -1,0 +1,141 @@
+<div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">   {{this.pageDetail.pageTitle}} </h3>
+      </div>
+      <div class="">
+        <!--
+        <button type="button" [routerLink]="['/merchant/manage-draft']" mat-raised-button
+          class="noshadow top-btn-font white-btn custom-bak-btn">
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+        -->
+      </div>
+    </div>
+</div>
+
+<div class="box-shadow bg-white padding-10 hoz-form" id="basicDetailsForm">
+    <form [formGroup]="basicDetailsForm" *ngIf="approveMode; else noDataForApprove">
+
+      <div class="content-head">
+        <div class="content-head-caption">
+          <h3>Store Approve</h3>
+          <h3></h3>
+        </div>
+        <div class="content-head-action">
+            <div class="apprive-reject-btn" *ngIf="approveMode">
+                  <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (click)="requestProcess('APPROVED')">
+                    <mat-icon>check</mat-icon> Accept
+                  </button>
+                  <button type="button" mat-raised-button class="noshadow top-btn-font" color="warn" (click)="requestProcess('REJECTED')">
+                    <mat-icon>cancel</mat-icon> Reject
+                  </button>
+            </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-sm-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Current Store Name
+              <!-- <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>-->
+            </mat-label>
+            <input matInput formControlName="store_display_name" trim="blur" />
+            <span *ngIf="!basicDetailsForm.get('store_display_name').valid && basicDetailsForm.get('store_display_name').touched" matTooltipClass="downline"
+              matTooltip="This is required Field" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Current Business Category
+               <!-- <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span> -->
+              </mat-label>
+              <mat-select  formControlName="businessCategoryId" [value]="basicDetailsForm.get('businessCategoryId').value">
+                <ng-container *ngIf="detailsList.buisnessCategory">
+                  <mat-option [value]="sellerType.id" *ngFor="let sellerType of detailsList.buisnessCategory.payload">
+                    {{sellerType.businessCategoryName}}</mat-option>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Current Address
+                <!-- <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span> -->
+              </mat-label>
+              <textarea matInput formControlName="store_address" trim="blur"></textarea>
+
+              <span *ngIf="!basicDetailsForm.get('store_address').valid && basicDetailsForm.get('store_address').touched" matTooltipClass="downline"
+               matTooltip="This Field Is Required" aria-label="This field is Required" class="mandatory-alert">
+               <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+            </mat-form-field>
+        </div>
+          
+          <div class="col-sm-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Contact No
+                <!--<span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span> -->
+              </mat-label>
+              <input matInput formControlName="storeContact" trim="blur" />
+              <span *ngIf="!basicDetailsForm.get('storeContact').valid && basicDetailsForm.get('storeContact').touched" matTooltipClass="downline"
+                matTooltip="This is required Field" aria-label="This field is Required" class="mandatory-alert">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+            </mat-form-field>
+          </div>
+
+
+        </div>
+   
+       <div class="row mt-3">
+        <div class="col-sm-6 form-content-body">
+            <div class="offset-1">
+                <div class="upload-image-view" >
+                <img *ngIf="basicDetailsForm.get('store_logo_url') && basicDetailsForm.get('store_logo_url').value && checkExtension(basicDetailsForm.get('store_logo_url').value)!='pdf'"
+                    height="99%" width="99%" [src]="basicDetailsForm.get('store_logo_url').value" />
+                    <img *ngIf="basicDetailsForm.get('logourl') && basicDetailsForm.get('store_logo_url').value && checkExtension(basicDetailsForm.get('store_logo_url').value)=='pdf'"
+                    height="99%" width="99%" src="../../../../../../assets/img/pdf.png" />
+                <br />
+                </div>
+                <a href="javascript:void(0);">  <p style="color:lightseagreen">Current Store Logo</p> </a>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Land Mark
+                <!--<span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span> -->
+              </mat-label>
+              <input matInput formControlName="landmarkName" trim="blur" />
+              <span *ngIf="!basicDetailsForm.get('landmarkName').valid && basicDetailsForm.get('landmarkName').touched" matTooltipClass="downline"
+                matTooltip="This is required Field" aria-label="This field is Required" class="mandatory-alert">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+            </mat-form-field>
+          </div>
+    </div>
+
+
+    <div class="col-12">
+        <div class="border border-primary">
+          <agm-map [scrollwheel]="false" [zoom]="13" [latitude]="map.lat" [longitude]="map.lng" style="height: 310px">
+            <agm-marker [latitude]="map.lat" [longitude]="map.lng" [markerDraggable]="false"></agm-marker>
+          </agm-map>
+        </div>
+      </div>
+
+    </form>
+
+    <ng-template #noDataForApprove> 
+       No Data Pending For Operation!!
+    </ng-template>
+
+</div>
+

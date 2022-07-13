@@ -1,0 +1,46 @@
+<form [formGroup]="newBrandForm" (ngSubmit)="onSubmit()" autocomplete="off">
+    <div class="top-bar box-shadow" style="position: relative;">
+      <div class="d-flex align-items-center">
+        <div class="mr-auto">
+          <h3 class="m-subheader__title">Add Brand Owner</h3>
+        </div>
+        <div class="form-header-btn">
+          <button mat-raised-button class="noshadow top-btn-font" color="primary" [disabled]="isSubmit">
+            <mat-icon>save</mat-icon> Save
+          </button>
+
+          <button  mat-dialog-close mat-raised-button class="noshadow ml-2 top-btn-font" color="primary">
+            <mat-icon>close</mat-icon> Close
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="box-shadow bg-white padding-10">
+      <div class="row">
+        <div class="col-10">
+          <div class="hoz-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Owner Name</mat-label>
+              <input matInput formControlName="brandName" trim=blur
+              [ngClass]="{ 'is-invalid': submitted && f.brandName.errors }"/>
+              <button matTooltip="Check Availability" aria-label="Check Availability" type="button"
+                class="matSuffix-text availability" matSuffix mat-button color="primary"
+                (click)="checkAvailability($event);">
+                <mat-icon>done</mat-icon>
+              </button>
+            </mat-form-field>
+            <div *ngIf="!f.brandName.valid && f.brandName.touched && f.brandName.errors" class="error">
+  
+              <span class="text-danger" *ngIf="f.brandName.errors.required">Required</span>
+              <span class="text-danger" *ngIf="f.brandName.errors.maxlength">Max Length 100 Characters</span>
+  
+            </div>
+            <mat-hint align="start" *ngIf="statusChange()">
+              <span
+                style="color: green;font-size: 12px;margin-top: -7px;display: block;margin-bottom: 7px;">{{ brandNameAvailibilityCheckText }}</span>
+            </mat-hint>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>

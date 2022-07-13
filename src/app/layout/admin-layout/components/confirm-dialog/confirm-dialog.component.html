@@ -1,0 +1,11 @@
+<mat-dialog-content>
+  <h2 mat-dialog-title>
+    Are your sure you want to delete {{ data.payload.name }}
+  </h2>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+  <button class="m-3" mat-flat-button color="primary" (click)="onConfirm()">
+    Yes
+  </button>
+</mat-dialog-actions>

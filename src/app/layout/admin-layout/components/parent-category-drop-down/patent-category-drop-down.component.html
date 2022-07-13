@@ -1,0 +1,14 @@
+<select
+  #parentCategoryDropdown
+  class="form-control"
+  [(ngModel)]="selectionCtrl"
+  (change)="onSelectionChange($event)"
+  [disabled]="disable"
+>
+</select>
+<ul *ngIf="multiSelection">
+  <li *ngFor="let selection of multiSelectArr;let i=index">
+    {{selection.name}}
+    <mat-icon style="cursor: pointer" (click)="deleteSelection(i)" *ngIf="!disable">cancel</mat-icon>
+  </li>
+</ul>

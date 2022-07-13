@@ -1,0 +1,140 @@
+<mat-drawer-container class="order-filter-container" hasBackdrop="true">
+    <mat-drawer #orderFilter position="end" mode="over">
+      <div class="more-filter-header">
+        <h3>Date Filter</h3>
+        <button (click)="orderFilter.close()" mat-mini-fab aria-label="Example icon button with a close icon">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="more-filter-body">
+        <mat-radio-group style="display: flex;flex-direction: column;" color="primary" aria-label="Select an option"
+          [(ngModel)]="selectedDate">
+          <mat-radio-button *ngFor="let list of dateList" [value]="list.value" (change)="orderDateChanged($event)">
+            {{list.name}}</mat-radio-button>
+        </mat-radio-group>
+        <div class="form-header-btn" *ngIf="isCustomDate">
+          <mat-form-field appearance="fill">
+              <mat-label>From Date</mat-label>
+              <input matInput [matDatepicker]="startDate" [(ngModel)]="start_date" (ngModelChange)="changeDate()">
+              <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+              <mat-datepicker #startDate></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+              <mat-label>To Date</mat-label>
+              <input matInput [matDatepicker]="endDate" [(ngModel)]="end_date" (ngModelChange)="changeDate()">
+              <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+              <mat-datepicker #endDate></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <button (click)="clearOrderDate();orderFilter.close();" mat-button>Clear</button>
+      </div>
+    </mat-drawer>
+    <mat-drawer-content>
+      <div class="ndh-order-panel">
+        <h3 style="font-weight: 700 !important; margin-left: 5px;" class="ndh-order-h3">E-com Shipment Orders</h3>
+        <div class="ndh-order-body">
+          <div class="ndh-order-filter">
+            <div class="row-container" style="float: left; width: 100%;">
+                <div class="auto-col">
+                    <mat-form-field class="filters-order-input" appearance="outline">
+                        <input matInput placeholder="Search by Order No" [(ngModel)]="orderid" (keyup)="searchById()">
+                        <mat-icon matSuffix (click)="searchById()" style="width: 35px;cursor: pointer;">search</mat-icon>
+                    </mat-form-field>
+                </div>
+              <div class="auto-col">
+                <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+                  <mat-button-toggle [matMenuTriggerFor]="menuStatus" value="status">Status <mat-icon>arrow_drop_down
+                    </mat-icon>
+                  </mat-button-toggle>
+                  <mat-button-toggle value="filters" (click)="orderFilter.toggle()">Date Filter</mat-button-toggle>
+                </mat-button-toggle-group>
+                <mat-menu #menuStatus="matMenu">
+                  <mat-radio-group class="order-radio-group"
+                    style="display: flex;flex-direction: column;padding: 10px 15px;padding-bottom: 0px;" color="primary"
+                    (click)="$event.stopPropagation();" [(ngModel)]="selectedStatus" aria-label="Select an option">
+                    <mat-radio-button value="ACCEPTED" (change)="orderStatusChanged('ACCEPTED')">ACCEPTED
+                    </mat-radio-button>
+                    <mat-radio-button value="CANCELLED" (change)="orderStatusChanged('CANCELLED')">CANCELLED
+                    </mat-radio-button>
+                  </mat-radio-group>
+                  <button (click)="clearOrderstatus();" mat-button>Clear</button>
+                </mat-menu>
+              </div>
+            </div>
+            <div class="form-header-btn" style="float: right;">
+              <mat-icon (click)="searchPendingOrder()" style="margin-right: 20px; cursor: pointer; margin-top: 18px;">
+                cached</mat-icon>
+            </div>
+          </div>
+          <div class="ndh-order-table">
+            <table mat-table [dataSource]="rowData" style="border: 0px solid rgba(0, 0, 0, 0.12);">
+              <ng-container matColumnDef="subOrderDate">
+                <th mat-header-cell *matHeaderCellDef> Shipment Date </th>
+                <td mat-cell *matCellDef="let element"> {{element.subOrderDate | date:'dd/MM/yy'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="trackingId">
+                <th mat-header-cell *matHeaderCellDef> AWB No. </th>
+                <td mat-cell *matCellDef="let element; let i = index;"><a href="javascript:void(0)" (click)="onActionBtnClickNew(element.orderId, element.deliveryType, i)">{{element.trackingId}}</a> </td>
+              </ng-container>
+
+              <ng-container matColumnDef="courrier">
+                <th mat-header-cell *matHeaderCellDef> Logistic Company </th>
+                <td mat-cell *matCellDef="let element"> {{element.courrier}} </td>
+              </ng-container>  
+
+              <ng-container matColumnDef="shippingChargeTotal">
+                <th mat-header-cell *matHeaderCellDef> Shipping Charge </th>
+                <td mat-cell *matCellDef="let element"> ₹{{element.shippingChargeTotal}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="paymentMethod">
+                <th mat-header-cell *matHeaderCellDef> Payment Method </th>
+                <td mat-cell *matCellDef="let element"> {{element.paymentMethod}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Order Status </th>
+                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+              </ng-container>  
+              
+              <ng-container matColumnDef="orderNumber">
+                <th mat-header-cell *matHeaderCellDef> Order No </th>
+                <td mat-cell *matCellDef="let element; let i = index;"> <a href="javascript:void(0)" (click)="onActionBtnClickNew(element.orderId, element.deliveryType, i)">{{element.orderNumber}}</a> </td>
+              </ng-container>
+
+              <ng-container matColumnDef="shipmentDetails">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element; let i = index;" >
+                    <button mat-flat-button matTooltip="View" aria-label="View" class="btn-data btn-sm-data" (click)="onActionBtnClickNew(element.orderId, element.deliveryType, i)">
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                </td>
+              </ng-container>
+
+              <!-- <ng-container matColumnDef="orderStatus">
+                <th mat-header-cell *matHeaderCellDef> Shipment Status </th>
+                <td mat-cell *matCellDef="let element">
+                  <mat-form-field appearance="outline" style="width: 120px;">
+                    <mat-label></mat-label>
+                    <mat-select [(value)]="element['orderStatus']" [disabled]="element.orderStatus=='CANCELLED'" (selectionChange)="forseCancelShipment(element.orderId)">
+                      <mat-option value="ACCEPTED">ACCEPTED</mat-option>
+                      <mat-option value="CANCELLED">CANCELLED</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div *ngIf="element.cancellationReason !=null" style="padding: 10px 0px; font-size: 12px;"><span style="font-weight: bold;">Reason:</span> {{element.cancellationReason}}</div>
+                </td>
+              </ng-container> -->
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+  
+            <mat-paginator style-paginator [length]="totalRecords" pageSize="{{perPage}}"
+              [pageSizeOptions]="[5, 10, 20, 50, 100]" (page)="onPaginateChange($event)" showFirstLastButtons>
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>

@@ -1,0 +1,31 @@
+<div>
+    <p>Delivery fee breakup for this order</p>
+    <table >
+        <tbody>
+            <tr>
+                <td style="width: 60%;text-align: left;">
+                    <p>Total Delivery Charge</p>
+                </td>
+                <td style="width: 40%;text-align: right;">
+                    <p>₹{{ chargeDetails.actual_delivery_charge }}</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 60%;text-align: left;">
+                    <p>Seller Discount</p>
+                </td>
+                <td style="width: 40%;text-align: right;">
+                    <p>-₹{{ chargeDetails.merchant_delivery_discount }}</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 60%;text-align: left;">
+                    <p>Delivery Charge</p>
+                </td>
+                <td style="width: 40%;text-align: right;">
+                    <p>₹{{ chargeDetails.net_delivery_charge }}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>                      
+</div>

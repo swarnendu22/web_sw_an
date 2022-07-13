@@ -1,0 +1,42 @@
+<div style="position: relative;">
+    <div>
+        <div style="position: absolute;right: -10px;top: -10px;">
+            <button mat-mini-fab color="warn" mat-dialog-close style="float: right;">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <h5>Category List</h5>
+    </div>
+    <div class="master-caterory-filter">
+        <div class="filter-area-box" style="padding: 15px 0px;">
+            <mat-form-field appearance="outline">
+                <mat-label>Search Category</mat-label>
+                <input matInput [(ngModel)]="categoryName" (keyup)="catListByName()">
+                <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+            <mat-tree [dataSource]="dataSource" class="tree-item-box" [treeControl]="treeControl">
+                <mat-tree-node matTreeNodePaddingIndent="10" class="tree-item single-tree" *matTreeNodeDef="let node"
+                    matTreeNodePadding>
+                    <button mat-icon-button disabled></button>
+                    <div class="product-cat-name" (click)="selectCat(node.path, node.id, node.ancestry)">
+                        <p style="margin-left: 10px;" class="single-item">{{node.name}}</p>
+                        <mat-icon>chevron_right</mat-icon>
+                    </div>
+                </mat-tree-node>
+                <mat-tree-node matTreeNodePaddingIndent="10" *matTreeNodeDef="let node;when: hasChild" class="tree-item"
+                    matTreeNodePadding>
+                    <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+                        <mat-icon class="mat-icon-rtl-mirror">
+                            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                        </mat-icon>
+                    </button>
+                    <div class="product-cat-name" matTreeNodeToggle>
+                        <img src="https://ndh.imgix.net/ndh-assets/categories-images/{{node.id}}.png"
+                            (error)="changeSource($event)" />
+                        <p >{{node.name}}</p>
+                    </div>
+                </mat-tree-node>
+            </mat-tree>
+        </div>
+    </div>
+</div>

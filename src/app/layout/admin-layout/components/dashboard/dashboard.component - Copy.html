@@ -1,0 +1,192 @@
+<div class="ndh-order-panel">
+  <div class="ndh-order-body">
+    <div class="row">
+      <div class="main-content">
+        <div class="section__content section__content--p30">
+          <div class="container-fluid xs-container">
+            <div class="row m-t-25 rm-margin">
+              <div class="col-sm-12 col-lg-12 col-xs-12">
+                <h3 class="ndh-order-h3">Store</h3>
+              </div>
+              <div class="col-sm-6 col-4 col-lg-4">
+                <a href="javascript:void(0);" routerLink="/merchant/manage-pending-merchant">
+                    <div class="overview-item overview-item--c4">
+                        <div class="overview__inner">
+                          <span class="overview-box">
+                            <span class="text">
+                              <span>PENDING STORES</span>
+                              <h2 [CountTo]="pendingCount" [from]="0" [duration]="1"></h2>
+                            </span>
+                          </span>
+                          <span class="icon_custom">
+                            <mat-icon fontSet="material-icons-outlined">store</mat-icon>
+                          </span>
+                        </div>
+                      </div>
+                </a>
+              </div>
+              <div class="col-sm-6 col-4 col-lg-4">
+                <a href="javascript:void(0);" routerLink="/merchant/manage-active-merchant">
+                    <div class="overview-item overview-item--c2">
+                    <div class="overview__inner">
+                        <span class="overview-box">
+                        <span class="text">
+                            <span>LIVE STORES</span>
+                            <h2 [CountTo]="approvedCount" [from]="0" [duration]="1"></h2>
+                        </span>
+                        </span>
+                        <span class="icon_custom">
+                        <mat-icon fontSet="material-icons-outlined">store</mat-icon>
+                        </span>
+                    </div>
+                    </div>
+                </a>
+              </div>
+              <div class="col-sm-6 col-4 col-lg-4">
+                <a href="javascript:void(0);" routerLink="/merchant/manage-rejected-merchant">
+                    <div class="overview-item overview-item--c1">
+                    <div class="overview__inner">
+                        <span class="overview-box">
+                        <span class="text">
+                            <span>INACTIVE STORES</span>
+                            <h2 [CountTo]="approveNoProdCount" [from]="0" [duration]="1"></h2>
+                        </span>
+                        </span>
+                        <span class="icon_custom">
+                        <mat-icon fontSet="material-icons-outlined">store</mat-icon>
+                        </span>
+                    </div>
+                    </div>
+                </a>
+              </div>
+            </div>
+
+            <div class="row m-t-25 rm-margin">
+              <div class="col-sm-12 col-lg-12 col-xs-12">
+                <h3 class="ndh-order-h3">Products</h3>
+              </div>
+              <div class="col-sm-6 col-4 col-lg-4">
+                <a href="javascript:void(0);" routerLink="/catalog/manage-master-catalog">
+                    <div class="overview-item overview-item--c2">
+                    <div class="overview__inner">
+                        <span class="overview-box">
+                        <span class="text">
+                            <span>ACTIVE PRODUCTS</span>
+                            <h2 [CountTo]="activeCount" [from]="0" [duration]="1"></h2>
+                        </span>
+                        </span>
+                        <span class="icon_custom">
+                        <mat-icon fontSet="material-icons-outlined">shopping_bag</mat-icon>
+                        </span>
+                    </div>
+                    </div>
+                </a>
+              </div>
+              <div class="col-sm-6 col-4 col-lg-4">
+                <div class="overview-item overview-item--c1">
+                  <div class="overview__inner">
+                    <span class="overview-box">
+                      <span class="text">
+                        <span>OUT OF STOCK</span>
+                        <h2 [CountTo]="outOfStockCount" [from]="0" [duration]="1"></h2>
+                      </span>
+                    </span>
+                    <span class="icon_custom">
+                      <mat-icon fontSet="material-icons-outlined">shopping_bag</mat-icon>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-4 col-lg-4">
+                <a href="javascript:void(0);" routerLink="/catalog/store-pending-products">
+                    <div class="overview-item overview-item--c4">
+                    <div class="overview__inner">
+                        <span class="overview-box">
+                        <span class="text">
+                            <span>PENDING PRODUCTS</span>
+                            <h2 [CountTo]="pendingProductCount" [from]="0" [duration]="1"></h2>
+                        </span>
+                        </span>
+                        <span class="icon_custom">
+                        <mat-icon fontSet="material-icons-outlined">shopping_bag</mat-icon>
+                        </span>
+                    </div>
+                    </div>
+                </a>
+              </div>
+            </div>
+
+            <div class="row tb-margin">
+              <div class="col-sm-6 col-12">
+                <div class="business-chart">
+                  <div class="vertical-rotate">
+                    <p>% Completed</p>
+                  </div>
+                  <canvas baseChart [datasets]="sBusinessChartData" [labels]="sBusinessChartLabels" [options]="sBusinessChartOptions" [plugins]="sBusinessChartPlugins"
+                    [legend]="sBusinessChartLegend" [colors]="sBusinessColors" [chartType]="sBusinessChartType">
+                  </canvas>
+                </div>
+              </div>
+              <div class="col-sm-6 col-12">
+                <div class="order-dashboard-report">
+                  <!-- <h1>Order Report</h1> -->
+                  <div class="order-dashboard-report-box">
+                    <div class="d-flex justify-content-center">
+                      <div class="amount">
+                        <h4>Today</h4>
+                        <h2>{{dailyOrders}}</h2>
+                      </div>
+                      <div class="money">
+                        <h4>{{todayDate | date}}</h4>
+                        <h2>₹{{dailyTotalAmt}}</h2>
+                      </div>
+                    </div>
+                    <div class="report-box-label">
+                      <label class="pending"><span>Pending</span> 10</label>
+                      <label class="completed"><span>Completed</span> 10</label>
+                      <label class="cancelled"><span>Cancelled</span> 10</label>
+                    </div>
+                  </div>
+                  <div class="order-dashboard-report-box">
+                    <div class="d-flex justify-content-center">
+                      <div class="amount">
+                        <h4>This Week</h4>
+                        <h2>{{w_orders}}</h2>
+                      </div>
+                      <div class="money">
+                        <h4>{{week_date | date}} - {{todayDate | date}}</h4>
+                        <h2>₹{{w_totalamt}}</h2>
+                      </div>
+                    </div>
+                    <div class="report-box-label">
+                      <label class="pending"><span>Pending</span> 10</label>
+                      <label class="completed"><span>Completed</span> 10</label>
+                      <label class="cancelled"><span>Cancelled</span> 10</label>
+                    </div>
+                  </div>
+                  <div class="order-dashboard-report-box">
+                    <div class="d-flex justify-content-center">
+                      <div class="amount">
+                        <h4>This Month</h4>
+                        <h2>{{m_orders}}</h2>
+                      </div>
+                      <div class="money">
+                        <h4>{{month_date | date}} - {{todayDate | date}}</h4>
+                        <h2>₹{{m_totalamt}}</h2>
+                      </div>
+                    </div>
+                    <div class="report-box-label">
+                      <label class="pending"><span>Pending</span> 10</label>
+                      <label class="completed"><span>Completed</span> 10</label>
+                      <label class="cancelled"><span>Cancelled</span> 10</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

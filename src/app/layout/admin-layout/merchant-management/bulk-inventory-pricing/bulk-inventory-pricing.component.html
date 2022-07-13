@@ -1,0 +1,30 @@
+<div class="tab-area-content p-0">
+    <div class="loading" *ngIf="loading">
+      <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+    <div class="top-bar box-shadow">
+      <div class="d-flex align-items-center">
+        <div class="mr-auto">
+          <h3 class="m-subheader__title">Bulk File List </h3>
+        </div>
+        <div class="form-header-btn">
+  
+          <button type="button" (keydown.enter)="$event.preventDefault()" (click)="download($event)" mat-raised-button class="top-btn-font mr-2" color="primary">
+            <mat-icon fontSet="material-icons-outlined">cloud_download</mat-icon> Download Bulk Price
+          </button>
+  
+          <button type="button" (click)="uploadContentSheet()" mat-raised-button class="top-btn-font" color="primary">
+            <mat-icon fontSet="material-icons-outlined">cloud_upload</mat-icon> Upload Bulk Price
+          </button>
+  
+        </div>
+      </div>
+    </div>
+  
+    <div class="bg-white" style="height: calc(100vh - 220px)">
+      <ag-grid-angular style="width:100%; height: 100%" class="ag-theme-balham" [rowData]="rowData" [defaultColDef]="defaultColDef"
+        [columnDefs]="columnDefs" (firstDataRendered)="onFirstDataRendered($event)" [pagination]="true" (gridReady)="onGridReady($event)"
+        [floatingFilter]="true" [enableFilter]="true" (gridSizeChanged)="onGridSizeChanged($event)">
+      </ag-grid-angular>
+    </div>
+  </div>

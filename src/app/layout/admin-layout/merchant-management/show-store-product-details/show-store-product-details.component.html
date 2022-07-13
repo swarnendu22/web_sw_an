@@ -1,0 +1,87 @@
+<div class="show-store-product">
+	<div class="store-details-cont">
+		<div class="store-cover store-cover-blur">
+			<div class="cover-content">
+				<img *ngIf="store_cover_image" [src]="store_cover_image" />
+				<!-- to be checked again -->
+				<div class="store-rating-cont d-flex justfy-space-btw">
+					<div class="store d-flex align-center">
+						<div class="store-logo">
+							<img *ngIf="store_logo" [src]="store_logo" />
+						</div>
+						<div class="store-name-address">
+							<h1>{{store_display_name}}</h1>
+							<p>{{store_address}}</p>
+						</div>
+					</div>
+					<div class="rate-reviews">
+						<div class="store-rate" *ngIf="store_rating">{{store_rating.toFixed(2)}}</div>
+						<div class="store-review">
+							<h6>{{store_review}}</h6>
+							<p>Reviews</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="open-follow">
+			<div class="open-now d-flex align-center" *ngIf="storeOpenDetails && is_live==true">
+				<i>{{ storeOpenDetails.isOpen==true?'Open now':'Closed now'}} </i>
+				<span>-</span>{{storeOpenDetails.openTime}} - {{storeOpenDetails.closeTime}}</div>
+			<div class="open-now d-flex align-center" *ngIf="is_live==false">
+				<i> Store is closed for ordering</i>
+			</div>
+			<div class="d-flex justfy-space-btw storepick-follow">
+				<div class="store-pick-home-delivery">
+					<p>
+						<mat-icon>store</mat-icon> Store Pickup {{storePick}}</p>
+					<p>
+						<img src="../../../../../assets/img/delivery-bike.svg" />{{deliveryText}}</p>
+					<!-- Have to check-->
+					<p>
+						<mat-icon>phone</mat-icon> {{store_contact}} </p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="search-filter">
+		<div class="search-store-product">
+			<mat-form-field appearance="outline">
+				<input matInput placeholder="Search for Product" [(ngModel)]="searchTerm" (keyup)="searchProduct($event)">
+				<mat-icon matPrefix>search</mat-icon>
+			</mat-form-field>
+		</div>
+		<div class="category-filter store-category-filter">
+			<ul>
+				<li class="{{selectedCategoryId==null?'active':''}}" (click)="categoryFilter('',null)">All</li>
+				<li (click)="categoryFilter(category.name,category.id)" class="{{selectedCategoryId==category.id?'active':''}}" [value]="category.id"
+				 *ngFor="let category Of productCategories">{{category.name}}</li>
+			</ul>
+		</div>
+	</div>
+	<div class="store-product-list" id="store-details-product-list" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
+	 (scrolled)="showMore()" style="height: calc(100vh - 180px);
+			overflow-y: scroll;" [scrollWindow]="false" id="containerDivFilter">
+		<ul>
+			<li *ngFor="let product of productList">
+				<div class="product-img">
+					<img src="{{product._source.thumbnail_image}}?w=50&h=50" />
+				</div>
+				<div class="product-details">
+					<h1>{{product._source.product_name}}</h1>
+					<p class="product-description">{{product._source.product_short_description}}</p>
+					<div class="desc-add">
+						<div class="p-desc">
+							<div class="product-price">
+								<h4>₹{{product._source.selling_price}}</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="view-button">
+					<button mat-raised-button color="primary" (click)="openProductDialog(product)">View</button>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>

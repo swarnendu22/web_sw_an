@@ -1,0 +1,10 @@
+<ng-container *ngIf="imageUrl">
+    <span class="cateImageMain" (click)="editImage()">
+        <img [src]="imageUrl" class="cateImage" (error) ="changeSource($event)" alt="">
+        <mat-icon class="mat_edit">edit</mat-icon>
+    </span>
+</ng-container>
+
+<ng-container *ngIf="!imageUrl">
+    'No Image Found'
+</ng-container>

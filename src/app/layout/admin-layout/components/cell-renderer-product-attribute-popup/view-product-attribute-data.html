@@ -1,0 +1,123 @@
+<form autocomplete="off">
+  <ng-container *ngIf="attributePayload ? attributePayload.length > 0 : false">
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+    <h2 mat-dialog-title>
+      PRODUCT ATTRIBUTE DETAILS
+    </h2>
+    <span align="end"> Total Records: {{ attributePayload.length }} </span>
+    <mat-dialog-content>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Is Default</th>
+            <th>Attribute Value</th>
+            <th>Swatch Color</th>
+            <th>Position</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let attrValue of attributePayload; let i = index">
+            <td>
+              <mat-radio-button
+                [value]="0"
+                [checked]="attrValue['default1']"
+                [disabled]="true"
+              ></mat-radio-button>
+            </td>
+
+            <td>
+              <span>{{ attrValue['attributeValue'] }}</span>
+            </td>
+            <td>
+              <span>{{ attrValue['swatchColorCode'] }}</span>
+            </td>
+            <td>
+              <span>{{ attrValue['position'] }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-dialog-content>
+  </ng-container>
+  <ng-container *ngIf="attributePayload == null">
+    <div class="loader-spiner">
+      <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="attributePayload ? attributePayload.length == 0 : false">
+    <span>No Product Attribute Values are found</span>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+  </ng-container>
+</form>
+
+<!-- <div class="row">
+  <div class="col">
+    <span>Attribute Name</span>
+    <span class="m-2" style="color: grey">{{
+      data.attributePayload['name']
+    }}</span>
+    <hr />
+    <span>Type</span>
+    <span class="m-2" style="color: grey">{{
+      data.attributePayload['type']
+    }}</span>
+    <hr />
+    <span>Status</span>
+    <span class="m-2" style="color: grey">{{
+      data.attributePayload['status']
+    }}</span>
+    <hr />
+    <span>Mandatory</span>
+    <span class="m-2" style="color: grey">{{
+      data.attributePayload['option'] == 'N' ? 'NO' : 'YES'
+    }}</span>
+    <hr />
+    <span>Max Length</span>
+    <span class="m-2" style="color: grey">{{
+      data.attributePayload['maxLength  ']
+    }}</span>
+    <hr />
+    <span>Status</span>
+    <span class="m-2" style="color: grey">{{
+      data.attributePayload['status']
+    }}</span>
+    <hr />
+  </div>
+  <hr />
+  <div class="col-6">
+    <span>Variant</span>
+    <span class="m-2" style="color: grey">{{
+      data.attributePayload['isVariant'] == true ? 'Yes' :'No'
+    }}</span>
+    <hr />
+    <span>Visible On Store</span>
+    <span class="m-2" style="color: grey">{{
+      data.attributePayload['isVisibleOnFront'] == true ? 'Yes' :'No'
+    }}</span>
+    <hr />
+    <span>Visible On List</span>
+    <span class="m-2" style="color: grey">{{
+      data.attributePayload['isVisibleOnList'] == true ? 'Yes' :'No'
+    }}</span>
+    <hr />
+    <span>Searchable</span>
+    <span class="m-2" style="color: grey">{{
+      data.attributePayload['searchable'] == "1" ? 'Yes' :'No'
+    }}</span>
+    <hr />
+    <span>Filterable</span>
+    <span class="m-2" style="color: grey">{{
+      data.attributePayload['filterable'] == true ? 'Yes' :'No'
+    }}</span>
+    <hr />
+    <span>Promo Rules</span>
+    <span class="m-2" style="color: grey">{{
+      data.attributePayload['promoRules'] == true ? 'Yes' :'No'
+    }}</span>
+    <hr />
+  </div>
+</div> -->

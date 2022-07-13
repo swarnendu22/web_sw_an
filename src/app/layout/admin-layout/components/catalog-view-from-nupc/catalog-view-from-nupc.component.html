@@ -1,0 +1,3 @@
+<a *ngIf="!params.colDef.viewAction" href="javascript:void(0);" (click)="invokeParentMethod()">{{params.data[1]}}</a>
+<!-- Resolved according to NDH-11 issue raised from Jira -->
+<a *ngIf="params.colDef.viewAction" mat-flat-button color="primary" matTooltip="View" aria-label="View" class="btn-data btn-sm-data" (click)="invokeParentMethod()"><mat-icon>visibility</mat-icon></a>

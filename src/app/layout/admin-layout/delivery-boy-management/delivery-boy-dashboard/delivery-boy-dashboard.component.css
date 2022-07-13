@@ -1,0 +1,23 @@
+.de-dashboard {
+    display: flex;
+    flex-direction: row;
+   	height: calc(100vh - 90px);
+    align-items: flex-start;
+    align-content: flex-start;
+}
+.side-de-dashboard {
+	width: 250px;
+	padding: 15px;
+	background: white;
+}
+.side-de-dashboard .mat-button-toggle-group {
+	margin-bottom: 15px;
+}
+.side-de-dashboard .mat-button-toggle {
+	width: 50%;
+}
+.content-de-dashboard {
+	flex-grow: 1;
+    padding-left: 15px;
+    align-self:stretch;
+}

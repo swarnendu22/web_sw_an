@@ -1,0 +1,1456 @@
+<div class="loading" *ngIf="loading">
+	<mat-spinner [diameter]="50"></mat-spinner>
+</div>
+<form [formGroup]="driverDetailsForm">
+	<div class="driver-details-view">
+		<div class="d-flex justify-content-between align-items-flex-end">
+			<!-- <h1>Driver Details</h1> -->
+			<div class="field-action-btn mb-2" *ngIf="status !== 'PENDING'">
+
+				<!-- START FROM HERE -->
+				<!-- <button mat-raised-button class="mr-2">
+					<mat-icon>create</mat-icon> Edit
+				</button> -->
+
+				<!-- END HERE -->
+
+			</div>
+		</div>
+		<div class="driver-details-view-area">
+			<div class="hoz-form">
+				<h4>Basic Details</h4>
+				<div class="row mb-3">
+					<div class="col-md-3">
+						<div class="driver-profile-area">
+							<div class="driver-profile-img">
+								<img [src]="photoUrl">
+								<div class="btnon-hover">
+									<div class="change-img">
+										<input accept="image/*" type="file" (change)="onSelectFile($event,'photo_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image">
+											<mat-icon>edit</mat-icon>
+										</button>
+									</div>
+									<button type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('photo_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="d-flex delivery-boy-status justify-content-center align-items-center mt-3">
+							<p class="mb-0 mr-2">Delivery Boy:</p>
+							<mat-slide-toggle color="primary">Inactive</mat-slide-toggle>
+						</div>
+					</div>
+					<div class="col-md-9">
+						<div class="row">
+							<div class="col-md-6">
+								<mat-form-field appearance="outline">
+									<!-- [ngClass]="{ 'ng-invalid ng-touched': !driverDetailsForm.get('name').valid }" -->
+									<mat-label>Name</mat-label>
+									<input type="text" matInput formControlName="name" trim="blur">
+									<span [tooltip]="name"
+										*ngIf="!driverDetailsForm.get('name').valid && driverDetailsForm.get('name').touched"
+										class="mandatory-alert" content-type="template">
+										<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+									</span>
+								</mat-form-field>
+								<ng-template #name>
+									<div>
+										<p class="mb-1" *ngIf="driverDetailsForm.get('name').errors.required">
+											Required</p>
+									</div>
+								</ng-template>
+							</div>
+							<div class="col-md-6">
+								<mat-form-field appearance="outline">
+									<mat-label>Phone</mat-label>
+									<input type="number" min="0" minlength="10" maxlength="10" matInput trim="blur"
+										formControlName="phone">
+									<span [tooltip]="phone"
+										*ngIf="!driverDetailsForm.get('phone').valid && driverDetailsForm.get('phone').touched"
+										class="mandatory-alert" content-type="template">
+										<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+									</span>
+								</mat-form-field>
+								<ng-template #phone>
+									<div>
+										<p class="mb-1" *ngIf="driverDetailsForm.get('phone').errors.required">Required
+										</p>
+									</div>
+								</ng-template>
+							</div>
+							<div class="col-md-6">
+								<mat-form-field appearance="outline">
+									<mat-label>Email</mat-label>
+									<input type="email" matInput formControlName="email" trim="blur" appBlockCopyPaste>
+									<span [tooltip]="email"
+										*ngIf="!driverDetailsForm.get('email').valid && driverDetailsForm.get('email').touched"
+										class="mandatory-alert" content-type="template">
+										<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+									</span>
+								</mat-form-field>
+								<ng-template #email>
+									<div>
+										<p class="mb-1" *ngIf="driverDetailsForm.get('email').errors.required">Required
+										</p>
+									</div>
+								</ng-template>
+							</div>
+							<div class="col-md-6">
+								<mat-form-field class="forDate" appearance="outline">
+									<mat-label>Date of Birth</mat-label>
+									<input matInput [matDatepicker]="pickerdate" [max]="todayDate" formControlName="dob"
+										appBlockTypeInput>
+									<mat-datepicker-toggle matSuffix [for]="pickerdate"></mat-datepicker-toggle>
+									<mat-datepicker #pickerdate></mat-datepicker>
+									<span [tooltip]="dob"
+										*ngIf="!driverDetailsForm.get('dob').valid && driverDetailsForm.get('dob').touched"
+										class="mandatory-alert" content-type="template">
+										<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+									</span>
+								</mat-form-field>
+								<ng-template #dob>
+									<div>
+										<p class="mb-1" *ngIf="driverDetailsForm.get('dob').errors.required">Required
+										</p>
+									</div>
+								</ng-template>
+							</div>
+							<div class="col-md-4">
+								<p class="mb-1">Gender: </p>
+								<mat-radio-group formControlName="gender">
+									<mat-radio-button checked color="primary" value="MALE">Male</mat-radio-button>
+									<mat-radio-button color="primary" value="FEMALE">Female</mat-radio-button>
+									<mat-radio-button color="primary" value="OTHER">Other</mat-radio-button>
+								</mat-radio-group>
+								<span [tooltip]="gender"
+									*ngIf="!driverDetailsForm.get('gender').valid && driverDetailsForm.get('gender').touched"
+									class="mandatory-alert" content-type="template">
+									<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+								</span>
+								<ng-template #gender>
+									<div>
+										<p class="mb-1" *ngIf="driverDetailsForm.get('gender').errors.required">Required
+										</p>
+									</div>
+								</ng-template>
+							</div>
+							<div class="col-md-2">
+								<mat-form-field appearance="outline">
+									<mat-label>Status</mat-label>
+									<mat-select formControlName="status"
+										[ngClass]="{ 'ng-invalid ng-touched': !driverDetailsForm.get('status').valid }">
+										<mat-option value="REJECTED">REJECTED</mat-option>
+										<mat-option value="PENDING">PENDING</mat-option>
+									</mat-select>
+									<span [tooltip]="status"
+										*ngIf="!driverDetailsForm.get('status').valid && driverDetailsForm.get('status').touched"
+										class="mandatory-alert" content-type="template">
+										<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+									</span>
+								</mat-form-field>
+								<ng-template #status>
+									<div>
+										<p class="mb-1" *ngIf="driverDetailsForm.get('status').errors.required">
+											Required</p>
+									</div>
+								</ng-template>
+							</div>
+
+							<div class="col-md-6">
+								<mat-form-field appearance="outline">
+									<mat-label>Vehicle Type</mat-label>
+									<mat-select formControlName="vehicle_type"
+										(selectionChange)="vehicleType($event.value)">
+										<mat-option value="Bicycle">Bicycle</mat-option>
+										<mat-option value="Two Wheeler">Two Wheeler</mat-option>
+										<mat-option value="eRiksa">eRickshaw</mat-option>
+										<mat-option value="Four Wheeler">Four Wheeler</mat-option>
+									</mat-select>
+									<span [tooltip]="vehicle_type"
+										*ngIf="!driverDetailsForm.get('vehicle_type').valid && driverDetailsForm.get('vehicle_type').touched"
+										class="mandatory-alert" content-type="template">
+										<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+									</span>
+								</mat-form-field>
+								<ng-template #vehicle_type>
+									<div>
+										<p class="mb-1" *ngIf="driverDetailsForm.get('vehicle_type').errors.required">
+											Required</p>
+									</div>
+								</ng-template>
+							</div>
+						</div>
+					</div>
+				</div>
+				<h4>Address Details</h4>
+				<div class="row mb-3">
+					<div class="col-md-6">
+						<h5>Present Address</h5>
+						<mat-form-field appearance="outline">
+							<mat-label>Address</mat-label>
+							<input matInput formControlName="pre_address1" trim="blur">
+							<span [tooltip]="pre_address1"
+								*ngIf="!driverDetailsForm.get('pre_address1').valid && driverDetailsForm.get('pre_address1').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #pre_address1>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pre_address1').errors.required">Required
+								</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Address Type</mat-label>
+							<mat-select formControlName="pre_address_type">
+								<mat-option value="1">Home</mat-option>
+								<mat-option value="2">Work</mat-option>
+								<mat-option value="3">Hotel</mat-option>
+								<mat-option value="4">Other</mat-option>
+							</mat-select>
+							<span [tooltip]="pre_address_type"
+								*ngIf="!driverDetailsForm.get('pre_address_type').valid && driverDetailsForm.get('pre_address_type').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #pre_address_type>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pre_address_type').errors.required">
+									Required</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Land mark</mat-label>
+							<input matInput formControlName="pre_address2" trim="blur">
+							<span [tooltip]="pre_address2"
+								*ngIf="!driverDetailsForm.get('pre_address2').valid && driverDetailsForm.get('pre_address2').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #pre_address2>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pre_address2').errors.required">Required
+								</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>City</mat-label>
+							<input matInput formControlName="pre_city" trim="blur">
+							<span [tooltip]="pre_city"
+								*ngIf="!driverDetailsForm.get('pre_city').valid && driverDetailsForm.get('pre_city').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #pre_city>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pre_city').errors.required">Required</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>District</mat-label>
+							<input matInput formControlName="pre_city" trim="blur">
+							<span [tooltip]="pre_city"
+								*ngIf="!driverDetailsForm.get('pre_city').valid && driverDetailsForm.get('pre_city').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #pre_city>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pre_city').errors.required">Required</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Zipcode</mat-label>
+							<input matInput formControlName="pre_zipcode" trim="blur">
+							<span [tooltip]="pre_zipcode"
+								*ngIf="!driverDetailsForm.get('pre_zipcode').valid && driverDetailsForm.get('pre_zipcode').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #pre_zipcode>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pre_zipcode').errors.required">Required
+								</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>State</mat-label>
+							<input matInput formControlName="pre_state_name" trim="blur">
+							<span [tooltip]="pre_state_name"
+								*ngIf="!driverDetailsForm.get('pre_state_name').valid && driverDetailsForm.get('pre_state_name').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #pre_state_name>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pre_state_name').errors.required">Required
+								</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Country Code</mat-label>
+							<input matInput formControlName="pre_country_code" trim="blur">
+							<span [tooltip]="pre_country_code"
+								*ngIf="!driverDetailsForm.get('pre_country_code').valid && driverDetailsForm.get('pre_country_code').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #pre_country_code>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pre_country_code').errors.required">
+									Required</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Country Name</mat-label>
+							<input matInput formControlName="pre_country_name" trim="blur">
+							<span [tooltip]="pre_country_name"
+								*ngIf="!driverDetailsForm.get('pre_country_name').valid && driverDetailsForm.get('pre_country_name').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #pre_country_name>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pre_country_name').errors.required">
+									Required</p>
+							</div>
+						</ng-template>
+
+						<div class="driver-uploaded-document mb-0">
+							<label>Address Proof</label>
+							<div class="driver-document-file">
+								<!-- <a href="javascript:void(0);">document_file_name.png</a> -->
+								<a href="javascript:void(0);"
+									(click)="openDocument('pre_address_proof_file_url')">{{ driverDetailsForm.get('pre_address_proof_file_url').value  | splitImageNamefromURL}}</a>
+
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('pre_address_proof_file_url').value"
+										type="button" (click)="openDocument('pre_address_proof_file_url')"
+										style="margin-right: 15px;" mat-mini-fab color="secondary"
+										aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'pre_address_proof_file_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'pre_address_proof_file_url')">
+											<mat-icon *ngIf="driverDetailsForm.get('pre_address_proof_file_url').value">
+												edit</mat-icon>
+											<mat-icon
+												*ngIf="!driverDetailsForm.get('pre_address_proof_file_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('pre_address_proof_file_url').value"
+										type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('pre_address_proof_file_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="driver-document-img">
+							<img src="../../../../../assets/img/document-img.png">
+							<div class="btnon-hover">
+								<button (click)="openDocument()" class="mr-3" mat-mini-fab aria-label="View Image">
+						          <mat-icon>remove_red_eye</mat-icon>
+						        </button>
+				    			<div class="change-img">
+				    				<input accept="image/*" type="file">
+				    				<button mat-mini-fab color="primary" aria-label="Change Image">
+							          <mat-icon>edit</mat-icon>
+							        </button>
+				    			</div>
+				    			<button mat-mini-fab color="warn" aria-label="Delete Image">
+						          <mat-icon>delete</mat-icon>
+						        </button>
+				    		</div>
+						</div> -->
+					</div>
+					<div class="col-md-6">
+						<h5 class="d-flex align-items-center">Permanent Address <span class="ml-3">
+								<!-- <mat-checkbox color="primary">Same as present address</mat-checkbox> -->
+							</span></h5>
+						<mat-form-field appearance="outline">
+							<mat-label>Address</mat-label>
+							<input matInput formControlName="per_address1" trim="blur">
+							<span [tooltip]="per_address1"
+								*ngIf="!driverDetailsForm.get('per_address1').valid && driverDetailsForm.get('per_address1').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #per_address1>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('per_address1').errors.required">Required
+								</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Address Type</mat-label>
+							<mat-select formControlName="per_address_type" trim="blur">
+								<mat-option value="1">Home</mat-option>
+								<mat-option value="2">Work</mat-option>
+								<mat-option value="3">Hotel</mat-option>
+								<mat-option value="4">Other</mat-option>
+							</mat-select>
+							<span [tooltip]="per_address_type"
+								*ngIf="!driverDetailsForm.get('per_address_type').valid && driverDetailsForm.get('per_address_type').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #per_address_type>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('per_address_type').errors.required">
+									Required</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Land mark</mat-label>
+							<input matInput formControlName="per_address2" trim="blur">
+							<span [tooltip]="per_address2"
+								*ngIf="!driverDetailsForm.get('per_address2').valid && driverDetailsForm.get('per_address2').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #per_address2>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('per_address2').errors.required">Required
+								</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>City</mat-label>
+							<input matInput formControlName="per_city" trim="blur">
+							<span [tooltip]="per_city"
+								*ngIf="!driverDetailsForm.get('per_city').valid && driverDetailsForm.get('per_city').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #per_city>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('per_city').errors.required">Required</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>District</mat-label>
+							<input matInput formControlName="per_city" trim="blur">
+							<span [tooltip]="per_city"
+								*ngIf="!driverDetailsForm.get('per_city').valid && driverDetailsForm.get('per_city').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #per_city>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('per_city').errors.required">Required</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Zipcode</mat-label>
+							<input matInput formControlName="per_zipcode" trim="blur">
+							<span [tooltip]="per_zipcode"
+								*ngIf="!driverDetailsForm.get('per_zipcode').valid && driverDetailsForm.get('per_zipcode').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #per_zipcode>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('per_zipcode').errors.required">Required
+								</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>State</mat-label>
+							<input matInput formControlName="per_state_name" trim="blur">
+							<span [tooltip]="per_state_name"
+								*ngIf="!driverDetailsForm.get('per_state_name').valid && driverDetailsForm.get('per_state_name').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #per_state_name>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('per_state_name').errors.required">Required
+								</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Country Code</mat-label>
+							<input matInput formControlName="per_country_code" trim="blur">
+							<span [tooltip]="per_country_code"
+								*ngIf="!driverDetailsForm.get('per_country_code').valid && driverDetailsForm.get('per_country_code').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #per_country_code>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('per_country_code').errors.required">
+									Required</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Country Name</mat-label>
+							<input matInput formControlName="per_country_name" trim="blur">
+							<span [tooltip]="per_country_name"
+								*ngIf="!driverDetailsForm.get('per_country_name').valid && driverDetailsForm.get('per_country_name').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #per_country_name>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('per_country_name').errors.required">
+									Required</p>
+							</div>
+						</ng-template>
+						<div class="driver-uploaded-document mb-0">
+							<label>Address Proof</label>
+							<div class="driver-document-file">
+								<!-- <a href="javascript:void(0);">document_file_name.png</a> -->
+								<a href="javascript:void(0);"
+									(click)="openDocument('per_address_proof_file_url')">{{ driverDetailsForm.get('per_address_proof_file_url').value  | splitImageNamefromURL}}</a>
+
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('per_address_proof_file_url').value"
+										type="button" (click)="openDocument('per_address_proof_file_url')"
+										style="margin-right: 15px;" mat-mini-fab color="secondary"
+										aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'per_address_proof_file_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'per_address_proof_file_url')">
+											<mat-icon *ngIf="driverDetailsForm.get('per_address_proof_file_url').value">
+												edit</mat-icon>
+											<mat-icon
+												*ngIf="!driverDetailsForm.get('per_address_proof_file_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('per_address_proof_file_url').value"
+										type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('per_address_proof_file_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<h4>Working Details</h4>
+				<!-- If Bycycle or eRickshaw -->
+				<div *ngIf="!vehicleTypeName" class="row">
+					<div class="col-md-12">
+						<mat-form-field appearance="outline">
+							<mat-label>Pan Card Number</mat-label>
+							<input matInput formControlName="pan_card_number" trim="blur" appBlockCopyPaste>
+							<span [tooltip]="pan_card_number"
+								*ngIf="!driverDetailsForm.get('pan_card_number').valid && driverDetailsForm.get('pan_card_number').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #pan_card_number>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pan_card_number').errors.required">
+									Required</p>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pan_card_number').errors.pattern">
+									Invalid Value</p>
+							</div>
+						</ng-template>
+						<div class="driver-uploaded-document">
+							<label>Pan Card Document</label>
+							<div class="driver-document-file">
+								<!-- <a href="javascript:void(0);">document_file_name.png</a> -->
+								<a href="javascript:void(0);"
+									(click)="openDocument('pan_card_photo_url')">{{ driverDetailsForm.get('pan_card_photo_url').value  | splitImageNamefromURL}}</a>
+
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('pan_card_photo_url').value" type="button"
+										(click)="openDocument('pan_card_photo_url')" style="margin-right: 15px;"
+										mat-mini-fab color="secondary" aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'pan_card_photo_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'pan_card_photo_url')">
+											<mat-icon *ngIf="driverDetailsForm.get('pan_card_photo_url').value">
+												edit</mat-icon>
+											<mat-icon *ngIf="!driverDetailsForm.get('pan_card_photo_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('pan_card_photo_url').value" type="button"
+										mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('pan_card_photo_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+							<div style="color: red;"
+								*ngIf="!driverDetailsForm.get('pan_card_photo_url').valid && driverDetailsForm.get('pan_card_photo_url').touched">
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pan_card_photo_url').errors.required">
+									Required</p>
+							</div>
+						</div>
+						<div class="driver-uploaded-document">
+							<label>Police Verification Certificate</label>
+							<div class="driver-document-file">
+								<a href="javascript:void(0);"
+									(click)="openDocument('police_verification_certificate_url')">{{ driverDetailsForm.get('police_verification_certificate_url').value  | splitImageNamefromURL}}</a>
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('police_verification_certificate_url').value"
+										type="button" (click)="openDocument('police_verification_certificate_url')"
+										style="margin-right: 15px;" mat-mini-fab color="secondary"
+										aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'police_verification_certificate_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'police_verification_certificate_url')">
+											<mat-icon
+												*ngIf="driverDetailsForm.get('police_verification_certificate_url').value">
+												edit</mat-icon>
+											<mat-icon
+												*ngIf="!driverDetailsForm.get('police_verification_certificate_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('police_verification_certificate_url').value"
+										type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('police_verification_certificate_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+							<div style="color: red;"
+								*ngIf="!driverDetailsForm.get('police_verification_certificate_url').valid && driverDetailsForm.get('police_verification_certificate_url').touched">
+								<p class="mb-1"
+									*ngIf="driverDetailsForm.get('police_verification_certificate_url').errors.required">
+									Required</p>
+							</div>
+						</div>
+						<mat-form-field appearance="outline">
+							<mat-label>Highest Qualification</mat-label>
+							<input matInput formControlName="highest_qualification" trim="blur">
+							<span [tooltip]="highest_qualification"
+								*ngIf="!driverDetailsForm.get('highest_qualification').valid && driverDetailsForm.get('highest_qualification').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #highest_qualification>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('highest_qualification').errors.required">
+									Required</p>
+							</div>
+						</ng-template>
+						<div class="driver-uploaded-document">
+							<label>Qualification Document</label>
+							<div class="driver-document-file">
+
+								<a href="javascript:void(0);"
+									(click)="openDocument('highest_qualification_certificate_url')">{{ driverDetailsForm.get('highest_qualification_certificate_url').value  | splitImageNamefromURL}}</a>
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('highest_qualification_certificate_url').value"
+										type="button" (click)="openDocument('highest_qualification_certificate_url')"
+										style="margin-right: 15px;" mat-mini-fab color="secondary"
+										aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'highest_qualification_certificate_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'highest_qualification_certificate_url')">
+											<mat-icon
+												*ngIf="driverDetailsForm.get('highest_qualification_certificate_url').value">
+												edit</mat-icon>
+											<mat-icon
+												*ngIf="!driverDetailsForm.get('highest_qualification_certificate_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('highest_qualification_certificate_url').value"
+										type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('highest_qualification_certificate_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+							<div style="color: red;"
+								*ngIf="!driverDetailsForm.get('highest_qualification_certificate_url').valid && driverDetailsForm.get('highest_qualification_certificate_url').touched">
+								<p class="mb-1"
+									*ngIf="driverDetailsForm.get('highest_qualification_certificate_url').errors.required">
+									Required</p>
+							</div>
+						</div>
+						<div class="driver-uploaded-document">
+							<label>Proof of Identity Front Page</label>
+							<div class="driver-document-file">
+								<!-- <a href="javascript:void(0);"></a> -->
+								<a href="javascript:void(0);"
+									(click)="openDocument('proof_of_identity_photo_url')">{{ driverDetailsForm.get('proof_of_identity_photo_url').value  | splitImageNamefromURL}}</a>
+
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('proof_of_identity_photo_url').value"
+										type="button" (click)="openDocument('proof_of_identity_photo_url')"
+										style="margin-right: 15px;" mat-mini-fab color="secondary"
+										aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'proof_of_identity_photo_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'proof_of_identity_photo_url')">
+											<mat-icon
+												*ngIf="driverDetailsForm.get('proof_of_identity_photo_url').value">
+												edit</mat-icon>
+											<mat-icon
+												*ngIf="!driverDetailsForm.get('proof_of_identity_photo_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('proof_of_identity_photo_url').value"
+										type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('proof_of_identity_photo_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+							<div style="color: red;"
+								*ngIf="!driverDetailsForm.get('proof_of_identity_photo_url').valid && driverDetailsForm.get('proof_of_identity_photo_url').touched">
+								<p class="mb-1"
+									*ngIf="driverDetailsForm.get('proof_of_identity_photo_url').errors.required">
+									Required</p>
+							</div>
+						</div>
+						<div class="driver-uploaded-document">
+							<label>Proof of Identity Back Page</label>
+							<div class="driver-document-file">
+								<!-- <a href="javascript:void(0);">document_file_name.png</a> -->
+								<a href="javascript:void(0);"
+									(click)="openDocument('proof_of_identity_backpage_url')">{{ driverDetailsForm.get('proof_of_identity_backpage_url').value  | splitImageNamefromURL}}</a>
+
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('proof_of_identity_backpage_url').value"
+										type="button" (click)="openDocument('proof_of_identity_backpage_url')"
+										style="margin-right: 15px;" mat-mini-fab color="secondary"
+										aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'proof_of_identity_backpage_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'proof_of_identity_backpage_url')">
+											<mat-icon
+												*ngIf="driverDetailsForm.get('proof_of_identity_backpage_url').value">
+												edit</mat-icon>
+											<mat-icon
+												*ngIf="!driverDetailsForm.get('proof_of_identity_backpage_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('proof_of_identity_backpage_url').value"
+										type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('proof_of_identity_backpage_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+							<div style="color: red;"
+								*ngIf="!driverDetailsForm.get('proof_of_identity_backpage_url').valid && driverDetailsForm.get('proof_of_identity_backpage_url').touched">
+								<p class="mb-1"
+									*ngIf="driverDetailsForm.get('proof_of_identity_backpage_url').errors.required">
+									Required</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- If not Bycycle or eRickshaw -->
+				<div *ngIf="vehicleTypeName" class="row">
+					<div class="col-md-6">
+						<mat-form-field appearance="outline">
+							<mat-label>Driving License Number</mat-label>
+							<input matInput formControlName="driving_license_number" trim="blur" appBlockCopyPaste>
+							<span [tooltip]="driving_license_number"
+								*ngIf="!driverDetailsForm.get('driving_license_number').valid && driverDetailsForm.get('driving_license_number').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #driving_license_number>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('driving_license_number').errors.required">
+									Required</p>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('driving_license_number').errors.pattern">
+									Invalid value</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Driving License State</mat-label>
+							<mat-select formControlName="driving_licence_state">
+								<mat-option *ngFor="let state of issuingStateList" [value]="state">
+									{{state}}</mat-option>
+							</mat-select>
+							<span [tooltip]="driving_licence_state"
+								*ngIf="!driverDetailsForm.get('driving_licence_state').valid && driverDetailsForm.get('driving_licence_state').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #driving_licence_state>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('driving_licence_state').errors.required">
+									Required</p>
+							</div>
+						</ng-template>
+						<!-- <mat-form-field appearance="outline">
+							<mat-label>Driving License Type</mat-label>
+							<mat-select formControlName="driving_license_type" multiple
+								(selectionChange)="changeVal($event)"
+								[ngClass]="{ 'ng-invalid ng-touched': !driverDetailsForm.get('driving_license_type').valid }">
+								<mat-option *ngFor="let Ltype of listLicenseTypes" [value]="Ltype"
+									(change)="licenseTypeChange($event)">
+									{{Ltype.title}}</mat-option>
+							</mat-select>
+							<span [tooltip]="driving_license_type"
+								*ngIf="!driverDetailsForm.get('driving_license_type').valid && driverDetailsForm.get('driving_license_type').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+            </mat-form-field> -->
+						<mat-form-field appearance="outline">
+							<mat-label>Driving License Type</mat-label>
+							<mat-select formControlName="driving_license_type" multiple
+								[(ngModel)]="selectedDrivingLisenceType">
+								<mat-option *ngFor="let Ltype of listLicenseTypes" [value]="Ltype.id"
+									(change)="licenseTypeChange($event)">
+									{{Ltype.title}}</mat-option>
+							</mat-select>
+							<span [tooltip]="driving_license_type"
+								*ngIf="!driverDetailsForm.get('driving_license_type').valid && driverDetailsForm.get('driving_license_type').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #driving_license_type>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('driving_license_type').errors.required">
+									Required</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Driving License Validity</mat-label>
+							<input matInput [matDatepicker]="pickerdateDL" [min]="minDLDate"
+								formControlName="driving_license_validity" appBlockTypeInput>
+							<mat-datepicker-toggle matSuffix [for]="pickerdateDL"></mat-datepicker-toggle>
+							<mat-datepicker #pickerdateDL></mat-datepicker>
+							<!-- <input matInput formControlName="driving_license_validity" trim="blur"
+								[ngClass]="{ 'ng-invalid ng-touched': !driverDetailsForm.get('driving_license_validity').valid }"> -->
+							<span [tooltip]="driving_license_validity"
+								*ngIf="!driverDetailsForm.get('driving_license_validity').valid && driverDetailsForm.get('driving_license_validity').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #driving_license_validity>
+							<div>
+								<p class="mb-1"
+									*ngIf="driverDetailsForm.get('driving_license_validity').errors.required">Required
+								</p>
+							</div>
+						</ng-template>
+						<div class="driver-uploaded-document">
+							<label>Driving Licence Front Page</label>
+							<div class="driver-document-file">
+								<!-- <a href="javascript:void(0);"></a> -->
+								<a href="javascript:void(0);"
+									(click)="openDocument('driving_license_front_page_url')">{{ driverDetailsForm.get('driving_license_front_page_url').value  | splitImageNamefromURL}}</a>
+
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('proof_of_identity_photo_url').value"
+										type="button" (click)="openDocument('proof_of_identity_photo_url')"
+										style="margin-right: 15px;" mat-mini-fab color="secondary"
+										aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'driving_license_front_page_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'driving_license_front_page_url')">
+											<mat-icon
+												*ngIf="driverDetailsForm.get('driving_license_front_page_url').value">
+												edit</mat-icon>
+											<mat-icon
+												*ngIf="!driverDetailsForm.get('driving_license_front_page_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('driving_license_front_page_url').value"
+										type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('driving_license_front_page_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+							<div style="color: red;"
+								*ngIf="!driverDetailsForm.get('driving_license_front_page_url').valid && driverDetailsForm.get('driving_license_front_page_url').touched">
+								<p class="mb-1"
+									*ngIf="driverDetailsForm.get('driving_license_front_page_url').errors.required">
+									Required</p>
+							</div>
+						</div>
+						<div class="driver-uploaded-document">
+							<label>Driving Licence Back Page</label>
+							<div class="driver-document-file">
+								<!-- <a href="javascript:void(0);"></a> -->
+								<a href="javascript:void(0);"
+									(click)="openDocument('driving_license_back_page_url')">{{ driverDetailsForm.get('driving_license_back_page_url').value  | splitImageNamefromURL}}</a>
+
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('proof_of_identity_photo_url').value"
+										type="button" (click)="openDocument('proof_of_identity_photo_url')"
+										style="margin-right: 15px;" mat-mini-fab color="secondary"
+										aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'driving_license_back_page_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'driving_license_back_page_url')">
+											<mat-icon
+												*ngIf="driverDetailsForm.get('driving_license_back_page_url').value">
+												edit</mat-icon>
+											<mat-icon
+												*ngIf="!driverDetailsForm.get('driving_license_back_page_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('driving_license_back_page_url').value"
+										type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('driving_license_back_page_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+							<div style="color: red;"
+								*ngIf="!driverDetailsForm.get('driving_license_back_page_url').valid && driverDetailsForm.get('driving_license_back_page_url').touched">
+								<p class="mb-1"
+									*ngIf="driverDetailsForm.get('driving_license_back_page_url').errors.required">
+									Required</p>
+							</div>
+						</div>
+
+					</div>
+					<div class="col-md-6">
+						<mat-form-field appearance="outline">
+							<mat-label>Pan Card Number</mat-label>
+							<input matInput formControlName="pan_card_number" trim="blur" appBlockCopyPaste>
+							<span [tooltip]="pan_card_number"
+								*ngIf="!driverDetailsForm.get('pan_card_number').valid && driverDetailsForm.get('pan_card_number').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #pan_card_number>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pan_card_number').errors.required">
+									Required</p>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('pan_card_number').errors.pattern">
+									Invalid Value</p>
+							</div>
+						</ng-template>
+						<div class="driver-uploaded-document">
+							<label>Pan Card Document</label>
+							<div class="driver-document-file">
+								<!-- <a href="javascript:void(0);">document_file_name.png</a> -->
+								<a href="javascript:void(0);"
+									(click)="openDocument('pan_card_photo_url')">{{ driverDetailsForm.get('pan_card_photo_url').value  | splitImageNamefromURL}}</a>
+
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('pan_card_photo_url').value" type="button"
+										(click)="openDocument('pan_card_photo_url')" style="margin-right: 15px;"
+										mat-mini-fab color="secondary" aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'pan_card_photo_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'pan_card_photo_url')">
+											<mat-icon *ngIf="driverDetailsForm.get('pan_card_photo_url').value">
+												edit</mat-icon>
+											<mat-icon *ngIf="!driverDetailsForm.get('pan_card_photo_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('pan_card_photo_url').value" type="button"
+										mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('pan_card_photo_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="driver-uploaded-document">
+							<label>Police Verification Certificate</label>
+							<div class="driver-document-file">
+								<a href="javascript:void(0);"
+									(click)="openDocument('police_verification_certificate_url')">{{ driverDetailsForm.get('police_verification_certificate_url').value  | splitImageNamefromURL}}</a>
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('police_verification_certificate_url').value"
+										type="button" (click)="openDocument('police_verification_certificate_url')"
+										style="margin-right: 15px;" mat-mini-fab color="secondary"
+										aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'police_verification_certificate_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'police_verification_certificate_url')">
+											<mat-icon
+												*ngIf="driverDetailsForm.get('police_verification_certificate_url').value">
+												edit</mat-icon>
+											<mat-icon
+												*ngIf="!driverDetailsForm.get('police_verification_certificate_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('police_verification_certificate_url').value"
+										type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('police_verification_certificate_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+						</div>
+						<mat-form-field appearance="outline">
+							<mat-label>Highest Qualification</mat-label>
+							<input matInput formControlName="highest_qualification" trim="blur">
+							<span [tooltip]="highest_qualification"
+								*ngIf="!driverDetailsForm.get('highest_qualification').valid && driverDetailsForm.get('highest_qualification').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #highest_qualification>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('highest_qualification').errors.required">
+									Required</p>
+							</div>
+						</ng-template>
+						<div class="driver-uploaded-document">
+							<label>Qualification Document</label>
+							<div class="driver-document-file">
+
+								<a href="javascript:void(0);"
+									(click)="openDocument('highest_qualification_certificate_url')">{{ driverDetailsForm.get('highest_qualification_certificate_url').value  | splitImageNamefromURL}}</a>
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('highest_qualification_certificate_url').value"
+										type="button" (click)="openDocument('highest_qualification_certificate_url')"
+										style="margin-right: 15px;" mat-mini-fab color="secondary"
+										aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'highest_qualification_certificate_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'highest_qualification_certificate_url')">
+											<mat-icon
+												*ngIf="driverDetailsForm.get('highest_qualification_certificate_url').value">
+												edit</mat-icon>
+											<mat-icon
+												*ngIf="!driverDetailsForm.get('highest_qualification_certificate_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('highest_qualification_certificate_url').value"
+										type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('highest_qualification_certificate_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+							<div style="color: red;"
+								*ngIf="!driverDetailsForm.get('highest_qualification_certificate_url').valid && driverDetailsForm.get('highest_qualification_certificate_url').touched">
+								<p class="mb-1"
+									*ngIf="driverDetailsForm.get('highest_qualification_certificate_url').errors.required">
+									Required</p>
+							</div>
+						</div>
+						<div class="driver-uploaded-document">
+							<label>Proof of Identity Front Page</label>
+							<div class="driver-document-file">
+								<!-- <a href="javascript:void(0);"></a> -->
+								<a href="javascript:void(0);"
+									(click)="openDocument('proof_of_identity_photo_url')">{{ driverDetailsForm.get('proof_of_identity_photo_url').value  | splitImageNamefromURL}}</a>
+
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('proof_of_identity_photo_url').value"
+										type="button" (click)="openDocument('proof_of_identity_photo_url')"
+										style="margin-right: 15px;" mat-mini-fab color="secondary"
+										aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'proof_of_identity_photo_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'proof_of_identity_photo_url')">
+											<mat-icon
+												*ngIf="driverDetailsForm.get('proof_of_identity_photo_url').value">
+												edit</mat-icon>
+											<mat-icon
+												*ngIf="!driverDetailsForm.get('proof_of_identity_photo_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('proof_of_identity_photo_url').value"
+										type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('proof_of_identity_photo_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+							<div style="color: red;"
+								*ngIf="!driverDetailsForm.get('proof_of_identity_photo_url').valid && driverDetailsForm.get('proof_of_identity_photo_url').touched">
+								<p class="mb-1"
+									*ngIf="driverDetailsForm.get('proof_of_identity_photo_url').errors.required">
+									Required</p>
+							</div>
+						</div>
+						<div class="driver-uploaded-document">
+							<label>Proof of Identity Back Page</label>
+							<div class="driver-document-file">
+								<!-- <a href="javascript:void(0);">document_file_name.png</a> -->
+								<a href="javascript:void(0);"
+									(click)="openDocument('proof_of_identity_backpage_url')">{{ driverDetailsForm.get('proof_of_identity_backpage_url').value  | splitImageNamefromURL}}</a>
+
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('proof_of_identity_backpage_url').value"
+										type="button" (click)="openDocument('proof_of_identity_backpage_url')"
+										style="margin-right: 15px;" mat-mini-fab color="secondary"
+										aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'proof_of_identity_backpage_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'proof_of_identity_backpage_url')">
+											<mat-icon
+												*ngIf="driverDetailsForm.get('proof_of_identity_backpage_url').value">
+												edit</mat-icon>
+											<mat-icon
+												*ngIf="!driverDetailsForm.get('proof_of_identity_backpage_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('proof_of_identity_backpage_url').value"
+										type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('proof_of_identity_backpage_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+							<div style="color: red;"
+								*ngIf="!driverDetailsForm.get('proof_of_identity_backpage_url').valid && driverDetailsForm.get('proof_of_identity_backpage_url').touched">
+								<p class="mb-1"
+									*ngIf="driverDetailsForm.get('proof_of_identity_backpage_url').errors.required">
+									Required</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- If Bycycle or eRickshaw -->
+				<div *ngIf="!vehicleTypeName" class="row">
+					<div class="col-md-12">
+						<h4>Bank Details</h4>
+						<mat-form-field appearance="outline">
+							<mat-label>Bank Name</mat-label>
+							<input matInput formControlName="bank_name" trim="blur" appBlockCopyPaste>
+							<span [tooltip]="bank_name"
+								*ngIf="!driverDetailsForm.get('bank_name').valid && driverDetailsForm.get('bank_name').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #bank_name>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('bank_name').errors.required">
+									Required</p>
+
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Account Holder Name</mat-label>
+							<input matInput formControlName="account_holder_name" trim="blur" appBlockCopyPaste>
+							<span [tooltip]="account_holder_name"
+								*ngIf="!driverDetailsForm.get('account_holder_name').valid && driverDetailsForm.get('account_holder_name').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #account_holder_name>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('account_holder_name').errors.required">
+									Required</p>
+
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Account Number</mat-label>
+							<input matInput formControlName="account_number" trim="blur" appBlockCopyPaste>
+							<span [tooltip]="account_number"
+								*ngIf="!driverDetailsForm.get('account_number').valid && driverDetailsForm.get('account_number').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #account_number>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('account_number').errors.required">
+									Required</p>
+
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>IFSC Code</mat-label>
+							<input matInput formControlName="ifsc_code" trim="blur" appBlockCopyPaste>
+							<span [tooltip]="ifsc_code"
+								*ngIf="!driverDetailsForm.get('ifsc_code').valid && driverDetailsForm.get('ifsc_code').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #ifsc_code>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('ifsc_code').errors.required">
+									Required</p>
+
+							</div>
+						</ng-template>
+					</div>
+				</div>
+				<!-- If not Bycycle or eRickshaw -->
+				<div *ngIf="vehicleTypeName" class="row">
+					<div class="col-md-6">
+						<h4>Vehicle Details</h4>
+						<mat-form-field appearance="outline">
+							<mat-label>Vehicle Model Name</mat-label>
+							<input matInput formControlName="vehicle_model_name" trim="blur" appBlockCopyPaste>
+							<span [tooltip]="vehicle_model_name"
+								*ngIf="!driverDetailsForm.get('vehicle_model_name').valid && driverDetailsForm.get('vehicle_model_name').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #vehicle_model_name>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('vehicle_model_name').errors.required">
+									Required</p>
+
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Vehicle Model Year</mat-label>
+							<input matInput formControlName="vehicle_model_year" trim="blur">
+							<span [tooltip]="vehicle_model_year"
+								*ngIf="!driverDetailsForm.get('vehicle_model_year').valid && driverDetailsForm.get('vehicle_model_year').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #vehicle_model_year>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('vehicle_model_year').errors.required">
+									Required</p>
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Vehicle Plate Number</mat-label>
+							<input matInput formControlName="vehicle_plate_number" trim="blur">
+							<span [tooltip]="vehicle_plate_number"
+								*ngIf="!driverDetailsForm.get('vehicle_plate_number').valid && driverDetailsForm.get('vehicle_plate_number').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #vehicle_plate_number>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('vehicle_plate_number').errors.required">
+									Required</p>
+							</div>
+						</ng-template>
+
+						<div class="driver-uploaded-document">
+							<label>Vehicle Insurance Copy</label>
+							<div class="driver-document-file">
+								<a href="javascript:void(0);"
+									(click)="openDocument('vehicle_insurance_copy_url')">{{ driverDetailsForm.get('vehicle_insurance_copy_url').value  | splitImageNamefromURL}}</a>
+								<div class="driver-document-icon">
+									<!-- <button *ngIf="driverDetailsForm.get('vehicle_insurance_copy_url').value"
+										type="button" (click)="openDocument('vehicle_insurance_copy_url')"
+										style="margin-right: 15px;" mat-mini-fab color="secondary"
+										aria-label="Preview Image">
+										<mat-icon>remove_red_eye</mat-icon>
+									</button> -->
+									<div class="change-img">
+										<input accept="image/*, .pdf" type="file"
+											(change)="onSelectFile($event,'vehicle_insurance_copy_url')">
+										<button mat-mini-fab color="primary" aria-label="Change Image"
+											(change)="onSelectFile($event,'vehicle_insurance_copy_url')">
+											<mat-icon *ngIf="driverDetailsForm.get('vehicle_insurance_copy_url').value">
+												edit</mat-icon>
+											<mat-icon
+												*ngIf="!driverDetailsForm.get('vehicle_insurance_copy_url').value">
+												add</mat-icon>
+										</button>
+									</div>
+									<button *ngIf="driverDetailsForm.get('vehicle_insurance_copy_url').value"
+										type="button" mat-mini-fab color="warn" aria-label="Delete Image"
+										(click)="deleteFile('vehicle_insurance_copy_url')">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<h4>Bank Details</h4>
+						<mat-form-field appearance="outline">
+							<mat-label>Bank Name</mat-label>
+							<input matInput formControlName="bank_name" trim="blur" appBlockCopyPaste>
+							<span [tooltip]="bank_name"
+								*ngIf="!driverDetailsForm.get('bank_name').valid && driverDetailsForm.get('bank_name').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #bank_name>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('bank_name').errors.required">
+									Required</p>
+
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Account Holder Name</mat-label>
+							<input matInput formControlName="account_holder_name" trim="blur" appBlockCopyPaste>
+							<span [tooltip]="account_holder_name"
+								*ngIf="!driverDetailsForm.get('account_holder_name').valid && driverDetailsForm.get('account_holder_name').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #account_holder_name>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('account_holder_name').errors.required">
+									Required</p>
+
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>Account Number</mat-label>
+							<input matInput formControlName="account_number" trim="blur" appBlockCopyPaste>
+							<span [tooltip]="account_number"
+								*ngIf="!driverDetailsForm.get('account_number').valid && driverDetailsForm.get('account_number').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #account_number>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('account_number').errors.required">
+									Required</p>
+
+							</div>
+						</ng-template>
+						<mat-form-field appearance="outline">
+							<mat-label>IFSC Code</mat-label>
+							<input matInput formControlName="ifsc_code" trim="blur" appBlockCopyPaste>
+							<span [tooltip]="ifsc_code"
+								*ngIf="!driverDetailsForm.get('ifsc_code').valid && driverDetailsForm.get('ifsc_code').touched"
+								class="mandatory-alert" content-type="template">
+								<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+							</span>
+						</mat-form-field>
+						<ng-template #ifsc_code>
+							<div>
+								<p class="mb-1" *ngIf="driverDetailsForm.get('ifsc_code').errors.required">
+									Required</p>
+
+							</div>
+						</ng-template>
+					</div>
+				</div>
+				<h4>Operational Area</h4>
+				<mat-form-field class="mt-2" appearance="outline">
+					<input matInput placeholder="Search for location" autocorrect="off" autocapitalize="off"
+						spellcheck="off" #search [formControl]="searchControl" trim="blur">
+				</mat-form-field>
+				<agm-map [scrollwheel]="true" [zoom]="13" [latitude]="map.lat" [longitude]="map.lng"
+					style="height: 200px">
+					<agm-marker [latitude]="map.lat" [longitude]="map.lng" [markerDraggable]="true"
+						(dragEnd)="markerDragEnd(map, $event)"></agm-marker>
+				</agm-map>
+				<mat-form-field class="mt-2" appearance="outline">
+					<mat-label>Max Buffer Distance (Meters)</mat-label>
+					<input type="text" matInput formControlName="max_buffer_distance" appBlockCopyPaste trim="blur"
+						numbersOnly maxlength="5">
+					<span [tooltip]="max_buffer_distance"
+						*ngIf="!driverDetailsForm.get('max_buffer_distance').valid && driverDetailsForm.get('max_buffer_distance').touched"
+						class="mandatory-alert" content-type="template">
+						<mat-icon fontSet="material-icons-outlined">info</mat-icon>
+					</span>
+				</mat-form-field>
+				<ng-template #max_buffer_distance>
+					<div>
+						<p class="mb-1" *ngIf="driverDetailsForm.get('max_buffer_distance').errors.required">
+							Required</p>
+						<p class="mb-1" *ngIf="driverDetailsForm.get('max_buffer_distance').errors.pattern">
+							Invalid Value</p>
+					</div>
+				</ng-template>
+
+				<div class="mt-3">
+					<button mat-raised-button color="primary" (click)="updateDriverProfile()">
+						<mat-icon>save</mat-icon> Save
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

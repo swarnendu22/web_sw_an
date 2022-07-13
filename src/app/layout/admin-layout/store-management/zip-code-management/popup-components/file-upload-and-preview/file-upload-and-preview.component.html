@@ -1,0 +1,87 @@
+<ng-container *ngIf="!isFileUploaded">
+    <h2 mat-dialog-title>Upload Excel/CSV File</h2>
+    <mat-dialog-content>
+        <div class="loading" *ngIf="loading">
+            <mat-spinner [diameter]="50"></mat-spinner>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <ul class="tds-text pr-1">
+                    <li>You need to Submit Excel/CSV File Only</li>
+                    <!-- <li>Data Format Example <span style="font-style: oblique;text-decoration: underline">
+                            <mat-icon style="color: grey; font-size: 18px;"
+                                matTooltip="Data Format e.g:- Zipcode(accept 6 digit number), Allow COD(accept: 0/1), Delivery Charges(only number, Delivery TAT(Only number)">
+                                info</mat-icon>
+                        </span></li> -->
+                    <li><a style="font-style: oblique;text-decoration: underline"
+                            href="https://ndhbucket.s3.ap-south-1.amazonaws.com/File/zipcode-final.xlsx">Download Sample
+                            File</a> <span style="margin-left: 6px ;display: inline-block;vertical-align: sub;">
+                            <mat-icon fontSet="material-icons-outlined" style="color: grey; font-size: 16px;"
+                                matTooltip="Data Format e.g:- Zipcode(accept 6 digit number), Allow COD(accept: 0/1), Delivery Charges(only number, Delivery TAT(Only number)">
+                                info</mat-icon>
+                        </span></li>
+                </ul>
+            </div>
+            <div class="col-6">
+                <div class="hoz-form">
+                    <div class="row">
+                        <div class="col-12 upload-doc">
+                            <input type="file" class="custom-input upload-d" (change)="uploadedFile($event)"
+                                placeholder="Upload file" accept=".xlsx, .csv, .xls">
+                        </div>
+                        <mat-hint *ngIf="errorFile" class="error-hint">Please upload excel/csv file only.
+                        </mat-hint>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <!-- <button mat-flat-button color="primary" cdkFocusInitial (click)="upload()">Upload</button> -->
+    </mat-dialog-actions>
+</ng-container>
+
+<ng-container *ngIf="isFileUploaded">
+    <div @fadeIn>
+        <h2 mat-dialog-title class="mb-2">Preview Excel/CSV File</h2>
+        <span style="color: grey; font-size: 10px">
+            <i>Note: (*) Only Unique ZipCode will be saved
+            </i>
+        </span>
+        <mat-dialog-content style="height: calc(100vh - 310px)">
+            <table class="table layout-fixed">
+                <thead>
+                    <tr>
+                        <th class="smallCell">ZipCode</th>
+                        <th class="smallCell">Allow COD</th>
+                        <th class="smallCell">Add. Delivery Charge</th>
+                        <th class="smallCell">Add. TAT(in Hr)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of finalData; let i=index">
+
+                        <td>
+                            {{row.zipCode}} <span *ngIf="row.isDuplicate" class="badge badge-danger">Duplicate</span>
+                        </td>
+                        <td>
+                            {{row.isCodAvailable}}
+                        </td>
+                        <td>
+                            {{row.additionalDelivery}}
+                        </td>
+                        <td>
+                            {{row.deliveryTat}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button type="button" mat-button (click)="close()">Cancel</button>
+            <button type="button" mat-flat-button color="primary" [disabled]="duplicateZipCode"
+                (keydown.enter)="$event.preventDefault()" (click)="saveZips($event)">Save</button>
+        </mat-dialog-actions>
+    </div>
+</ng-container>

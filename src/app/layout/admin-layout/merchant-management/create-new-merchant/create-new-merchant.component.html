@@ -1,0 +1,262 @@
+<form [formGroup]="basicDetailsForm" autocomplete="off"  (ngSubmit)="onSubmit(formDirective)" #formDirective="ngForm">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title" *ngIf="!approveMode">Add New Merchant</h3>
+        <h3 class="m-subheader__title" *ngIf="approveMode">Approve / Reject New Merchant</h3>
+      </div>
+      <div class="form-header-btn">
+        <button mat-raised-button class="noshadow top-btn-font" color="primary" *ngIf="!approveMode">
+          <mat-icon>save</mat-icon> Save
+        </button>
+        <ng-container *ngIf="approveMode">
+          <!-- <div class="content-head-action"> -->
+          <button type="button" [routerLink]="approveMode?['/merchant/pending-merchant']:['/merchant/active-merchant']" mat-raised-button
+            class="noshadow top-btn-font white-btn">
+            <mat-icon>arrow_back</mat-icon> Back
+          </button>
+          <!-- </div> -->
+          <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (click)="requestProcess('APPROVED')">
+            <mat-icon>save</mat-icon> Accept
+          </button>
+          <button type="button" mat-raised-button class="noshadow top-btn-font" color="default" (click)="requestProcess('REJECTED')">
+            <mat-icon>cancel</mat-icon> Reject
+          </button>
+        </ng-container>
+        <!-- <mat-spinner [diameter]="20"></mat-spinner> -->
+      </div>
+    </div>
+  </div>
+  <div class="box-shadow bg-white padding-10 hoz-form">
+    <div class="content-head">
+      <div class="content-head-caption">
+        <h3>Basic Information</h3>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-sm-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Store Name
+            <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+          </mat-label>
+          <input  matInput autocomplete="nope" formControlName="storeName" (keyup)="assignToLegalName($event)" [ngClass]="{ 'is-invalid': submitted && f.storeName.errors }"
+            trim="blur" />
+          <span *ngIf="!basicDetailsForm.get('storeName').valid && basicDetailsForm.get('storeName').touched" matTooltipClass="downline"
+            matTooltip="This is required Field" aria-label="This field is Required" class="mandatory-alert">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Support Number
+            <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+          </mat-label>
+          <input  matInput autocomplete="nope" formControlName="supportNumber"  [ngClass]="{ 'is-invalid': submitted && f.storeName.errors }"
+            trim="blur" />
+          <span *ngIf="!basicDetailsForm.get('supportNumber').valid && basicDetailsForm.get('supportNumber').touched" matTooltipClass="downline"
+            matTooltip="This is required Field" aria-label="This field is Required" class="mandatory-alert">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+        </mat-form-field>
+      
+      </div>
+      <div class="col-sm-6">
+      
+        <mat-form-field appearance="outline">
+          <mat-label>Contact Number
+            <span  matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+          </mat-label>
+          <input type="text" autocomplete="nope"  formControlName="contactNumber" matInput numbersOnly trim="blur" />
+            <ng-container *ngIf = "!basicDetailsForm.get('contactNumber').valid && basicDetailsForm.get('contactNumber').touched">
+              <span *ngIf="!basicDetailsForm.get('contactNumber').hasError('required')" matTooltipClass="downline"
+               matTooltip="This is required Field" aria-label="This field is Required" class="mandatory-alert">
+               <mat-icon fontSet="material-icons-outlined">info</mat-icon> 
+              </span>
+
+              <span *ngIf="!basicDetailsForm.get('contactNumber').hasError('maxlength')" matTooltipClass="downline"
+               matTooltip="Invalid mobile no" aria-label="This field is Required" class="mandatory-alert">
+               <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+            </ng-container>
+          <span >
+          </span>
+        </mat-form-field>
+
+        <mat-checkbox formControlName="homedelivery"></mat-checkbox>
+          <mat-label class="ml-1">Home Delivery
+          </mat-label>
+      
+          <mat-checkbox formControlName="isActive" class="ml-4"></mat-checkbox>
+          <mat-label class="ml-1">Active Store
+          </mat-label>
+      </div>
+
+      <div class="col-sm-6 form-content-body">
+        <div class="offset-1">
+          <div class="upload-image-view">
+            <img *ngIf="basicDetailsForm.get('storeLogoUrl') && basicDetailsForm.get('storeLogoUrl').value && checkExtension(basicDetailsForm.get('storeLogoUrl').value)!='pdf'"
+              height="99%" width="99%" [src]="basicDetailsForm.get('storeLogoUrl').value" />
+             <img *ngIf="basicDetailsForm.get('storeLogoUrl') && basicDetailsForm.get('storeLogoUrl').value && checkExtension(basicDetailsForm.get('storeLogoUrl').value)=='pdf'"
+                height="99%" width="99%" src="../../../../../../assets/img/pdf.png" />
+            <br />           
+          </div>
+          <div class="btn-sm-upload" style="width:32%">
+            <app-img-upload-aws [className]="'custom-input icon'" [awsFolderName]="'storeLogoUrl'" [accept]="['image/jpeg', 'image/jpg','image/png','application/pdf']"
+                  (imgUploaded)="onFileUpload($event,'storeLogoUrl')" [acceptFileSize]="'true'" [supportedExtension]="'.jpeg,.jpg,.png,.pdf'"
+                  [fileSizeLimit]="'2097152'">
+            </app-img-upload-aws>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div class="box-shadow bg-white padding-10 mt-3 hoz-form">
+    <div class="content-head">
+      <div class="content-head-caption">
+        <h3>Address Information</h3>
+      </div>
+    </div>
+
+    <div class="form-content-body">
+      <div class="row mt-3">
+        <div class="col-12">
+
+          <mat-form-field appearance="outline">
+              <mat-label>Address
+                <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+              </mat-label>
+              <textarea autocomplete="nope" matInput formControlName="address" [ngClass]="{ 'is-invalid': submitted && f.address.errors }" trim="blur"></textarea>
+
+              <span *ngIf="!basicDetailsForm.get('address').valid && basicDetailsForm.get('address').touched" matTooltipClass="downline"
+               matTooltip="Invalid Email Id" aria-label="This field is Required" class="mandatory-alert">
+               <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+          </mat-form-field>
+         
+        </div>
+        <div class="col-6">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Landmark</mat-label>
+            <input autocomplete="nope" matInput formControlName="landmark" [ngClass]="{ 'is-invalid': submitted && f.landmark.errors }" trim="blur" />
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline">
+             <mat-label>City
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+             </mat-label>
+             <input autocomplete="nope" matInput formControlName="city" [ngClass]="{ 'is-invalid': submitted && f.city.errors }" trim="blur" />
+
+             <span *ngIf="!basicDetailsForm.get('city').valid && basicDetailsForm.get('city').touched" matTooltipClass="downline"
+               matTooltip="This field is Required" aria-label="This field is Required" class="mandatory-alert">
+               <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+          </mat-form-field>
+
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>ZIP Code
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input autocomplete="nope" matInput type="number" min="0" formControlName="zipCode" [ngClass]="{ 'is-invalid': submitted && f.zipCode.errors }" trim="blur"
+            />
+            <ng-container *ngIf="!basicDetailsForm.get('zipCode').valid && basicDetailsForm.get('zipCode').touched">
+
+              <span *ngIf="basicDetailsForm.get('zipCode').hasError('required')" matTooltipClass="downline"
+                matTooltip="This field is Required" aria-label="This field is Required" class="mandatory-alert">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+             </span>
+
+             <span *ngIf="basicDetailsForm.get('zipCode').hasError('pattern')" matTooltipClass="downline"
+                matTooltip="Invalid Pincode" aria-label="This field is Required" class="mandatory-alert">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+             </span>
+
+            </ng-container>
+          </mat-form-field>
+
+
+          <mat-form-field appearance="outline">
+            <mat-label>Region
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <mat-select formControlName="regionCode" trim="blur" [ngClass]="{ 'is-invalid': submitted && f.regionCode.errors }">
+              <ng-container *ngIf="detailsList.regionsList">
+                <mat-option [value]="region.id" *ngFor="let region of detailsList.regionsList.payload">{{region.name}}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+
+            <span *ngIf="!basicDetailsForm.get('regionCode').valid && basicDetailsForm.get('regionCode').touched" matTooltipClass="downline"
+                matTooltip="This Field Is Required" aria-label="This field is Required" class="mandatory-alert">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+
+        </div>
+
+        <div class="col-6">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Lattitude</mat-label>
+            <input autocomplete="nope" matInput formControlName="geoLat" [ngClass]="{ 'is-invalid': submitted && f.landmark.errors }" trim="blur" />
+          </mat-form-field>
+
+        </div>
+
+        <div class="col-6">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Longitude
+            </mat-label>
+            <input autocomplete="nope" matInput formControlName="geoLong" [ngClass]="{ 'is-invalid': submitted && f.city.errors }" trim="blur" />
+         </mat-form-field>
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="box-shadow bg-white padding-10 mt-3 hoz-form">
+    <div class="content-head">
+      <div class="content-head-caption">
+        <h3>Merchant Other Information</h3>
+      </div>
+    </div>
+
+    <div class="form-content-body">
+      <div class="row mt-3">
+        <div class="col-4">
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>Merchant Category
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <mat-select formControlName="businessCategoryId" [ngClass]="{ 'is-invalid': submitted && f.businessCategoryId.errors }">
+              <ng-container *ngIf="detailsList.buisnessCategory">
+                <mat-option [value]="sellerType.id" *ngFor="let sellerType of detailsList.buisnessCategory.payload">
+                  {{sellerType.businessCategoryName}}</mat-option>
+              </ng-container>
+            </mat-select>
+
+          <span *ngIf="!basicDetailsForm.get('businessCategoryId').valid && basicDetailsForm.get('businessCategoryId').touched && basicDetailsForm.get('businessCategoryId').hasError('required')" matTooltipClass="downline"
+            matTooltip="This field is Required" aria-label="This field is Required" class="mandatory-alert">
+            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+          </span>
+
+          </mat-form-field>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+</form>

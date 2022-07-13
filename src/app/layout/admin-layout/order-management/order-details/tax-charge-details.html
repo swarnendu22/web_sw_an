@@ -1,0 +1,31 @@
+<div>
+    <p>Taxes and Charges</p>
+    <table >
+        <tbody>
+            <tr>
+                <td style="width: 60%;text-align: left;">
+                    <p>Packaging Charge</p>
+                </td>
+                <td style="width: 40%;text-align: right;">
+                    <p>₹{{chargeDetails.total_packaging_charge}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 60%;text-align: left;">
+                    <p>Platform Charge</p>
+                </td>
+                <td style="width: 40%;text-align: right;">
+                    <p>-₹{{chargeDetails.platform_charge_breakup.customer_bear_amount}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 60%;text-align: left;">
+                    <p>Tax Total</p>
+                </td>
+                <td style="width: 40%;text-align: right;">
+                    <p>₹{{chargeDetails.total_tax}}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>                      
+</div>

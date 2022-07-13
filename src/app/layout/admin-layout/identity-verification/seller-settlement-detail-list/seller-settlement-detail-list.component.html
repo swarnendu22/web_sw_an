@@ -1,0 +1,68 @@
+<div class="">
+    <div class="loading" *ngIf="loading">
+        <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+    <div class="top-bar box-shadow">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title">Seller Settlement Details </h3>
+            </div>
+
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn mr-2" value="Export" [matMenuTriggerFor]="downloadBank">Download Bank File
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+            <mat-menu #downloadBank="matMenu" xPosition="before">
+                <button mat-menu-item (click)="onDownloadBankFile('hdfc')">HDFC</button>
+            </mat-menu>
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn mr-2" value="Export" [matMenuTriggerFor]="uploadBank">Upload Bank File
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+            <mat-menu #uploadBank="matMenu" xPosition="before">
+                <button mat-menu-item (click)="uploadContentSheet()">HDFC</button>
+            </mat-menu>
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn mr-2" value="Export" (click)="onBtnExport()">Download Settlement Acknowledgement</button>
+            <button routerLink="/users/seller-settlement-master-list" style="height: 42px;" mat-raised-button class="noshadow top-btn-font white-btn">
+                <mat-icon>arrow_back</mat-icon> Back
+            </button>
+
+        </div>
+    </div>
+
+    <div class="bg-white" style="height: calc(100vh - 140px)">
+        <ag-grid-angular style="width:100%; height: 100%" class="ag-theme-balham" [rowData]="rowData" [defaultColDef]="defaultColDef"
+            [columnDefs]="columnDefs" (firstDataRendered)="onFirstDataRendered($event)" [pagination]="true" (gridReady)="onGridReady($event)"
+            [floatingFilter]="true" [enableFilter]="true" (gridSizeChanged)="onGridSizeChanged($event)">
+        </ag-grid-angular>
+    </div>
+</div>
+
+<ng-template #uploadBankFileForSettlement>
+    <mat-dialog-content class="mat-typography">
+        <div class="hoz-form">
+            <div class="row">
+
+                <div class="col">
+                    <div *ngIf="bankFileUrl" class="upload-doc">
+                        <div class="upload-xls">
+                            <img src="../../../../../../assets/img/xls.png">
+                            <p>{{bankFileUrl.name}}</p>
+                            <i class="fa fa-times delete-doc" (click)="deleteImage('bankFileUrl')"></i>
+                        </div>
+                    </div>
+                    <p class="fileText" *ngIf="!bankFileUrl">Upload Bank File</p>
+                    <div class="attach-file" *ngIf="!bankFileUrl">
+                        <app-img-upload-aws [className]="'custom-input select-file'" [type]="'excel'" [awsFolderName]="'ndh-admin/gstn'" [accept]="'.xls,.xlsx'"
+                            (imgUploaded)="onFileUpload($event,'bankFileUrl')" [acceptedFileType]="">
+                        </app-img-upload-aws>
+                    </div>
+                </div>
+
+                <div class="col-md-12 text-right">
+                    <button mat-button (click)="onCloseDialog()">Cancel</button>
+                    <button mat-raised-button class="btn-primary" (click)="onSubmit()" cdkFocusInitial>Submit</button>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+
+</ng-template>

@@ -1,0 +1,27 @@
+<form [formGroup]="rejectPendingBrandRequestForm" autocomplete="off">
+  <h2 mat-dialog-title>Reject Brands</h2>
+  <mat-dialog-content>
+    <div class="hoz-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Remarks</mat-label>
+        <input
+          type="text"
+          matInput
+          #remarks
+          formControlName="remarks"
+        />
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button
+      mat-flat-button
+      color="primary"
+      [mat-dialog-close]="true"
+      (click)="submitReject()"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,404 @@
+
+<form [formGroup]="merchantInfoForm">
+    <div class="tab-area-content">
+        <div style="display: flex;align-items: center;justify-content: space-between;    padding: 0px 15px;margin-bottom: 10px;">
+            <h4>Basic Information</h4>
+            <button mat-raised-button color="primary" (click)="onSubmitMerchantInfo()">Save</button>
+        </div>
+        <div style="flex-direction: row;" class="hoz-form">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Legal Name</mat-label>
+                            <input matInput formControlName="legalName" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('legalName').valid }">                            
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-8">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Address</mat-label>
+                            <input matInput formControlName="address" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('address').valid }">
+                            <mat-icon class="edit-address" matSuffix (click)="editAddress()" >edit</mat-icon>
+                            <span [tooltip]="address" *ngIf="!merchantInfoForm.get('address').valid && merchantInfoForm.get('address').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #address>
+                            <div>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('address').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>City</mat-label>
+                            <input matInput formControlName="city" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('city').valid }">
+
+                            <span [tooltip]="city" *ngIf="!merchantInfoForm.get('city').valid && merchantInfoForm.get('city').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #city>
+                            <div>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('city').errors.required">Required</p>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('city').errors.maxlength">Max Length 100</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Pin Code</mat-label>
+                            <input numbersOnly matInput formControlName="pincode" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('pincode').valid }">
+
+                            <span [tooltip]="pincode" *ngIf="!merchantInfoForm.get('pincode').valid && merchantInfoForm.get('pincode').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #pincode>
+                            <div>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('pincode').errors.required">Required</p>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('pincode').errors.pattern">Not Valid</p>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('pincode').errors.maxlength">Max Length 25</p>
+                            </div>
+                        </ng-template>
+
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Region</mat-label>
+                            <mat-select formControlName="state" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('state').valid }">
+                                <mat-option [value]="region.regionName" *ngFor="let region of regions">{{region.regionName}}</mat-option>
+                            </mat-select>
+
+                            <span [tooltip]="state" *ngIf="!merchantInfoForm.get('state').valid && merchantInfoForm.get('state').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+
+                        <ng-template #state>
+                            <div>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('state').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Country</mat-label>
+                            <mat-select formControlName="country" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('country').valid }">
+                                <mat-option [value]="item.countryCode" *ngFor="let item of countries">{{item.countryName}}</mat-option>
+                            </mat-select>
+
+                            <span [tooltip]="country" *ngIf="!merchantInfoForm.get('country').valid && merchantInfoForm.get('country').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+
+                        <ng-template #country>
+                            <div>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('country').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Landmark</mat-label>
+                            <input matInput formControlName="landmark" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('landmark').valid }">
+
+                            <span [tooltip]="landmark" *ngIf="!merchantInfoForm.get('landmark').valid && merchantInfoForm.get('landmark').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #landmark>
+                            <div>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('landmark').errors.required">Required</p>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('landmark').errors.maxlength">Max Length 100</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="storeEmail" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('storeEmail').valid }">
+
+                            <span [tooltip]="storeEmail" *ngIf="!merchantInfoForm.get('storeEmail').valid && merchantInfoForm.get('storeEmail').touched" class="mandatory-alert"
+                            content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+
+                        <ng-template #storeEmail>
+                            <div>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('storeEmail').errors.required">Required</p>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('storeEmail').errors.pattern">Not Valid</p>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('storeEmail').errors.maxlength">Max Length 100</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div style="margin-top: 17px;" class="col-md-12">
+                    <h1 class="subs-heading">Subscription Type: <b *ngIf=
+                        "merchantInfoById">{{ merchantInfoById.subscriptionLevel }}</b></h1>
+                    <h1 class="subs-heading">Expire On: <b *ngIf=
+                        "merchantInfoById">{{ merchantInfoById.subscriptionExpiryOn | date: 'dd/MM/yyyy' }}</b></h1>
+                    <h1 class="subs-heading">Max Store: <b *ngIf=
+                        "merchantInfoById">{{ merchantInfoById.maxStoresAllowed }}</b></h1>
+                    <h3 class="changeSubs" (click)="changeSubsDialog()" ><b>Change Subscription</b></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-area-content mt-3">
+        <div style="display: flex;align-items: center;justify-content: space-between;    padding: 0px 15px;margin-bottom: 10px;">
+            <h4>Legal Information</h4>
+        </div>
+        <div class="hoz-form">
+            <div class="col-md-12">
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Legal Name</mat-label>
+                            <input matInput readonly="true" formControlName="panFullName" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('panFullName').valid }">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-5">
+                        <mat-form-field appearance="outline">
+                            <mat-label>PAN Number</mat-label>
+                            <input matInput [(ngModel)]="panNumberEdit" (ngModelChange)="onPanChange($event)" autocomplete="off" trim="blur" formControlName="panNo" Name="panEdit" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('panNo').valid }" style="text-transform: uppercase;">
+
+                            <span [tooltip]="panNo" *ngIf="!merchantInfoForm.get('panNo').valid && merchantInfoForm.get('panNo').touched" class="mandatory-alert"
+                            content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+
+                        <span *ngIf="panVerified" style="padding: 0px 5px 0px 0px; color: green;">
+                            <mat-icon style="vertical-align: sub;color: green;font-size: 16px;width: 16px;">done</mat-icon> Verified
+                        </span>
+                        
+                        <span *ngIf="panVerificationReference != null" style="color: #a9a8a8; font-size: 10px;padding: 2px 15px 15px 0px;">PAN Verification Reference: {{panVerificationReference}}</span>
+
+                        <ng-template #panNo>
+                            <div>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('panNo').errors.pattern">Invalid Pattern</p>
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-md-3 mt-2">
+                        <button mat-raised-button color="primary" [disabled]="panVerifiedBtn" (click)="verifyLegalInformation()">Verify PAN</button>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-8">
+                        <mat-checkbox formControlName="form60Submited" (change)="form60Submission($event)" ></mat-checkbox> Form 60 Declaration Submitted
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-area-content mt-3">
+        <div style="display: flex;align-items: center;justify-content: space-between;    padding: 0px 15px;margin-bottom: 10px;">
+            <h4>Payment Information</h4>
+        </div>
+        <div class="hoz-form">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Account Number</mat-label>
+                            <input [(ngModel)]="accountNumberEdit" (ngModelChange)="bankDetailsUpdate($event)" matInput formControlName="accountNumber" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('accountNumber').valid }" maxlength="16">
+                        </mat-form-field>
+
+                        <ng-template #storeEmail>
+                            <div>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('storeEmail').errors.maxlength">Max Length 15</p>
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>IFSC Code</mat-label>
+                            <input matInput [(ngModel)]="ifscCodeEdit" (ngModelChange)="bankDetailsUpdate($event)" formControlName="ifscCode" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('ifscCode').valid }">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Registered Mobile Number</mat-label>
+                            <input [(ngModel)]="bankMobileEdit" (ngModelChange)="bankDetailsUpdate($event)" numbersOnly matInput formControlName="bankLinkedMobile" trim="blur" maxlength="10" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('bankLinkedMobile').valid }">
+
+                            <span [tooltip]="bankLinkedMobile" *ngIf="!merchantInfoForm.get('bankLinkedMobile').valid && merchantInfoForm.get('bankLinkedMobile').touched" class="mandatory-alert"
+                            content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+
+                        <ng-template #bankLinkedMobile>
+                            <div>
+                                <p class="mb-1" *ngIf="merchantInfoForm.get('bankLinkedMobile').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-md-3 mt-2">
+                        <button mat-raised-button color="primary" [disabled]="accountVerifiedBtn" (click)="verifyBankInformation()">Verify Account</button>
+                    </div> 
+
+                    <span *ngIf="accountVerified" style="padding: 0px 5px 10px 15px; color: green;">
+                        <mat-icon style="vertical-align: sub;color: green;font-size: 16px;width: 16px;">done</mat-icon> Verified
+                    </span>
+                    
+                    <span *ngIf="accountVerificationReference != null" style="color: #a9a8a8; font-size: 10px;padding: 2px 15px 15px 15px;">Bank Verification Reference: {{accountVerificationReference}}</span>
+                </div>
+                
+                    
+                <div class="row"> 
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Benificiary Name</mat-label>
+                            <input matInput formControlName="benificiaryName" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('benificiaryName').valid }">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Bank Name</mat-label>
+                            <input matInput formControlName="bankName" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('bankName').valid }">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Branch Name</mat-label>
+                            <input matInput formControlName="branchName" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('branchName').valid }">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Bank Address</mat-label>
+                            <input matInput formControlName="bankAddress" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('bankAddress').valid }">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Account Type</label>
+                        <div style="clear: both;"></div>
+                        <mat-radio-group aria-label="Select an option" formControlName="accountType">
+                            <mat-radio-button class="mr-3" value="SAVINGS" (click)="accountTypeStatus('SAVINGS')" >SAVINGS</mat-radio-button>
+                            <mat-radio-button class="mr-3" value="CURRENT" (click)="accountTypeStatus('CURRENT')" >CURRENT</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-area-content mt-3">
+        <div style="display: flex;align-items: center;justify-content: space-between;    padding: 0px 15px;margin-bottom: 10px;">
+            <h4>Merchant Details</h4>
+        </div>
+        <div class="hoz-form">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Merchant ID</mat-label>
+                            <input matInput readonly="true" formControlName="id" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('id').valid }">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Business Category</mat-label>
+                            <mat-select formControlName="businessCategory" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('businessCategory').valid }">
+                                <mat-option [value]="item.businessCategoryName" *ngFor="let item of businessCategoryList">{{item.businessCategoryName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Terminal ID</mat-label>
+                            <input matInput formControlName="terminalId" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('terminalId').valid }">
+                        </mat-form-field>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>VPA</mat-label>
+                            <input matInput formControlName="vpa" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !merchantInfoForm.get('vpa').valid }">
+                        </mat-form-field>
+                    </div>
+                    <div style="display: flex; align-items: center;" class="col-md-4">
+                        <mat-radio-group aria-label="Select an option" formControlName="accept_online_payment">
+                            <mat-radio-button class="mr-3" [value]=true (click)="PaymentStatus( true )" >Accept Online Payment</mat-radio-button>
+                            <mat-radio-button class="mr-3" [value]=false (click)="PaymentStatus( false )" >Don't Accept Online Payment</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="tab-area-content mt-3">
+        <div style="display: flex;align-items: center;justify-content: space-between;    padding: 0px 15px;margin-bottom: 10px;">
+            <h4>Subscription Info</h4>
+        </div>
+        <div class="hoz-form">
+            <div class="col-md-12">
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Subscription Type</mat-label>
+                            <mat-select>
+                                <mat-option value="BASIC">Basic</mat-option>
+                                <mat-option value="SILVER">Silver</mat-option>
+                                <mat-option value="GOLD">Gold</mat-option>
+                                <mat-option value="PLATINUM">Platinum</mat-option>
+                                <mat-option value="DIAMOND">Diamond</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Expire On</mat-label>
+                            <input matInput [matDatepicker]="startDate" (click)="startDate.open()">
+                            <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                            <mat-datepicker #startDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Max Store</mat-label>
+                            <input matInput numbersOnly>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <button mat-raised-button color="primary" (click)="changeSubsDialog()" >Change Subscription</button>
+                    </div>
+               
+                </div>
+            </div>
+        </div>
+    </div> -->
+</form>
+
+    

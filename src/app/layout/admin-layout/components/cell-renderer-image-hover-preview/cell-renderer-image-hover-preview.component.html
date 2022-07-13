@@ -1,0 +1,9 @@
+<ng-container *ngIf="imageUrl">
+    <img [src]="imageUrl" style="object-fit: contain;
+    width: 100%;
+    height: 50px;" alt="" (click)="overM()" (mouseleave)="leaveM()">
+</ng-container>
+
+<ng-container *ngIf="!imageUrl">
+    'No Image Found'
+</ng-container>

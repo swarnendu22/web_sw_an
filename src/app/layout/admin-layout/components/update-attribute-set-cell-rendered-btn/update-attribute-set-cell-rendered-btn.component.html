@@ -1,0 +1,18 @@
+<button
+      mat-flat-button
+      color="primary"
+      class="btn-data"
+      (click)="invokeParentMethod()"
+      [disabled]="!isEditParent"
+    >
+      Update
+    </button>
+    <button
+      mat-flat-button
+      color="warn"
+      class="btn-data"
+      (click)="delete($event)"
+      [disabled]="!isEditParent"
+    >
+      Delete
+    </button>

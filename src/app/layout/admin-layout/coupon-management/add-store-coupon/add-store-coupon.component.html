@@ -1,0 +1,103 @@
+<div mat-dialog-title>
+    <h3>Assign Coupon</h3> <span style="font-size: 12px;" *ngIf="expiryFrom !='' && expiryTo!=''">Expiry date of this coupon {{expiryFrom | date : 'dd-MM-yyyy'}} to {{expiryTo | date : 'dd-MM-yyyy'}}</span>
+    <button mat-icon-button aria-label="Close Store" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<mat-dialog-content class="mat-typography" style="max-height: 100% !important;">
+    <form [formGroup]="couponAssignForm" autocomplete="off" novalidate>
+        <div class="row">
+            <div class="col-sm-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Search Store</mat-label>
+                    <input matInput [(ngModel)] = "storeName" formControlName="storeName" (keyup)="filterItem()">
+                    <mat-icon matPrefix>search</mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>Select Coupon</mat-label>
+                    <mat-select formControlName="coupon_id" (selectionChange)="couponChange($event)">
+                        <mat-option [value]="coupon.id" *ngFor="let coupon of filterItemsOfType()">{{coupon.code}}</mat-option>
+                    </mat-select>
+                    <mat-icon fontSet="material-icons-outlined" matPrefix>local_activity</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <div 
+            class="store-coupon-select" 
+            style="height: 280px; overflow-y: auto; padding: 10px; width: 70%; float: left;"
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onScrollDown()"
+            [scrollWindow]="false"
+        >
+            <h4>Available Store</h4>
+            <span *ngFor="let store of allStore" style="height: 300px;">
+                <div *ngIf="checkStore(store._source.store_id)"  style="float: left; width: 33%;padding-bottom: 5px;">
+                    <mat-checkbox color="primary" (change)="onChange(store._source.store_id, store._source.store_name, store._source.store_logo_url, store._source.short_address, $event)" [checked]="selectedStore(store._source.store_id)"></mat-checkbox>
+                    <img src="{{store._source.store_logo_url}}" style="max-width: 40px;max-height: 40px; margin-left: 10px;border-radius: 3px; min-height: 40px;"/>
+                    <div class="store-coupon-name">
+                        <h4 style="overflow: hidden; white-space: nowrap; max-width: 95%; font-size: 12px !important;">{{store._source.store_name}}</h4>
+                        <p>{{store._source.short_address}}</p>
+                    </div>
+                </div>
+            </span>
+        </div>
+        <div class="store-coupon-select" style="height: 280px; overflow-y: auto; padding: 10px; width: 28%; float: right;" formArrayName="store_ids" #scroll>
+            <h4>Selected Store</h4>
+            <div *ngFor="let store of couponAssignForm.get('store_ids').controls; let key=index;" [formGroupName]="key">
+                <div style="float: left; width: 80%;padding-bottom: 10px;">
+                    <img src="{{store.value.store_logo_url}}" style="max-width: 40px;max-height: 40px; margin-left: 10px;border-radius: 3px;min-height: 40px;"/>
+                    <div class="store-coupon-name">
+                        <h4 style="overflow: hidden; white-space: nowrap; max-width: 95%; font-size: 12px !important;">{{store.value.store_name}}</h4>
+                        <p>{{store.value.short_address}}</p>
+                    </div>
+                </div>
+                <button mat-icon-button color="warn" (click)="removeStore(key)" style="float: right;">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 mb-2">
+                <mat-form-field appearance="outline">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput [matDatepicker]="start_date" formControlName="start_date" [readonly]="true" (dateChange)="addEvent('change', $event)">
+                    <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
+                    <mat-datepicker #start_date></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-6 mb-2">
+                <mat-form-field appearance="outline">
+                    <mat-label>End Date</mat-label>
+                    <input matInput [matDatepicker]="end_date" formControlName="end_date" [readonly]="true" [min]="minDate" [max]="maxDate">
+                    <mat-datepicker-toggle matSuffix [for]="end_date"></mat-datepicker-toggle>
+                    <mat-datepicker #end_date></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-6 mb-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>Max Order Count</mat-label>
+                    <input type="number" min="1" step="1" matInput formControlName="max_order_count" onkeypress="return event.charCode >= 48 && event.charCode <= 57" appTwoDigitDecimaNumber  minValue="1" maxValue="100000">
+                </mat-form-field>
+                <ng-container *ngIf="!couponAssignForm.get('max_order_count').valid && couponAssignForm.get('max_order_count').touched">
+                    <mat-hint align="start" class="error" *ngIf="couponAssignForm.get('max_order_count').hasError('min') || couponAssignForm.get('max_order_count').hasError('max')">
+                        Max Order Count should be 1 to 100000</mat-hint>
+                </ng-container>
+            </div>
+
+            <div class="col-sm-3 mb-3" style="padding-top: 10px;">
+                <mat-slide-toggle color="primary" formControlName="allow_store_update" *ngIf="false">Allow Store Update
+                </mat-slide-toggle>
+            </div>
+
+            <div class="col-sm-3">
+                <button mat-raised-button class="save-store-coupon" color="primary" (keydown.enter)="$event.preventDefault()"
+                (click)="onFormSubmit($event)">Save</button>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>

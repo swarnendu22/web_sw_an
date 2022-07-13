@@ -1,0 +1,27 @@
+
+<mat-dialog-content>
+	<div class="hoz-form">
+		<div class="row">
+			<div class="col-md-6">
+				<mat-form-field appearance="outline" class="forDate">
+				  <mat-label>Date from</mat-label>
+				  <input matInput [matDatepicker]="dateFrom">
+				  <mat-datepicker-toggle matSuffix [for]="dateFrom"></mat-datepicker-toggle>
+				  <mat-datepicker #dateFrom></mat-datepicker>
+				</mat-form-field>
+			</div>
+			<div class="col-md-6">
+				<mat-form-field appearance="outline" class="forDate">
+				  <mat-label>Date to</mat-label>
+				  <input matInput [matDatepicker]="dateTo">
+				  <mat-datepicker-toggle matSuffix [for]="dateTo"></mat-datepicker-toggle>
+				  <mat-datepicker #dateTo></mat-datepicker>
+				</mat-form-field>
+			</div>
+		</div>
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" cdkFocusInitial>Search</button>
+</mat-dialog-actions>

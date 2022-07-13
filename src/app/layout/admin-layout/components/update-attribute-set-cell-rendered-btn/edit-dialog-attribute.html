@@ -1,0 +1,94 @@
+<form [formGroup]="updateAttributeForm" autocomplete="off">
+  <h2 mat-dialog-title>Update Attributes</h2>
+  <mat-dialog-content>
+    <div class="hoz-form">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Select Attribute Group (Non Editable)</mat-label>
+                <input matInput placeholder="Select Group" formControlName="groupName" [disabled]="'true'" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Type (Non Editable)</mat-label>
+                <mat-select formControlName="type" disabled>
+                  <mat-option value="TEXT">Text</mat-option>
+                  <mat-option value="SELECT">Select</mat-option>
+                  <mat-option value="SWATCH">Swatch</mat-option>
+                  <mat-option value="IMAGE">Image</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Attribute Product Name (Non Editable)</mat-label>
+                <input matInput placeholder="Enter Attribute Name" formControlName="name" [disabled]="'true'" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Attribute Max Length</mat-label>
+                <input matInput type="text" trim="blur" autocomplete="off" formControlName="maxLength" min="0"
+                  maxlength="10" numbersOnly autocomplete="off" />
+              </mat-form-field>
+              <ng-container *ngIf="
+              !updateAttributeForm.get('maxLength').valid &&
+              updateAttributeForm.get('maxLength').touched
+            ">
+                <mat-hint align="start" class="error"
+                  *ngIf="updateAttributeForm.get('maxLength').hasError('maxlength')">
+                  Invalid Value</mat-hint>
+              </ng-container>
+            </div>
+          </div>
+          <div class=" row">
+            <div class="col-sm">
+              <mat-form-field appearance="outline">
+                <mat-label>Attribute Option</mat-label>
+                <mat-select formControlName="option">
+                  <mat-option value="M">Mandatory</mat-option>
+                  <mat-option value="N">Non Mandatory</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <ng-container *ngIf="
+                  !updateAttributeForm.get('option').valid &&
+                  updateAttributeForm.get('option').touched
+                ">
+                <mat-hint align="start" class="error" *ngIf="updateAttributeForm.get('option').hasError('required')">
+                  Required Field</mat-hint>
+              </ng-container>
+            </div>
+          </div>
+          <div class="row  mt-2">
+            <div class="col">
+              <mat-slide-toggle color="primary" formControlName="filterable">Filterable
+              </mat-slide-toggle>
+            </div>
+            <div class="col">
+              <mat-slide-toggle color="primary" formControlName="searchable">Searchable
+              </mat-slide-toggle>
+            </div>
+            <div class="col">
+              <mat-slide-toggle color="primary" formControlName="isVisibleOnFront">Visible on Storefront
+              </mat-slide-toggle>
+            </div>
+            <div class="col">
+              <mat-slide-toggle color="primary" formControlName="isVisibleOnList">Visible on List
+              </mat-slide-toggle>
+            </div>
+            <div class="col">
+              <mat-slide-toggle color="primary" formControlName="isVariant">Is Variant
+              </mat-slide-toggle>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-flat-button color="primary" (click)="submitUpdateAttribute()">
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

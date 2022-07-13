@@ -1,0 +1,30 @@
+<div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title">Categories Keyword Request</h3>
+        </div>
+        <div class="form-header-btn">
+         <mat-form-field appearance="outline">
+        <mat-label>STATUS</mat-label>
+        <mat-select [(ngModel)]="payload" (selectionChange)="onStatusChange()">
+          <mat-option value="all">ALL</mat-option>
+          <mat-option value="pending">PENDING</mat-option>
+          <mat-option value="approved">APPROVED</mat-option>
+        </mat-select>
+      </mat-form-field>
+            <div class="store-approval-btn ml-3">
+                <button [disabled]="bulkOperationList.length<1" mat-raised-button (click)="bulkOperation('REJECTED')" type="button" class="btn btn-danger">REJECT</button>
+                <button [disabled]="bulkOperationList.length<1" mat-raised-button type="button" (click)="bulkOperation('APPROVED')" class="btn btn-success">APPROVE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="bg-white single-pagination" style="height: calc(100% - 20px)">
+    <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham" #agGrid [rowData]="rowData" [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef" (firstDataRendered)="onFirstDataRendered($event)" (gridReady)="onGridReady($event)" [rowSelection]="rowSelection"
+        [enableFilter]="true" [gridOptions]="gridOptions" [floatingFilter]="true" (gridSizeChanged)="onGridSizeChanged($event)">
+    </ag-grid-angular>
+
+</div>

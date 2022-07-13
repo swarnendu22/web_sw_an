@@ -1,0 +1,159 @@
+<form [formGroup]="registerUrl" autocomplete="off">
+  <div class="top-bar box-shadow" style="position: relative;">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">{{ urlStatus }}</h3>
+      </div>
+      <div class="form-header-btn">
+        <button mat-raised-button class="noshadow top-btn-font" color="primary" 
+          (click)="saveUrl()">
+          <mat-icon>save</mat-icon> Save
+        </button>
+
+        <button mat-dialog-close mat-raised-button class="noshadow ml-2 top-btn-font" color="primary">
+          <mat-icon>close</mat-icon> Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="box-shadow bg-white padding-10">
+    <div class="row">
+
+      <div class="col-12">
+        <mat-label style="font-weight: 600;">External URL</mat-label>
+        <div class="hoz-form">
+          <div class="row">
+
+            <div style="margin-top: 10px;" class="col-md-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Protocol</mat-label>
+                <mat-select tabindex="1" formControlName="externalProtocol">
+                  <div class="custom-panel" style="position: relative;overflow-x: hidden;" infiniteScroll
+                    [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScrollDown()"
+                    [scrollWindow]="false">
+                    <mat-option value="http">http</mat-option>
+                    <mat-option value="https">https</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div style="margin-top: 10px;" class="col-md-6">
+              <mat-form-field appearance="outline">
+                <mat-label>SubDomain</mat-label>
+                <input trim=blur matInput formControlName="externalsubdomain" />
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Domain</mat-label>
+                <input trim=blur matInput formControlName="externalDomain" [ngClass]="{ 'ng-invalid ng-touched': !registerUrl.get('externalDomain').valid }" />
+
+                <span [tooltip]="externalDomain" *ngIf="!registerUrl.get('externalDomain').valid && registerUrl.get('externalDomain').touched"
+                  class="mandatory-alert" content-type="template">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </span>
+              </mat-form-field>
+              <p *ngIf="!registerUrl.get('externalDomain').valid && registerUrl.get('externalDomain').touched" style="color: red; margin-top: -10px; margin-bottom: 5px;">Domain Required</p>
+              <p *ngIf="externalErr" style="color: red; margin-top: -10px; margin-bottom: 5px;">Wrong Domain</p>
+            </div>
+
+            <div class="col-md-6">
+              <mat-form-field appearance="outline">
+                <mat-label>PublicUrl</mat-label>
+                <input trim=blur matInput formControlName="externalPublicUrl" />
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+              <div style="display: flex; align-items: center; margin-left: 5px;">
+                <p style="margin: 0px; font-weight: 600; margin-right: 40px;">Theme Color</p>
+                <div ngx-colors-trigger class="color-option editBtns" [style.background]="Themebackground" [format]="'hex'"
+                  [hideTextInput]="true" [(ngModel)]="Themebackground" formControlName="themeColor">
+                </div>
+              </div>
+              <div style="display: none;">
+                <ngx-colors ngx-colors-trigger [(ngModel)]="color"></ngx-colors>
+              </div>
+              
+            </div>
+
+            <div class="col-md-6">
+              <div style="display: flex; align-items: center; margin-left: 5px;">
+                <p style="margin: 0px; font-weight: 600; margin-right: 40px;">Theme Text Color</p>
+                <div ngx-colors-trigger class="color-option editBtns" [style.background]="TextbackgroundColor" [format]="'hex'"
+                [hideTextInput]="true" [(ngModel)]="TextbackgroundColor" formControlName="themeTextColor" name="color">
+              </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+
+
+
+<!-- 
+      <div class="col-12">
+        <mat-label>Internal URL</mat-label>
+        <div class="hoz-form">
+          <div class="row">
+
+            <div class="col-md-3">
+              <mat-form-field appearance="outline">
+                <mat-label>Protocol</mat-label>
+                <mat-select tabindex="1" formControlName="internalProtocol">
+                  <div class="custom-panel" style="position: relative;overflow-x: hidden;" infiniteScroll
+                    [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScrollDown()"
+                    [scrollWindow]="false">
+                    <mat-option value="https">https</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-3">
+              <mat-form-field appearance="outline">
+                <mat-label>SubDomain</mat-label>
+                <input trim=blur matInput formControlName="internalsubdomain" />
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-3">
+              <mat-form-field appearance="outline">
+                <mat-label>Domain</mat-label>
+                <input trim=blur matInput formControlName="internalDomain" />
+
+                <span [tooltip]="internalDomain"
+                  *ngIf="!registerUrl.get('internalDomain').valid && registerUrl.get('internalDomain').touched"
+                  class="mandatory-alert" content-type="template">
+                  <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </span>
+              </mat-form-field>
+              <p *ngIf="!registerUrl.get('internalDomain').valid && registerUrl.get('internalDomain').touched" style="color: red; margin-top: -10px; margin-bottom: 5px;">Domain Required</p>
+              <p *ngIf="internalErr" style="color: red; margin-top: -10px; margin-bottom: 5px;">Wrong Domain</p>
+            </div>
+
+            <div class="col-md-3">
+              <mat-form-field appearance="outline">
+                <mat-label>PublicUrl</mat-label>
+                <input trim=blur matInput formControlName="internalPublicUrl" />
+              </mat-form-field>
+            </div>
+
+          </div>
+        </div>
+      </div> -->
+
+
+
+    </div>
+  </div>
+
+
+
+</form>

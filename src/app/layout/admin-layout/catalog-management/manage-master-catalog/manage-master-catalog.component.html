@@ -1,0 +1,47 @@
+<div class="top-bar box-shadow">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title">Products
+        <span class="total-count">{{totalRecords}} Total</span>
+      </h3>
+      <div class="sort-data">
+        <mat-label>Sort By:</mat-label>
+        <mat-form-field>
+          <mat-select [(value)]="selected" (selectionChange)="sortBy($event)">
+            <mat-option value="createdAt">Date Created</mat-option>
+            <mat-option value="maximumRetailPrice">MRP</mat-option>
+            <mat-option value="sellingPrice">Selling Price</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-label class="ml-4">Order By:</mat-label>
+        <mat-form-field>
+          <mat-select (selectionChange)="changeOrder($event)">
+            <mat-option value="desc">DESC</mat-option>
+            <mat-option value="asc">ASC</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="ml-auto form-header-btn">
+      <button type="button" (click)="openProductFilter()" mat-raised-button class="top-btn-font drop mr-2" color="primary">
+        Filter
+        <mat-icon>filter_list</mat-icon>
+      </button>
+      <button (click)="openAddNewProductDialog()" type="button" mat-raised-button class="top-btn-font" color="primary">
+        <mat-icon>add</mat-icon> Add New Master Catalog
+      </button>
+    </div>
+  </div>
+</div>
+<div class="bg-white single-pagination catalog-grid" style="height: calc(100% - 90px)">
+  <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData" [defaultColDef]="defaultColDef"
+    [columnDefs]="columnDefs" [rowHeight]="rowHeight" (firstDataRendered)="onFirstDataRendered($event)" (gridReady)="onGridReady($event)" [floatingFilter]="true"
+    [enableFilter]="true" (gridSizeChanged)="onGridSizeChanged($event)" [suppressRowClickSelection]="true" [rowSelection]="rowSelection"
+    (selectionChanged)="onSelectionChanged($event)">
+  </ag-grid-angular>
+  <!-- <ul style="display: none;">
+    <li *ngFor="let item of allCatalogList | paginate: { id: 'dataPagination', itemsPerPage: 100, currentPage: pageNo, totalItems: totalRecords }">{{ item.id }}</li>
+  </ul> -->
+  <pagination-controls (pageChange)="getPageNoData($event)" id="dataPagination"></pagination-controls>
+</div>

@@ -1,0 +1,300 @@
+<form [formGroup]="storeInfoForm">
+    <div class="tab-area-content">
+        <div class="hoz-form">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Store Name</mat-label>
+                            <input matInput formControlName="storeName" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeInfoForm.get('storeName').valid }">
+                            <span [tooltip]="deliveryRange" *ngIf="!storeInfoForm.get('storeName').valid && storeInfoForm.get('storeName').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #deliveryRange>
+                            <div>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('storeName').errors.required">Required</p>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('storeName').errors.maxlength">Max Length 50</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Business Category</mat-label>
+                            <mat-select disabled formControlName="businessCategoryId" [ngClass]="{ 'ng-invalid ng-touched': !storeInfoForm.get('businessCategoryId').valid }">
+                                <mat-option [value]="item.id" *ngFor="let item of businessCategoryList">{{item.businessCategoryName}}</mat-option>
+
+                            </mat-select>
+                            <span [tooltip]="businessCategoryId" *ngIf="!storeInfoForm.get('businessCategoryId').valid && storeInfoForm.get('businessCategoryId').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #businessCategoryId>
+                            <div>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('businessCategoryId').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <!-- <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Land Mark</mat-label>
+                            <input matInput formControlName="landmark" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeInfoForm.get('landmark').valid }">
+                            <span [tooltip]="landmark" *ngIf="!storeInfoForm.get('landmark').valid && storeInfoForm.get('landmark').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #landmark>
+                            <div>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('landmark').errors.required">Required</p>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('landmark').errors.maxlength">Max Length 100</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="p-label">Full Address
+                            <a href="javascript:void(0);">Lat/Long - ({{map.lat}},{{map.lng}})
+                            </a>
+                        </p>
+                        <mat-form-field appearance="outline">
+                            <textarea matInput readonly formControlName="address" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeInfoForm.get('address').valid }"></textarea>
+                            <mat-icon (click)="openDialogLatLong()" style="cursor: pointer" matSuffix>edit</mat-icon>
+                            <span [tooltip]="address" *ngIf="!storeInfoForm.get('address').valid && storeInfoForm.get('address').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #address>
+                            <div>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('address').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="p-label">Display Address</p>
+                        <mat-form-field appearance="outline">
+                            <textarea matInput formControlName="shortAddress" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeInfoForm.get('shortAddress').valid }"></textarea>
+                            <span [tooltip]="shortAddress" *ngIf="!storeInfoForm.get('shortAddress').valid && storeInfoForm.get('shortAddress').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #shortAddress>
+                            <div>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('shortAddress').errors.required">Required</p>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('shortAddress').errors.maxlength">Max Length 200</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>City</mat-label>
+                            <input matInput formControlName="city" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeInfoForm.get('city').valid }">
+                            <span [tooltip]="city" *ngIf="!storeInfoForm.get('city').valid && storeInfoForm.get('city').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #city>
+                            <div>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('city').errors.required">Required</p>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('city').errors.maxlength">Max Length 100</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Pin Code</mat-label>
+                            <input numbersOnly matInput formControlName="zipCode" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeInfoForm.get('zipCode').valid }">
+                            <span [tooltip]="zipCode" *ngIf="!storeInfoForm.get('zipCode').valid && storeInfoForm.get('zipCode').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #zipCode>
+                            <div>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('zipCode').errors.required">Required</p>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('zipCode').errors.pattern">Not Valid</p>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('zipCode').errors.maxlength">Max Length 25</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Region</mat-label>
+                            <mat-select disabled formControlName="regionName" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeInfoForm.get('regionName').valid }">
+                                <mat-option [value]="region.regionName" *ngFor="let region of regions">{{region.regionName}}</mat-option>
+
+                            </mat-select>
+                            <span [tooltip]="regionName" *ngIf="!storeInfoForm.get('regionName').valid && storeInfoForm.get('regionName').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #regionName>
+                            <div>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('regionName').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Country</mat-label>
+                            <mat-select disabled formControlName="countryCode" [ngClass]="{ 'ng-invalid ng-touched': !storeInfoForm.get('countryCode').valid }">
+                                <mat-option [value]="item.countryCode" *ngFor="let item of countries">{{item.countryName}}</mat-option>
+
+                            </mat-select>
+                            <mat-icon class="rupee" matSuffix>₹</mat-icon>
+                            <span [tooltip]="countryCode" *ngIf="!storeInfoForm.get('countryCode').valid && storeInfoForm.get('countryCode').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #countryCode>
+                            <div>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('countryCode').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div> -->
+
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Contact Number</mat-label>
+                            <input readonly="readonly" numbersOnly [readonly]="true" matInput formControlName="registeredNumber" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeInfoForm.get('registeredNumber').valid }">
+                            <span [tooltip]="registeredNumber" *ngIf="!storeInfoForm.get('registeredNumber').valid && storeInfoForm.get('registeredNumber').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #registeredNumber>
+                            <div>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('registeredNumber').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Support Number</mat-label>
+                            <input readonly="readonly" numbersOnly [readonly]="true" matInput formControlName="supportNumber" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeInfoForm.get('registeredNumber').valid }">
+                            <span [tooltip]="supportNumber" *ngIf="!storeInfoForm.get('supportNumber').valid && storeInfoForm.get('supportNumber').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #supportNumber>
+                            <div>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('supportNumber').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeInfoForm.get('email').valid }">
+                            <span [tooltip]="email" *ngIf="!storeInfoForm.get('email').valid && storeInfoForm.get('email').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #email>
+                            <div>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('email').errors.required">Required</p>
+                                <p class="mb-1" *ngIf="storeInfoForm.get('email').errors.email">Not Valid</p>
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Merchant-ID
+                                <span style="color: grey; font-size: 10px"></span>
+                            </mat-label>
+                            <mat-select formControlName="merchantId">
+                              <mat-option [value]="merchant.id" *ngFor="let merchant of merchantIdList; let i =index;">{{ merchant.shortAddress}} ({{ merchant.id }})</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Hub-ID
+                                <span style="color: grey; font-size: 10px"></span>
+                            </mat-label>
+                            <mat-select formControlName="hubId">
+                              <mat-option [value]="hub.id" *ngFor="let hub of HubIdList; let i = index;" >{{ hub.shortAddress }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>URL
+                                <span style="color: grey; font-size: 10px"></span>
+                            </mat-label>
+                            <mat-select #hasValue formControlName="urlId">
+                                <ng-container *ngFor="let url of storeUrlList; let i = index;">
+                                    <mat-option *ngIf="url.externalDomain" [value]="url.id">
+                    
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>{{ url.externalProtocol}}{{ url.externalSubDomain }}{{ url.externalDomain }}{{
+                                                url.externalPublicUrl}}
+                                            </span>
+                                            <span *ngIf="enabled" style="color: blue; text-decoration: underline;"
+                                                (click)="editUrl( url )">Edit</span>
+                                        </div>
+                    
+                                    </mat-option>
+                                </ng-container>
+                                <footer style="display: flex; justify-content: flex-end;">
+                                    <button mat-button (click)="addUrlDialog()">Add New Url</button>
+                                </footer>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div style="align-items: center; display: flex;" class="col-md-1">
+                        <button class="full-width" mat-raised-button color="primary" (click)="onSubmit()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="row">
+    <div class="col-md-9 pr-0">
+        <div class="tab-area-content mt-3">
+            <div class="store-profile-status">
+                <h4>Store Completion Status</h4>
+                <div class="d-flex justify-content-around mt-3">
+                    <circle-progress class="completion-progress" [percent]="profileCompletionPercent" [radius]="100" [outerStrokeWidth]="10"
+                        [innerStrokeWidth]="10" [space]="-10" [outerStrokeColor]="'#2cadd8'" [innerStrokeColor]="'#edf1f2'" [animation]="true"
+                        [animationDuration]="300"></circle-progress>
+                    <div class="completion-check">
+                        <mat-slide-toggle color="primary" checked disabled>Store Created</mat-slide-toggle>
+                        <mat-slide-toggle color="primary" [(ngModel)]="product">Product Added</mat-slide-toggle>
+                        <mat-slide-toggle color="primary" [(ngModel)]="compliance_doc">Compliance Document Submitted</mat-slide-toggle>
+                        <mat-slide-toggle color="primary" [(ngModel)]="delivery_opt">Delivery Option Configured</mat-slide-toggle>
+                        <mat-slide-toggle color="primary" [(ngModel)]="payment_gateway">Payment Gateway Linked</mat-slide-toggle>
+                    </div>
+                </div>
+                <div class="mt-4 text-center">
+                    <button mat-raised-button color="primary" type="button" (click)="onProfileStatusChanges()">Submit</button>
+                </div>
+            </div>
+        </div>
+        <div>
+
+        </div>
+    </div>
+
+    <div class="col-md-3 pl-0" *ngIf="storePublicUrl">
+        <div class="tab-area-content mt-3" style="margin-left: 15px">
+            <a class="store-link-qr" href="{{storePublicUrl}}" target="_blank">{{storePublicUrl}}</a>
+            <ngx-qrcode [elementType]="elementType" [errorCorrectionLevel]="correctionLevel" [value]="storePublicUrl" alt="Demo QR Code"
+                cssClass="bshadow"></ngx-qrcode>
+        </div>
+    </div>
+</div>

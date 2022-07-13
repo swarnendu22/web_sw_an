@@ -1,0 +1,374 @@
+.sb-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.sidenav-container {
+  flex: 1;
+}
+
+.sidenav {
+  color: #d36423;
+}
+
+.mat-list-item {
+  color: #676c7b;
+  opacity: 1;
+}
+
+.sidenav-content {
+  display: flex;
+}
+
+.mat-menu-item a {
+  text-decoration: none;
+}
+
+.is-mobile .toolbar {
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+}
+
+h1.app-name {
+  margin-left: 8px;
+}
+
+.sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<main-menu-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+  height: calc(100% - 64px);
+}
+
+.is-mobile .sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+     `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
+}
+
+.sidenav-content {
+  min-height: calc(100vh - 55px);
+  background-color: #f2f3f8;
+  height: auto;
+  padding: 15px;
+  padding-top: 10px;
+}
+.toolbar {
+  box-shadow: 0px 1px 15px 1px rgba(69, 65, 78, 0.1);
+  z-index: 2;
+  position: relative;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+.top-menu {
+  padding-left: 15px;
+}
+.logo {
+  display: flex;
+  margin-bottom: 15px;
+  padding: 12px;
+}
+.user-pic {
+  border-radius: 50%;
+  max-width: 65px;
+  max-height: 65px;
+  overflow: hidden;
+}
+.user-pic img {
+  max-width: 100%;
+}
+.user-name h4 {
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.user-name p {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #8e8e8e;
+  margin-bottom: 0;
+}
+.user-details {
+  padding: 20px 10px;
+  border-bottom: 1px solid #e6e6e6;
+  overflow-x: hidden;
+  margin-top: -8px;
+}
+
+.gap {
+  flex: 0 0 10px;
+}
+
+.side-menu-toggle .mat-expansion-panel-header {
+  padding-left: 0;
+}
+
+.header-topnav {
+  background: transparent;
+}
+.header-topnav ul {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 10px 0px;
+}
+.header-topnav ul li {
+  padding-right: 5px;
+}
+.header-topnav ul li:last-child {
+  padding-right: 0px;
+}
+.header-topnav ul li button {
+  border: none;
+  color: #fff;
+  padding: 0px 5px;
+  font-weight: 600;
+  font-size: 11px;
+}
+.header-topnav ul li button .mat-icon {
+  font-size: 15px;
+  height: 18px;
+}
+.header-topnav ul li button .mat-icon.angle-down {
+  font-size: 15px;
+  height: 18px;
+  width: 18px;
+}
+
+mat-sidenav-container {
+  height: 100%;
+  background-color: #eceef0 !important;
+}
+
+mat-sidenav,
+mat-sidenav-content {
+  padding: 0px;
+}
+
+mat-sidenav {
+  width: 225px;
+  padding: 0px;
+}
+.main-menu .mat-expansion-panel {
+  overflow: visible;
+}
+
+.main-menu .mat-expansion-panel {
+  box-shadow: none;
+  background: none;
+  margin-top: 0px !important;
+}
+.main-menu .mat-expansion-panel .mat-icon {
+  margin-right: 10px;
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+}
+
+.smallSidenav {
+  width: 72px;
+}
+
+.main-menu.mat-drawer {
+  background: white;
+  height: 100vh;
+  border: none;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 10%),
+    0 10px 10px -5px rgb(0 0 0 / 4%);
+}
+
+.main-menu .mat-expansion-panel-header {
+  padding: 0px 10px 0px 12px;
+  border-radius: 0px;
+}
+.main-menu .mat-expansion-panel-header.mat-expanded {
+  height: 48px !important;
+}
+.main-menu .mat-list-base {
+  padding-top: 0;
+}
+.main-menu .mat-list-base .mat-list-item {
+  height: 38px;
+  padding: 0 4px 0px 30px;
+  position: relative;
+}
+.main-menu .mat-list-base .mat-list-item.listSelected:before {
+  content: "";
+  left: 19px;
+  width: 2px;
+  top: 9px;
+  bottom: 0;
+  background: transparent;
+  z-index: 1;
+  position: absolute;
+  display: block;
+  background: #639;
+  height: 18px;
+}
+.main-menu .mat-expansion-panel-header-title {
+  margin-right: 10px;
+}
+
+::ng-deep .main-menu .mat-list-item-content {
+  color: rgb(28 28 28 / 60%);
+  padding: 0 10px !important;
+  font-size: 11.6px;
+  font-weight: 600;
+}
+::ng-deep .main-menu .listSelected .mat-list-item-content {
+  color: rgb(28 28 28 / 80%);
+}
+::ng-deep .main-menu .mat-list-item-content:hover {
+  cursor: pointer;
+  color: rgb(28 28 28 / 80%);
+}
+
+.main-menu
+  .mat-expansion-panel:not(.mat-expanded)
+  .mat-expansion-panel-header:hover:not([aria-disabled="true"]) {
+  background: rgb(0 0 0 / 5%);
+}
+
+.collapse-menu {
+  color: white;
+  font-weight: 700;
+  margin-top: 0px;
+  padding-top: 0;
+  width: 195px;
+  height: auto;
+}
+
+.main-menu .mat-fab {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 40px;
+  height: 40px;
+}
+.main-menu .mat-fab.mat-primary {
+  color: #2d2b2f;
+  background: #18a2d7;
+  background-image: linear-gradient(to right, #e9eaeb, #ffffff);
+}
+.main-menu .optionSelected_div .mat-fab.mat-primary {
+  color: rgba(102, 51, 153, 1);
+  background: #18a2d7;
+  background-image: linear-gradient(to right, #e9eaeb, #ffffff);
+}
+.main-menu .mat-fab .mat-button-wrapper {
+  padding: 15px 0;
+  display: inline-block;
+  line-height: 20px;
+}
+.main-menu .mat-fab .mat-icon {
+  line-height: 0.5;
+  font-size: 22px;
+}
+::ng-deep .main-menu .mat-expansion-panel-body {
+  padding: 0px;
+}
+
+.bottom-collapse,
+.bottom-collapse-sm {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 15px;
+  background: #262b30;
+  padding-bottom: 8px;
+  /* box-shadow: 0px 0px 3px 0px #1d2228; */
+}
+.bottom-collapse-sm .collapse-menu {
+  width: 41px;
+}
+
+.listSelected {
+  background-color: transparent;
+}
+.selectedMenu {
+  background-color: transparent;
+}
+.selectedMenu .menu-title-text {
+  color: rgba(102, 51, 153, 1);
+  font-weight: 700;
+  opacity: 1;
+}
+.main-menu .mat-expansion-panel .selectedMenu .mat-icon {
+  color: rgba(102, 51, 153, 1);
+}
+
+.fxd-collapse {
+  position: fixed;
+  top: 20px;
+  left: 206px;
+  z-index: 9;
+}
+.fxd-collapse.sm {
+  left: 58px;
+}
+.fxd-collapse .mat-mini-fab {
+  background: white;
+  color: rgba(102, 51, 153, 1);
+  width: 30px;
+  height: 30px;
+  border: 2px solid rgba(102, 51, 153, 1);
+}
+
+.fxd-collapse .mat-icon {
+  font-size: 23px;
+  width: 23px;
+  height: 34px;
+}
+.optionSelected {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.optionSelected_div {
+  background-color: transparent;
+  position: relative;
+}
+.optionSelected_div:before {
+  content: "";
+  left: 0;
+  width: 2px;
+  top: 0;
+  bottom: 0;
+  background: transparent;
+  z-index: 1;
+  position: absolute;
+  display: block;
+  background-color: #639;
+}
+
+.menu-title-text {
+  font-weight: 700;
+  color: #210c33;
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+@media (max-width: 767px) {
+  .smallSidenav {
+    width: 0px;
+  }
+  .mat-sidenav-content {
+    margin-left: 0px !important;
+  }
+  .fxd-collapse.sm {
+    left: 0px;
+  }
+}
+
+::ng-deep .mat-tooltip {
+  font-size: 12px !important;
+}

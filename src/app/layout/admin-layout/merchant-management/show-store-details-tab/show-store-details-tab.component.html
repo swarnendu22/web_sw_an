@@ -1,0 +1,125 @@
+<div class="manage-store-profile">
+    <div class="d-flex justify-content-between" style="background: white;padding: 10px;box-shadow: 0 1px 5px rgba(15,32,60,.1);border-radius: 5px; align-items: center;">
+        <div class="store-profile-area">
+            <img src="../../../../../assets/img/store-icon.png">
+            <h4>{{storeName}}</h4>
+            <p>{{address}}</p>
+        </div>
+        <div>
+            <mat-form-field appearance="outline" style="width: 120px;">
+                <mat-label>Store Type</mat-label>
+                <mat-select [(ngModel)]="storeType" (selectionChange)="onStoreTypeChange()">
+                  <mat-option value="PRIVATE">PRIVATE</mat-option>
+                  <mat-option value="PUBLIC">PUBLIC</mat-option>
+                </mat-select>
+            </mat-form-field> 
+        </div>
+        <div>
+            <mat-form-field appearance="outline" style="width: 120px;">
+                <mat-label>Store Status</mat-label>
+                <mat-select [(ngModel)]="storeStatus" (ngModelChange)="bulkOperation($event)">
+                <mat-option value="PENDING" *ngIf="storeStatus=='PENDING'">PENDING</mat-option>
+                <mat-option value="APPROVED">APPROVED</mat-option>
+                <mat-option value="DELETED">REJECTED</mat-option>
+                <mat-option value="DEACTIVATED" *ngIf="storeStatus=='DEACTIVATED'">DEACTIVATED</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <button mat-raised-button type="button" (click)="elacticStoreDetailsSync()" class="btn btn-success mr-3"
+                style="font-size: 15px;">SYNC</button>
+        </div>
+        <div>
+            <button (click)="backMerchant()" mat-raised-button class="noshadow top-btn-font white-btn">
+                <mat-icon>arrow_back</mat-icon> Back
+            </button>
+        </div>
+    </div>
+
+    <div class="manage-store-area">
+        <div class="tab-area">
+            <div class="manage-store-tab">
+                <mat-tab-group (selectedTabChange)="route($event)" [selectedIndex]="tabIndex">
+                    <mat-tab label="Store Info">
+                    </mat-tab>
+                    <mat-tab label="Store Properties">
+                    </mat-tab>
+                    <mat-tab label="Orders">
+                    </mat-tab>                    
+                    <!-- <mat-tab label="Promotional">
+                    </mat-tab> -->                    
+                    <mat-tab label="Store Operation">
+                    </mat-tab>
+                    <mat-tab label="Media">
+                    </mat-tab>
+                    <mat-tab label="Layouts">
+                    </mat-tab>
+                    <mat-tab label="Compliance">
+                    </mat-tab>
+                    <mat-tab label="Products">
+                    </mat-tab>
+                    <mat-tab label="Bulk File">
+                    </mat-tab>
+                    <mat-tab label="SEO Keywords">
+                    </mat-tab>                    
+                    <mat-tab label="Add Category">
+                    </mat-tab>
+                    <mat-tab label="Delivery Settings">
+                    </mat-tab>
+                    <!-- <mat-tab label="Users">
+                    </mat-tab>
+                    <mat-tab label="Bulk Inventory">
+                    </mat-tab> -->
+                </mat-tab-group>
+            </div>            
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==0">
+            <store-info></store-info>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==1">
+            <app-store-properties></app-store-properties>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==9">
+            <app-store-keywords></app-store-keywords>
+        </div>
+        <!-- <div class="flex-auto" *ngIf="tabIndex==3">
+            <app-store-promotional></app-store-promotional>
+        </div> -->        
+        <div class="flex-auto" *ngIf="tabIndex==3">
+            <app-store-operation></app-store-operation>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==4">
+            <app-store-media></app-store-media>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==5">
+            <app-store-layouts></app-store-layouts>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==6">
+            <app-store-compliance></app-store-compliance>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==7">
+            <app-store-products></app-store-products>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==8">
+            <app-store-bulk-file></app-store-bulk-file>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==2">
+            <app-store-orders></app-store-orders>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==10">
+            <app-add-category [storeId]="storeId" ></app-add-category>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==11">
+           <app-delivery-management [storeId]="storeId"></app-delivery-management>
+        </div>
+        <!-- <div class="flex-auto" *ngIf="tabIndex==11">
+            <app-store-delivery-settings></app-store-delivery-settings>
+        </div> -->
+        <!-- <div class="flex-auto" *ngIf="tabIndex==10">
+            <app-store-users></app-store-users>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==11">
+            <app-bulk-inventory-pricing></app-bulk-inventory-pricing>
+        </div> -->
+    </div>
+</div>

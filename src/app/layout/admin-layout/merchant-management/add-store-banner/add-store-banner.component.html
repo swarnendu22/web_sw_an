@@ -1,0 +1,563 @@
+<form [formGroup]="storeBannerForm">
+    <div class="top-bar box-shadow">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title"> Add New Banner </h3>
+            </div>
+            <div class="form-header-btn">
+                <button type="button" [routerLink]="['/merchant/banner-management']" mat-raised-button class="noshadow top-btn-font white-btn"
+                    color="primary">
+                    <mat-icon>arrow_back</mat-icon> Back
+                </button>
+                <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (keydown.enter)="$event.preventDefault()"
+                    (click)="formSubmit()">
+                    <mat-icon>save</mat-icon> Save
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="tab-area-content m-0">
+        <div class="hoz-form">
+            <!-- <h6>Add {{bannerType}}</h6> -->
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Banner Type</mat-label>
+                            <mat-select formControlName="bannerType" (selectionChange)="imageReset()" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('bannerType').valid }">
+                                <mat-option value="MASTER">MASTER BANNER</mat-option>
+                                <mat-option value="FEATURED">FEATURED BANNER</mat-option>
+                                <mat-option value="BRAND">POPULAR BRAND</mat-option>
+
+                            </mat-select>
+                            <span [tooltip]="bannertype" *ngIf="!storeBannerForm.get('bannerType').valid && storeBannerForm.get('bannerType').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #bannertype>
+                            <div>
+                                <p class="mb-1" *ngIf="storeBannerForm.get('bannertype').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Banner Position</mat-label>
+                            <input matInput numbersOnly formControlName="bannerPosition" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('bannerPosition').valid }">
+                            <span [tooltip]="bannerposition" *ngIf="!storeBannerForm.get('bannerPosition').valid && storeBannerForm.get('bannerPosition').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #bannerposition>
+                            <div>
+                                <p class="mb-1" *ngIf="storeBannerForm.get('bannerPosition').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Banner Name</mat-label>
+                            <input matInput formControlName="bannerName" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('bannerName').valid }">
+                            <span [tooltip]="deliveryRange" *ngIf="!storeBannerForm.get('bannerName').valid && storeBannerForm.get('bannerName').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #deliveryRange>
+                            <div>
+                                <p class="mb-1" *ngIf="storeBannerForm.get('bannerName').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Sector</mat-label>
+                            <mat-select formControlName="sectorId" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('sectorId').valid }">
+                                <mat-option [value]="item.sectorId" *ngFor="let item of sectors">{{item.sectorName}}</mat-option>
+
+                            </mat-select>
+                            <span [tooltip]="sectorId" *ngIf="!storeBannerForm.get('sectorId').valid && storeBannerForm.get('sectorId').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #sectorId>
+                            <div>
+                                <p class="mb-1" *ngIf="storeBannerForm.get('sectorId').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Accessibility</mat-label>
+                            <mat-select formControlName="accessibility" (selectionChange)="changeAccessibilty()" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('accessibility').valid }">
+                                <mat-option value="LOCAL">LOCAL</mat-option>
+                                <mat-option value="COUNTRY">COUNTRY</mat-option>
+                                <mat-option value="REGION">REGION</mat-option>
+
+                            </mat-select>
+                            <span [tooltip]="accessibility" *ngIf="!storeBannerForm.get('accessibility').valid && storeBannerForm.get('accessibility').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #accessibility>
+                            <div>
+                                <p class="mb-1" *ngIf="storeBannerForm.get('accessibility').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+
+
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Country</mat-label>
+                            <mat-select formControlName="baseCountry" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('baseCountry').valid }">
+                                <mat-option [value]="item.countryCode" *ngFor="let item of countries">{{item.countryName}}</mat-option>
+                            </mat-select>
+                            
+                            <!-- <span [tooltip]="baseCountry" *ngIf="!storeBannerForm.get('baseCountry').valid && storeBannerForm.get('baseCountry').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span> -->
+                        </mat-form-field>
+                        <!-- <ng-template *ngIf="!storeBannerForm.get('baseCountry').valid && storeBannerForm.get('baseCountry').touched" #baseCountry>
+                            <div>
+                                <p class="mb-1" *ngIf="storeBannerForm.get('baseCountry').errors.required">Required</p>
+                            </div>
+                        </ng-template> -->
+                    </div>
+
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Region</mat-label>
+                            <mat-select formControlName="baseRegion" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('baseRegion').valid }">
+                                <mat-option [value]="region.name" *ngFor="let region of regions">{{region.name}}</mat-option>
+                            </mat-select>
+                            <!-- <span [tooltip]="baseRegion" *ngIf="!storeBannerForm.get('baseRegion').valid && storeBannerForm.get('baseRegion').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span> -->
+                        </mat-form-field>
+                        <!-- <ng-template *ngIf="!storeBannerForm.get('baseRegion').valid && storeBannerForm.get('baseRegion').touched" #baseRegion>
+                            <div>
+
+                                <p class="mb-1" *ngIf="storeBannerForm.get('baseRegion').errors.required">Required</p>
+                            </div>
+                        </ng-template> -->
+                    </div>
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Listing Range (in KM)</mat-label>
+                            <input matInput formControlName="listingRange" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('listingRange').valid }">
+                            <!-- <span [tooltip]="listingRange" *ngIf="!storeBannerForm.get('listingRange').valid && storeBannerForm.get('listingRange').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span> -->
+                        </mat-form-field>
+                        <!-- <ng-template *ngIf="!storeBannerForm.get('listingRange').valid && storeBannerForm.get('listingRange').touched" #listingRange>
+                            <div>
+                                <p class="mb-1" *ngIf="storeBannerForm.get('listingRange').errors.required">Required</p>
+                            </div>
+                        </ng-template> -->
+                    </div>
+
+                    <div class="col-md-12">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Local Base Address</mat-label>
+                            <input matInput formControlName="address" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('address').valid }">
+                            <!-- <span [tooltip]="address" *ngIf="!storeBannerForm.get('address').valid && storeBannerForm.get('address').touched" class="mandatory-alert"
+                                content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span> -->
+                        </mat-form-field>
+                        <!-- <ng-template *ngIf="!storeBannerForm.get('address').valid && storeBannerForm.get('address').touched" #address>
+                            <div>
+                                <p class="mb-1" *ngIf="storeBannerForm.get('address').errors.required">Required</p>
+                            </div>
+                        </ng-template> -->
+                    </div>
+                    <div class="col-md-4" *ngIf="storeBannerForm.get('accessibility').value == 'LOCAL'">
+                        <div class="lat-long-box">
+                            <p class="mt-3">Lat/Long - ({{map.lat}},{{map.lng}})
+                                <mat-icon (click)="openDialogLatLong()">edit</mat-icon>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        <p class="mb-2">General Banner</p>
+                        <mat-slide-toggle formControlName="isGeneral" title="General banners are not specific to any store" color="primary">(General banners are not specific to any store)</mat-slide-toggle>
+                    </div>
+                    <div class="col-md-5">
+                        <p class="mb-2">Free Banner</p>
+                        <mat-slide-toggle formControlName="isFree" title="Free banners means seperate price is not required to tag store to this banner"
+                            color="primary">(Free banners means seperate price is not required to tag store to this banner)</mat-slide-toggle>
+                    </div>
+                    <div class="col-md-3">
+                        <mat-form-field class="forDate" appearance="outline">
+                            <mat-label>Expiry Date</mat-label>
+                            <input matInput [matDatepicker]="exp" formControlName="expiryDate" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('expiryDate').valid }">
+                            <span [tooltip]="expirydate" *ngIf="!storeBannerForm.get('expiryDate').valid && storeBannerForm.get('expiryDate').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                            <mat-datepicker-toggle matSuffix [for]="exp"></mat-datepicker-toggle>
+                            <mat-datepicker #exp></mat-datepicker>
+                        </mat-form-field>
+                        <ng-template #expirydate>
+                            <div>
+                                <p class="mb-1" *ngIf="storeBannerForm.get('expiryDate').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+
+                <div class="banner-section-blog" *ngIf="storeBannerForm.get('isFree').value==false">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Amount Paid</mat-label>
+                                <input matInput numbersOnly formControlName="amountPaid" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('amountPaid').valid }">
+                                <span matSuffix>INR</span>
+                                <span [tooltip]="amountPaid" *ngIf="!storeBannerForm.get('amountPaid').valid && storeBannerForm.get('amountPaid').touched"
+                                    class="mandatory-alert" content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+                            <ng-template #amountPaid>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeBannerForm.get('amountPaid').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Payment Mode</mat-label>
+                                <mat-select formControlName="paymentMethod" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('paymentMethod').valid }">
+                                    <mat-option value="CREDIT">CREDIT</mat-option>
+                                    <mat-option value="PAYMENT">PAYMENT</mat-option>
+
+                                </mat-select>
+                                <span [tooltip]="paymentMethod" *ngIf="!storeBannerForm.get('paymentMethod').valid && storeBannerForm.get('paymentMethod').touched"
+                                    class="mandatory-alert" content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+                            <ng-template #paymentMethod>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeBannerForm.get('paymentMethod').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Transaction Reference</mat-label>
+                                <input matInput formControlName="transactionReference" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('transactionReference').valid }">
+                                <span [tooltip]="transactionReference" *ngIf="!storeBannerForm.get('transactionReference').valid && storeBannerForm.get('transactionReference').touched"
+                                    class="mandatory-alert" content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+                            <ng-template #transactionReference>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeBannerForm.get('transactionReference').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field class="forDate" appearance="outline">
+                                <mat-label>Transction Date</mat-label>
+                                <input matInput [matDatepicker]="transactionDate" formControlName="transactionDate" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('transactionDate').valid }">
+                                <span [tooltip]="transactiondate" *ngIf="!storeBannerForm.get('transactionDate').valid && storeBannerForm.get('transactionDate').touched"
+                                    class="mandatory-alert" content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                                <mat-datepicker-toggle matSuffix [for]="transactionDate"></mat-datepicker-toggle>
+                                <mat-datepicker #transactionDate></mat-datepicker>
+                            </mat-form-field>
+                            <ng-template #transactiondate>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeBannerForm.get('transactionDate').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+
+                <div class="master-banner" *ngIf="storeBannerForm.get('bannerType').value=='MASTER'">
+                    <h4>Master Banner Reference</h4>
+                    <div class="master-banner-box">
+                        <div class="master-banner-upload">
+                            <div class="show-btn-hover">
+                                <img *ngIf="storeBannerForm.get('image_url').value" [src]="fileurl">
+                                <div class="btnon-hover">
+                                    <div class="change-store-img">
+                                        <input accept="image/*" type="file" id="imgUrl" (change)="onSelectFile($event)">
+                                        <button mat-mini-fab color="primary" aria-label="Change Image">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="!storeBannerForm.get('image_url').value">
+                                <input accept="image/*" type="file" id="imgUrl" (change)="onSelectFile($event)">
+                                <div>
+                                    <mat-icon>cloud_upload</mat-icon>
+                                    <h5>Image Specification</h5>
+                                    <p>(1080 x 500)- 72 dpi (jpg)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- for POPULAR_BRAND -->
+                <div class="master-banner" *ngIf="storeBannerForm.get('bannerType').value=='BRAND'">
+                    <h4>POPULAR_BRAND Banner Reference</h4>
+                    <div class="master-banner-box">
+                        <div class="master-banner-upload popular-brand">
+                            <div class="show-btn-hover">
+                                <img *ngIf="storeBannerForm.get('image_url').value" [src]="fileurl">
+                                <div class="btnon-hover">
+                                    <div class="change-store-img">
+                                        <input accept="image/*" type="file" id="imgUrl" (change)="onSelectFile($event)">
+                                        <button mat-mini-fab color="primary" aria-label="Change Image">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="!storeBannerForm.get('image_url').value">
+                                <input type="file" id="imgUrl" (change)="onSelectFile($event)">
+                                <div>
+                                    <mat-icon>cloud_upload</mat-icon>
+                                    <h5>Image Specification</h5>
+                                    <p>(250 x 250)- 72 dpi (jpg)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- for FEATURED -->
+                <div class="master-banner" *ngIf="storeBannerForm.get('bannerType').value=='FEATURED'">
+                    <h4>FEATURED Banner Reference</h4>
+                    <div class="master-banner-box">
+                        <div class="master-banner-upload featured">
+                            <div class="show-btn-hover">
+                                <img *ngIf="storeBannerForm.get('image_url').value" [src]="fileurl">
+                                <div class="btnon-hover">
+                                    <div class="change-store-img">
+                                        <input accept="image/*" type="file" id="imgUrl" (change)="onSelectFile($event)">
+                                        <button mat-mini-fab color="primary" aria-label="Change Image">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="!storeBannerForm.get('image_url').value">
+                                <input type="file" id="imgUrl" (change)="onSelectFile($event)">
+                                <div>
+                                    <mat-icon>cloud_upload</mat-icon>
+                                    <h5>Image Specification</h5>
+                                    <p>(400 x 400)- 72 dpi (jpg)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Redirection</mat-label>
+                            <mat-select formControlName="redirection" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('redirection').valid }">
+                                <mat-option value="HTML">HTML</mat-option>
+                                <mat-option value="STORES">STORES</mat-option>
+                                <mat-option value="STORE">STORE</mat-option>
+                                <mat-option value="QUICKLINK_TAG">QUICKLINK</mat-option>
+                                <mat-option value="PAGE">PAGE</mat-option>
+                            </mat-select>
+                            <span [tooltip]="redirection" *ngIf="!storeBannerForm.get('redirection').valid && storeBannerForm.get('redirection').touched"
+                                class="mandatory-alert" content-type="template">
+                                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                            </span>
+                        </mat-form-field>
+                        <ng-template #redirection>
+                            <div>
+                                <p class="mb-1" *ngIf="storeBannerForm.get('redirection').errors.required">Required</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="banner-section-blog" *ngIf="storeBannerForm.get('redirection').value=='HTML'">
+                    <h4>Html Properties</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>HTML URL</mat-label>
+                                <input matInput formControlName="html_url" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('html_url').valid }">
+                                <span [tooltip]="htmlurl" *ngIf="!storeBannerForm.get('html_url').valid && storeBannerForm.get('html_url').touched" class="mandatory-alert"
+                                    content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+                            <ng-template #htmlurl>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeBannerForm.get('html_url').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>View As</mat-label>
+                                <mat-select formControlName="htmlDisplayType" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('htmlDisplayType').valid }">
+                                    <mat-option value="FULL_SCREEN">FULL SCREEN</mat-option>
+                                    <mat-option value="INNER_VIEW">INNER VIEW</mat-option>
+                                    <mat-option value="SHOW_HEADER">SHOW HEADER</mat-option>
+                                    <mat-option value="SHOW_FOOTER">SHOW FOOTER</mat-option>
+                                </mat-select>
+                                <span [tooltip]="htmlDisplayType" *ngIf="!storeBannerForm.get('htmlDisplayType').valid && storeBannerForm.get('htmlDisplayType').touched"
+                                    class="mandatory-alert" content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+                            <ng-template #htmlDisplayType>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeBannerForm.get('htmlDisplayType').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner-section-blog" *ngIf="storeBannerForm.get('redirection').value=='QUICKLINK_TAG'">
+                    <h4>QuickLink Properties</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Label</mat-label>
+                                <input matInput formControlName="quicklinkLabel" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('quicklinkLabel').valid }">
+                                <span [tooltip]="quicklinkLabel" *ngIf="!storeBannerForm.get('quicklinkLabel').valid && storeBannerForm.get('quicklinkLabel').touched"
+                                    class="mandatory-alert" content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+                            <ng-template #quicklinkLabel>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeBannerForm.get('quicklinkLabel').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-12">
+                            <mat-form-field class="forDate" appearance="outline">
+                                <mat-label>Quicklink Name</mat-label>
+                                <input matInput formControlName="quicklinkName" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('quicklinkName').valid }">
+                                <mat-icon matSuffix>search</mat-icon>
+                                <span [tooltip]="quicklinkName" *ngIf="!storeBannerForm.get('quicklinkName').valid && storeBannerForm.get('quicklinkName').touched"
+                                    class="mandatory-alert" content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+                            <ng-template #quicklinkName>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeBannerForm.get('quicklinkName').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner-section-blog" *ngIf="storeBannerForm.get('redirection').value=='STORE'">
+                    <h4>Store Properties</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="forDate" appearance="outline">
+                                <mat-label>Store URL</mat-label>
+                                <span matPrefix>/</span>
+                                <input matInput formControlName="storeSlugUrl" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('storeSlugUrl').valid }">
+                                <mat-icon matSuffix>search</mat-icon>
+                                <span [tooltip]="storeSlugUrl" *ngIf="!storeBannerForm.get('storeSlugUrl').valid && storeBannerForm.get('storeSlugUrl').touched"
+                                    class="mandatory-alert" content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+                            <ng-template #storeSlugUrl>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeBannerForm.get('storeSlugUrl').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner-section-blog" *ngIf="storeBannerForm.get('redirection').value=='STORES'">
+                    <h4>Stores Properties</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Label</mat-label>
+                                <input matInput formControlName="storesLabel" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('storesLabel').valid }">
+                                <span [tooltip]="storesLabel" *ngIf="!storeBannerForm.get('storesLabel').valid && storeBannerForm.get('storesLabel').touched"
+                                    class="mandatory-alert" content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+                            <ng-template #storesLabel>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeBannerForm.get('storesLabel').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-12">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Stores Query</mat-label>
+                                <textarea rows="10" cols="10" matInput formControlName="storesQuery" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('storesQuery').valid }"></textarea>
+                                <span [tooltip]="storesQuery" *ngIf="!storeBannerForm.get('storesQuery').valid && storeBannerForm.get('storesQuery').touched"
+                                    class="mandatory-alert" content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+                            <ng-template #storesQuery>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeBannerForm.get('storesQuery').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner-section-blog" *ngIf="storeBannerForm.get('redirection').value=='PAGE'">
+                    <h4>Page Properties</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="forDate" appearance="outline">
+                                <mat-label>Page URL</mat-label>
+                                <input matInput formControlName="pageUrl" [ngClass]="{ 'ng-invalid ng-touched': !storeBannerForm.get('pageUrl').valid }">
+                                <mat-icon matSuffix>search</mat-icon>
+                                <span [tooltip]="pageUrl" *ngIf="!storeBannerForm.get('pageUrl').valid && storeBannerForm.get('pageUrl').touched" class="mandatory-alert"
+                                    content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+                            <ng-template #pageUrl>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeBannerForm.get('pageUrl').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-2">
+                        <button class="full-width" mat-raised-button color="primary" (click)="formSubmit()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

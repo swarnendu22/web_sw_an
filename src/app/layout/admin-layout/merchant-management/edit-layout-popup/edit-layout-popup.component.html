@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>Edit Layout</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="cover-img-area" *ngIf="checkCoverImage()">
+
+        <div *ngIf="!layoutCover">
+            <input type="file" (change)="onSelectFile($event,'store_logo_url')" />
+            <mat-icon>add_a_photo</mat-icon>
+            <p>Cover image dimensions should be min to 900 x 600 (Max size 5 MB)</p>
+        </div>
+        <div class="cover-layout-img" *ngIf="layoutCover">
+            <img [src]="layoutCover" />
+            <mat-icon (click)="layoutCover=null">clear</mat-icon>
+        </div>
+    </div>
+    <div class="feature-img-area" *ngIf="checkFeaturedImage()">
+        <h5>Add Feature Image</h5>
+        <p>Feature image dimensions should be minimum to 400 x 400 (Max size 5 MB)</p>
+        <div class="feature-col">
+            <div class="feature-img-box" *ngFor="let img of featuredimages(featuredImagesLength).fill(1);let i=index">
+                <div *ngIf="!featuredImagesObj[i]">
+                    <input type="file" (change)="onSelectFile($event,'featured_images',i)" />
+                    <mat-icon>add_a_photo</mat-icon>
+                </div>
+                <div class="feature-layout-img" *ngIf="featuredImagesObj[i]">
+                    <img [src]="featuredImagesObj[i]" />
+                    <mat-icon (click)="featuredImagesObj[i]=null">clear</mat-icon>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="promo-box-area">
+        <h5>Promo Details</h5>
+        <p>Choose Promo Icon</p>
+        <ul>
+            <li class="{{ checkIsActive(icon) ? 'active' : '' }}" *ngFor="let icon of promoIcons" (click)="setPromoIcon(icon)">
+                <img [src]="icon" />
+            </li>
+        </ul>
+        <mat-form-field appearance="fill">
+            <mat-label>Enter Promo Text</mat-label>
+            <input matInput [(ngModel)]="promo_text">
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" *ngIf="openFor=='edit'">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button mat-raised-button color="primary" cdkFocusInitial (click)="onSubmit()">Submit</button>
+    <button mat-button mat-raised-button color="primary" cdkFocusInitial (click)="onSubmit(true)">Submit & Publish</button>
+</mat-dialog-actions>

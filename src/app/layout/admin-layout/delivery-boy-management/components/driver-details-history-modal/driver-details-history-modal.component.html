@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Delivery History</h2>
+<mat-dialog-content class="mat-typography">
+  <!-- <div>
+    {{data}}
+  </div> -->
+  <table class="table table-hover delivery-boy-history">
+    <thead>
+      <tr>
+        <th>Reason</th>
+        <th>Created By</th>
+        <th class="text-center">Created At</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let driverHistoryObj of driverHistoryList">
+        <td>{{driverHistoryObj.comment}}</td>
+        <td class="text-center">stpladmin</td>
+        <td>{{driverHistoryObj.created_at | date:'medium' }}</td>
+        <td *ngIf="driverHistoryObj.status == 'APPROVED'">
+          <h4 class="mb-0"><span class="badge badge-pill badge-success">{{driverHistoryObj.status}}</span></h4>
+        </td>
+        <td *ngIf="driverHistoryObj.status == 'WORKING'">
+          <h4 class="mb-0"><span class="badge badge-pill badge-info">{{driverHistoryObj.status}}</span></h4>
+        </td>
+        <td *ngIf="driverHistoryObj.status == 'SUSPENDED'">
+          <h4 class="mb-0"><span class="badge badge-pill badge-warning">{{driverHistoryObj.status}}</span></h4>
+        </td>
+        <td *ngIf="driverHistoryObj.status == 'TERMINATED' || driverHistoryObj.status == 'ABSCONDED'">
+          <h4 class="mb-0"><span class="badge badge-pill badge-danger">{{driverHistoryObj.status}}</span></h4>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

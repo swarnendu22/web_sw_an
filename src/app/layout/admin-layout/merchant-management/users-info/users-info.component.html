@@ -1,0 +1,363 @@
+<div class="tab-area-content py-0 box-relative">
+    <button [hidden] = "isMerchantUserShow" style="position: absolute;top: 5.5px;right: 56px;z-index: 9;" mat-raised-button (click)="hideMerchantUser()">Close</button>
+
+    <button [hidden] = "!isMerchantUserShow" (click)="openMerchantUserForm()" style="position: absolute;top: 5.5px;right: 56px;z-index: 9;" mat-raised-button color="primary"><mat-icon>add</mat-icon> Add User to Merchant</button>
+
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="panelMerchantUser">
+            <mat-expansion-panel-header>
+                <mat-panel-title style="align-items: center;">
+                    <h4 class="mb-0">Merchant Users</h4>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <form [formGroup]="mechantUserForm">
+                <div class="hoz-form hoz-form-box" [hidden] = "isMerchantUserShow">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Name</mat-label>
+                                <input matInput formControlName="name" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !mechantUserForm.get('name').valid }" maxlength="100">
+
+                                <span [tooltip]="name" *ngIf="!mechantUserForm.get('name').valid && mechantUserForm.get('name').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #name>
+                                <div>
+                                    <p class="mb-1" *ngIf="mechantUserForm.get('name').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="mechantUserForm.get('name').errors.maxlength">Max Length 100</p>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Country</mat-label>
+                                <mat-select formControlName="country" [ngClass]="{ 'ng-invalid ng-touched': !mechantUserForm.get('country').valid }">
+                                    <mat-option [value]="item.countryCode" (click)="MerchantCountryDetails( item )" *ngFor="let item of countries">{{item.countryName}}</mat-option>
+                                </mat-select>
+
+                                <span [tooltip]="country" *ngIf="!mechantUserForm.get('country').valid && mechantUserForm.get('country').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #country>
+                                <div>
+                                    <p class="mb-1" *ngIf="mechantUserForm.get('country').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Contact Number</mat-label>
+                                <input numbersOnly matInput formControlName="phone" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !mechantUserForm.get('phone').valid }" maxlength="10">
+
+                                <span [tooltip]="phone" *ngIf="!mechantUserForm.get('phone').valid && mechantUserForm.get('phone').touched && required" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #phone>
+                                <div>
+                                    <p class="mb-1" *ngIf="mechantUserForm.get('phone').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="mechantUserForm.get('phone').errors.maxlength">Max Length 10</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Email</mat-label>
+                                <input matInput formControlName="email" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !mechantUserForm.get('email').valid }" maxlength="100">
+
+                                <span [tooltip]="email" *ngIf="!mechantUserForm.get('email').valid && mechantUserForm.get('email').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #email>
+                                <div>
+                                    <p class="mb-1" *ngIf="mechantUserForm.get('email').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="mechantUserForm.get('email').errors.pattern">Not Valid</p>
+                                    <p class="mb-1" *ngIf="mechantUserForm.get('email').errors.maxlength">Max Length 100</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-slide-toggle [checked]="merchantUserActive" color="primary" (change)="MerchantActiveToggle($event)">Active</mat-slide-toggle>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <button mat-raised-button color="primary" class="mr-3" (click)="onSubmitMerchantUserAdd()" *ngIf="!isMerchantUserUpdateForm">Save</button>
+                        <button mat-raised-button color="primary" class="mr-3" (click)="onSubmitMerchantUserUpdate()" *ngIf="isMerchantUserUpdateForm" >Update</button>
+                    </div>
+                </div>
+            </form>
+            <div style="height: 300px">
+                <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham" [rowData]="merchantrowData" [defaultColDef]="defaultColDef" [columnDefs]="columnDefsMerchantUser" (gridReady)="onGridReady($event)" (firstDataRendered)="onFirstDataRendered($event)"  (gridSizeChanged)="onGridSizeChanged($event)"></ag-grid-angular>
+            </div>  
+        </mat-expansion-panel>
+    </mat-accordion>    
+</div>
+
+
+<div class="tab-area-content py-0 mt-3 box-relative">
+    <button [hidden] = "isHubUserShow" style="position: absolute;top: 5.5px;right: 56px;z-index: 9;" mat-raised-button (click)="hideHubUser()">Close</button>
+
+    <button [hidden] = "!isHubUserShow" (click)="openHubUserForm()" style="position: absolute;top: 5.5px;right: 56px;z-index: 9;" mat-raised-button color="primary"><mat-icon>add</mat-icon> Add User to Hub</button>
+
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="panelHubUser">
+            <mat-expansion-panel-header>
+            <mat-panel-title style="align-items: center;">
+                <h4 class="mb-0">Hub Users</h4>
+            </mat-panel-title>
+            </mat-expansion-panel-header>
+            <form [formGroup]="hubUserForm">
+                <div class="hoz-form hoz-form-box" [hidden] = "isHubUserShow">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Hub</mat-label>
+                                <mat-select formControlName="entityId" [ngClass]="{ 'ng-invalid ng-touched': !hubUserForm.get('entityId').valid }">
+                                    <mat-option [value]="item.id" *ngFor="let item of hubListByMerchantId">{{item.address}}</mat-option>
+                                </mat-select>
+
+                                <span [tooltip]="entityId" *ngIf="!hubUserForm.get('entityId').valid && hubUserForm.get('entityId').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #entityId>
+                                <div>
+                                    <p class="mb-1" *ngIf="hubUserForm.get('entityId').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Name</mat-label>
+                                <input matInput formControlName="name" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !hubUserForm.get('name').valid }" maxlength="100">
+
+                                <span [tooltip]="name" *ngIf="!hubUserForm.get('name').valid && hubUserForm.get('name').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #name>
+                                <div>
+                                    <p class="mb-1" *ngIf="hubUserForm.get('name').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="hubUserForm.get('name').errors.maxlength">Max Length 100</p>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Country</mat-label>
+                                <mat-select formControlName="country" [ngClass]="{ 'ng-invalid ng-touched': !hubUserForm.get('country').valid }">
+                                    <mat-option [value]="item.countryCode" (click)="HubCountryDetails( item )" *ngFor="let item of countries">{{item.countryName}}</mat-option>
+                                </mat-select>
+
+                                <span [tooltip]="country" *ngIf="!hubUserForm.get('country').valid && hubUserForm.get('country').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #country>
+                                <div>
+                                    <p class="mb-1" *ngIf="hubUserForm.get('country').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Contact Number</mat-label>
+                                <input matInput formControlName="phone" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !hubUserForm.get('phone').valid }" maxlength="10">
+
+                                <span [tooltip]="phone" *ngIf="!hubUserForm.get('phone').valid && hubUserForm.get('phone').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #phone>
+                                <div>
+                                    <p class="mb-1" *ngIf="hubUserForm.get('phone').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="hubUserForm.get('phone').errors.maxlength">Max Length 10</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Email</mat-label>
+                                <input matInput formControlName="email" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !hubUserForm.get('email').valid }" maxlength="100">
+
+                                <span [tooltip]="email" *ngIf="!hubUserForm.get('email').valid && hubUserForm.get('email').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #email>
+                                <div>
+                                    <p class="mb-1" *ngIf="hubUserForm.get('email').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="hubUserForm.get('email').errors.pattern">Not Valid</p>
+                                    <p class="mb-1" *ngIf="hubUserForm.get('email').errors.maxlength">Max Length 100</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-slide-toggle [checked]="HubUserActive" color="primary" (change)="HubActiveToggle($event)">Active</mat-slide-toggle>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <button mat-raised-button color="primary" *ngIf="!isHubUserUpdateForm" class="mr-3" (click)="onSubmitHubUserAdd()">Save</button>
+                        <button mat-raised-button color="primary" *ngIf="isHubUserUpdateForm" class="mr-3" (click)="onSubmitHubUserUpdate()">Update</button>
+                    </div>
+                </div>
+            </form>
+            
+            <div style="height: 300px">
+                <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham" [rowData]="hubrowData" [defaultColDef]="defaultColDef2" [columnDefs]="columnDefsHubUser" (gridReady)="onGridReady($event)" (firstDataRendered)="onFirstDataRendered($event)"  (gridSizeChanged)="onGridSizeChanged($event)"></ag-grid-angular>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>    
+</div>
+
+
+<div class="tab-area-content py-0 mt-3 box-relative">
+    <button [hidden] = "isStoreUserShow" style="position: absolute;top: 5.5px;right: 56px;z-index: 9;" mat-raised-button (click)="hideStoreUser()">Close</button>
+
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="panelStoreUser">
+            <mat-expansion-panel-header>
+                <mat-panel-title style="align-items: center;">
+                    <h4 class="mb-0">Store Users</h4>
+                </mat-panel-title>       
+            </mat-expansion-panel-header>
+            <form [formGroup]="storeUserForm">
+                <div class="hoz-form hoz-form-box" [hidden] = "isStoreUserShow">
+                    <div class="row">
+
+                        <div class="col-md-5">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Name</mat-label>
+                                <input matInput formControlName="name" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeUserForm.get('name').valid }" maxlength="100">
+
+                                <span [tooltip]="name" *ngIf="!storeUserForm.get('name').valid && storeUserForm.get('name').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #name>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeUserForm.get('name').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="storeUserForm.get('name').errors.maxlength">Max Length 100</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Country</mat-label>
+                                <mat-select formControlName="country" [ngClass]="{ 'ng-invalid ng-touched': !storeUserForm.get('country').valid }">
+                                    <mat-option [value]="item.countryCode" *ngFor="let item of countries">{{item.countryName}}</mat-option>
+                                </mat-select>
+
+                                <span [tooltip]="country" *ngIf="!storeUserForm.get('country').valid && storeUserForm.get('country').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #country>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeUserForm.get('country').errors.required">Required</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div style="display: flex; align-items: center; padding: 0px; margin-left: 20px;" class="col-md-1">
+                            <mat-slide-toggle [checked]="storeUserActive" color="primary" (change)="storeActiveToggle($event)">Active</mat-slide-toggle>
+                        </div>
+                        <div style="display: flex; align-items: center; padding: 0px;" class="col-md-1">
+                            <button mat-raised-button color="primary" (click)="onSubmitStoreUserUpdate()">Update</button>
+                        </div>                        
+                        <div class="col-md-12">
+                            <div class="divider"></div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Contact Number</mat-label>
+                                <input matInput formControlName="phone" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeUserForm.get('phone').valid }" maxlength="10">
+
+                                <span [tooltip]="phone" *ngIf="!storeUserForm.get('phone').valid && storeUserForm.get('phone').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #phone>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeUserForm.get('phone').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="storeUserForm.get('phone').errors.maxlength">Max Length 10</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div style="display: flex; align-items: center;" class="col-md-2">
+                            <button mat-raised-button color="primary" (click)="updateStoreUserContact()" >Update Contact</button>
+                        </div>
+
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Email</mat-label>
+                                <input matInput formControlName="email" trim="blur" [ngClass]="{ 'ng-invalid ng-touched': !storeUserForm.get('email').valid }" maxlength="100">
+
+                                <span [tooltip]="email" *ngIf="!storeUserForm.get('email').valid && storeUserForm.get('email').touched" class="mandatory-alert"
+                                content-type="template">
+                                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                                </span>
+                            </mat-form-field>
+
+                            <ng-template #email>
+                                <div>
+                                    <p class="mb-1" *ngIf="storeUserForm.get('email').errors.required">Required</p>
+                                    <p class="mb-1" *ngIf="storeUserForm.get('email').errors.pattern">Not Valid</p>
+                                    <p class="mb-1" *ngIf="storeUserForm.get('email').errors.maxlength">Max Length 100</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div style="display: flex; align-items: center;" class="col-md-2">
+                            <button mat-raised-button color="primary" (click)="updateStoreUserEmail()" >Update Email</button>
+                        </div>
+                        <div class="col-md-12">
+                            <button mat-flat-button color="accent" (click)="resetPasswordModal()" >Reset Password</button>
+                        </div>
+
+                        <!-- <div class="col-md-6">
+                            <mat-slide-toggle [checked]="storeUserActive" color="primary" (change)="storeActiveToggle($event)">Active</mat-slide-toggle>
+                        </div> -->
+                    </div>
+                    <!-- <div style="text-align: right;">
+                        <button mat-raised-button color="primary" class="mr-3" (click)="onSubmitStoreUserUpdate()">Update</button>
+                    </div> -->
+                </div>
+            </form>
+            <div style="height: 300px">
+                <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham" [rowData]="storerowData" [defaultColDef]="defaultColDef3" [columnDefs]="columnDefsStoreUser" (gridReady)="onGridReady($event)" (firstDataRendered)="onFirstDataRendered($event)"  (gridSizeChanged)="onGridSizeChanged($event)"></ag-grid-angular>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>    
+</div>

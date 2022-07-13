@@ -1,0 +1,34 @@
+<form [formGroup]="updateDCForm" autocomplete="off">
+  <h2 mat-dialog-title>Update Zone</h2>
+  <mat-dialog-content>
+    <div class="hoz-form">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-6">
+              <mat-form-field appearance="outline">
+                <mat-label>TAT (In Hours)</mat-label>
+                <input matInput type="number" placeholder="Enter TAT (In Hours)" formControlName="deliveryTat"
+                  trim="blur" autocomplete="off" />
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Zip Code</mat-label>
+                <input type="number" #zipcode matInput placeholder="Enter Pincode" formControlName="zipCode" trim="blur"
+                  autocomplete="off" />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-flat-button color="primary" (click)="submitUpdateDC()"
+      [disabled]="!(updateDCForm.valid && updateDCForm.dirty)" mat-dialog-close="true">
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

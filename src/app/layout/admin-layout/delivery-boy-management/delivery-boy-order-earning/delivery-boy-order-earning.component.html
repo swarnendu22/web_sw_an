@@ -1,0 +1,41 @@
+<div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title">Order Vs Earning</h3>
+        </div>
+        <div class="form-header-btn mr-3">
+            <mat-form-field appearance="outline">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="form-header-btn">
+            <div class="input-group mr-2" style="width: 320px;">
+                <input type="text" class="form-control" style="height: 45px;" placeholder="Search by DE ID/Mobile No.">
+                <div class="input-group-append">
+                    <button class="btn btn-info d-flex align-items-center" style="height: 45px;" type="button" (click)="search()">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white single-pagination" style="height: calc(100% - 40px)">
+    <ag-grid-angular style="width:100%; height: 100%" class="ag-theme-balham" [rowData]="rowData"
+        [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" (firstDataRendered)="onFirstDataRendered($event)"
+        (gridReady)="onGridReady($event)" [enableFilter]="true" [floatingFilter]="true"
+        (gridSizeChanged)="onGridSizeChanged($event)">
+    </ag-grid-angular>
+
+    <ul style="display: none;">
+        <li
+            *ngFor="let item of rowData | paginate: { id: 'dataPagination', itemsPerPage: 9999, currentPage: pageNo, totalItems: totalRecords }">
+            {{ item.id }}</li>
+    </ul>
+    <pagination-controls (pageChange)="getPageNoData($event)" id="dataPagination"></pagination-controls>
+
+</div>

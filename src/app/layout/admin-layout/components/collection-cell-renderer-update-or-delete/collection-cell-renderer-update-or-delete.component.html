@@ -1,0 +1,7 @@
+<!-- <button *ngIf="!isNew" mat-flat-button color="primary" class="btn-data" (click)="invokeParentMethod($event)"
+    [disabled]="!isEditParent">
+    {{newZoneZipCode ? 'Edit': 'Update'}}
+</button>-->
+<button type="button" mat-flat-button color="warn" class="btn-data" (click)="delete($event)" [disabled]="!isEditParent">
+    Delete
+</button>

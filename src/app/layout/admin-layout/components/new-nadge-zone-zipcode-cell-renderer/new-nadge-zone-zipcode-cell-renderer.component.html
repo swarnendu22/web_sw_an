@@ -1,0 +1,3 @@
+<!-- <span *ngIf="isNew" matBadge="NEW" matBadgePosition="after" matBadgeOverlap="false">{{nupc}}</span> -->
+{{zipCode}}<span *ngIf="isNew" style="margin-left: 3px ;" class="badge badge-primary">NEW</span>
+<span *ngIf="!isNew">{{params.data.zipCode}}</span>

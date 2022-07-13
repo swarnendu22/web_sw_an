@@ -1,0 +1,44 @@
+<div class="top-bar box-shadow">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title">Manage Delivery Request <span class="total-count">Total Records: {{totalRecords}}</span></h3>
+    </div>
+
+    <div class="form-header-btn">
+
+      <!--  
+        <mat-form-field>
+            <mat-label style="color:#2AACD8"><h4>Status</h4></mat-label>
+             <mat-select (selectionChange)="statusFilter($event)">
+                <mat-option  style="color: #2AACD8" *ngFor="let status of merchentsStatus" [value]="status.statusKey">{{status.statusValue}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+          
+        <button [routerLink] = "['/merchant/create-new-merchant']" mat-raised-button class="noshadow top-btn-font" color="primary">
+          <mat-icon>add</mat-icon> Add New
+        </button>
+        <mat-spinner [diameter]="20"></mat-spinner> -->
+
+        <button type="button" (click)="openDeliveryRequestRearch()" mat-raised-button class="top-btn-font drop mr-2" color="primary">
+          Filter
+          <mat-icon>filter_list</mat-icon>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+
+  
+<div class="bg-white single-pagination" style="height: calc(100% - 40px)">
+    <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData" [defaultColDef]="defaultColDef"
+      [columnDefs]="columnDefs" (firstDataRendered)="onFirstDataRendered($event)" (gridReady)="onGridReady($event)" [floatingFilter]="true"
+      [enableFilter]="true" (gridSizeChanged)="onGridSizeChanged($event)" [suppressRowClickSelection]="true"
+    >
+    </ag-grid-angular>
+    <ul style="display: none;">
+      <li *ngFor="let item of rowData | paginate: { id: 'dataPagination', itemsPerPage: 100, currentPage: pageNo, totalItems: totalRecords }">{{ item.id }}</li>
+    </ul>
+    <pagination-controls (pageChange)="getPageNoData($event)" id="dataPagination"></pagination-controls>
+  </div>

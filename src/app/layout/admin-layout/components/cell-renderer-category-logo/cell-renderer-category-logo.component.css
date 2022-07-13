@@ -1,0 +1,29 @@
+.cateImageMain {
+    position: relative;
+    display: inline-block;
+}
+.cateImage {
+    object-fit: contain;
+    width:100px;
+    height: 100px;
+}
+.cateImageMain:hover {
+    opacity: .9;
+    background: #ece9e9;
+}
+.mat_edit {
+    position: absolute;
+    left: 39%;
+    top: 40%;
+    display: none;
+    z-index: 99999;
+    background: #000;
+    border-radius: 10px;
+    height: 30px;
+    width: 30px;
+    padding: 2px;
+    color: #fff;
+}
+.cateImageMain:hover .mat_edit{
+    display : block;
+}

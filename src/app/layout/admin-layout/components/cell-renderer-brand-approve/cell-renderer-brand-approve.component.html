@@ -1,0 +1,3 @@
+<a mat-flat-button color="primary" class="btn-data btn-sm-data" (click)="brandList()" *ngIf="(params.data.status=='PROCESSING' || params.data.status=='DRAFT') && (convertLowerCase(params.data.type)=='masterproduct' || convertLowerCase(params.data.type)=='storeproduct')">
+    <mat-icon>play_for_work</mat-icon>
+</a>

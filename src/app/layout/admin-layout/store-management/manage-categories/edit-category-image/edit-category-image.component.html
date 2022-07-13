@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Update Category Image</h2>
+<mat-dialog-content>
+    <div class="loading" *ngIf="submitted">
+        <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="upload-image-view">
+              <img [src]="url" *ngIf="url" height="200" />
+              <br />
+            </div>
+            <div class="btn-upload-image">
+              <input type='file' accept="image/png" (change)="onSelectFile($event)"
+                class="custom-input">
+            </div>
+        </div>
+        <div class="col-6 text-center" *ngIf="url && editImageUrl">
+            <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="3 / 3" format="png" (imageCropped)="imageCropped($event)"
+              (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
+            <button type="button" matTooltip="Crop Image" aria-label="Crop Image" class="btn btn-crop" (click)="imageCroppedDone()">
+              <mat-icon>crop</mat-icon>
+            </button>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button color="primary" cdkFocusInitial (click)="onSubmit($event)" (keydown.enter)="$event.preventDefault()">Upload</button>
+</mat-dialog-actions>

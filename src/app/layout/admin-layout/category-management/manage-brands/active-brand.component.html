@@ -1,0 +1,12 @@
+
+<div *ngIf="!isPending" class="bg-white grid-box-area" style="height: calc(100vh - 90px)">
+  <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [columnDefs]="columnDefs" (firstDataRendered)="onFirstDataRendered($event)"
+    (gridReady)="onGridReady($event)" [pagination]="true" [enableFilter]="true" [floatingFilter]="true" (gridSizeChanged)="onGridSizeChanged($event)">
+  </ag-grid-angular>
+</div>
+
+<div *ngIf="isPending" class="bg-white grid-box-area" style="height: calc(100vh - 90px)">
+  <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [columnDefs]="pendingColumnDefs" (firstDataRendered)="onFirstDataRendered($event)"
+    (gridReady)="onGridReady($event)" [pagination]="true" [enableFilter]="true" [floatingFilter]="true" (gridSizeChanged)="onGridSizeChanged($event)">
+  </ag-grid-angular>
+</div>

@@ -1,0 +1,47 @@
+<div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title">List View</h3>
+        </div>
+        <div class="form-header-btn">
+            <div class="input-group mr-2" style="width: 300px;">
+                <input type="text" class="form-control" [(ngModel)]="searchTerm"
+                    placeholder="Search by DE ID/Mobile No.">
+                <div class="input-group-append">
+                    <button class="btn btn-info" style="height: 38px;" type="button" (click)="search()">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="form-header-btn">
+            <mat-form-field class="min-form" appearance="outline">
+                <mat-label>DE Action</mat-label>
+                <mat-select [disabled]="!selectedDE.length" (selectionChange)="deliveryBoyActionPopup()">
+                    <mat-option value="active_orders">Forced Login</mat-option>
+                    <mat-option value="delivered_orders">Forced Logout</mat-option>
+                    <mat-option value="APPROVED">Approve</mat-option>
+                    <mat-option value="cancelled_orders">Suspend</mat-option>
+                    <mat-option value="cancelled_orders">Absconded</mat-option>
+                    <mat-option value="cancelled_orders">Terminated</mat-option>
+                    <mat-option value="cancelled_orders">Block</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div> -->
+    </div>
+</div>
+<div class="bg-white single-pagination" style="height: calc(100% - 30px)">
+    <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData"
+        [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" (firstDataRendered)="onFirstDataRendered($event)"
+        (gridReady)="onGridReady($event)" [enableFilter]="true" [floatingFilter]="true"
+        (gridSizeChanged)="onGridSizeChanged($event)">
+    </ag-grid-angular>
+
+    <ul style="display: none;">
+        <li
+            *ngFor="let item of rowData | paginate: { id: 'dataPagination', itemsPerPage: 9999, currentPage: pageNo, totalItems: totalRecords }">
+            {{ item.id }}</li>
+    </ul>
+    <pagination-controls (pageChange)="getPageNoData($event)" id="dataPagination"></pagination-controls>
+
+</div>

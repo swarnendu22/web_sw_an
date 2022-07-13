@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>Download Bulk Content Sheet Files</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="row">
+        <div class="col-5">
+            <ul class="tds-text">
+                <li>Download Product Attribute File</li>
+                <li>Download Base File </li>
+                <li>Download Image File</li>
+
+            </ul>
+        </div>
+        <div class="col-7">
+            <div class="hoz-form">
+                <div class="row">
+                    <!-- <div class="col-12">
+
+
+                        <div class="tree-view-valid">
+                            <tree-select class="exception_category_tree" name="simpleSelect" [items]="categoryItems"
+                                idField="id" textField="name" childrenField="childList" required=true
+                                [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
+                                (ngModelChange)="categorySelectionValue($event)" [filterPlaceholder]="FilterPlaceholder"
+                                [allowFilter]="ShowFilter" [disabled]="Disabled"
+                                [allowParentSelection]="AllowParentSelection"
+                                [restructureWhenChildSameName]="RestructureWhenChildSameName" expandMode="all">
+                            </tree-select>
+                        </div>
+
+                    </div> -->
+                </div>
+                <!-- Removed According to NDH-9 issue raised on Jira -->
+                <div class="row">
+                    <div class="col-12">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Attribute Set</mat-label>
+                            <mat-select [(ngModel)]="attributeSetId">
+                                <mat-option>
+                                    <ngx-mat-select-search #mySellerInput [formControl]="sellerFilterCtrl" [placeholderLabel]="'Find Attribute...'" [noEntriesFoundLabel]="'no matches  found'">
+                                    </ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let attribute of attributeSetsData | dropdownfilter:mySellerInput.value:'name'" [value]="attribute.id">{{attribute.label}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial (keydown.enter)="$event.preventDefault()"
+        (click)="download($event)" [disabled]="!checkForm()">Download</button>
+</mat-dialog-actions>

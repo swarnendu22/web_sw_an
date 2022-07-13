@@ -1,0 +1,64 @@
+<div style="position: relative;">
+    <div style="position: absolute;right: -15px;top: -15px;">
+        <button mat-mini-fab color="warn" mat-dialog-close style="float: right;">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div style="padding-bottom: 10px; font-weight: bold;
+    font-size: 18px;">
+        <span style="margin-right: 10px">Order#</span>
+        <span>{{ordersDetail.orderNumber}}</span>
+    </div>
+    <mat-divider></mat-divider>
+    <div style="border-width: 1px; border-color: gray; border-radius: 4px;margin-top: 10px;">
+        <div class="row">
+            <div class="col-md-12" style="padding-bottom: 10px;font-size: 13px;line-height: 28px">
+                <div>Shipping Charge: <span style="font-weight: bold;">₹{{ordersDetail.shippingChargeTotal}}</span></div>
+                <div>Payment Type: <span style="font-weight: bold;">{{ordersDetail.paymentMethod}}</span></div>
+                <div>Delivery Partner: <span style="font-weight: bold;">{{ordersDetail.courrier}}</span></div>
+                <div>Tracking No: <span style="font-weight: bold;">{{ordersDetail.trackingId}}</span></div>
+            </div>
+            <div class="col-md-6">
+                <div class="fullfillment-user-info" style="min-height: 200px;">
+                    <h4>Pickup Details</h4>
+                    <div class="fullfillment-user-box">
+                        <div class="fullfillment-user-info-img">
+                            <img src="{{storeInfo.store_logo}}">
+                        </div>
+                        <div class="fullfillment-user-info-text">
+                            <p class="block">{{storeInfo.store_name}}</p>
+                            <p>{{storeInfo.address}}</p>
+                            <p>
+                                <span class="callto">
+                                    <mat-icon>call</mat-icon>
+                                </span>
+                                {{storeInfo.support_number}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="fullfillment-user-info"  style="min-height: 200px;">
+                    <h4>Delivery Details</h4>
+                    <div class="fullfillment-user-box">
+                        <div class="fullfillment-user-info-img">
+                            <img src="{{customerInfo.profile_avatar_image}}">
+                        </div>
+                        <div class="fullfillment-user-info-text">
+                            <p class="block">{{customerInfo.name}}</p>
+                            <p>{{customerInfo.address1}}</p>
+                            <p>{{customerInfo.address2}}</p>
+                            <p>
+                                <span class="callto">
+                                    <mat-icon>call</mat-icon>
+                                </span>
+                                {{customerInfo.phone}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

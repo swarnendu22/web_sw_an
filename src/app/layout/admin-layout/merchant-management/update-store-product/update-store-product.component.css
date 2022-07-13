@@ -1,0 +1,112 @@
+/* new design css */
+.mat-select-panel{
+    overflow: hidden !important;
+}
+footer{
+    height: 40px;
+    text-align:right;
+}
+.variate_add_left{
+    flex: auto;
+}
+.item-action-area{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.add_more_barcode{
+    max-width: 66%;
+    flex: 0 0 66%;
+    margin-top: 15px;
+}
+.multi-variants .add_more_barcode{
+    padding: 0px 15px;
+}
+.add_more_barcode .mat-button-base{
+    width: 100%;
+}
+.del-item-row{
+    margin-top: 15px;
+    max-width: 34%;
+    flex: 0 0 34%;
+    padding: 0px 15px;
+}
+.del-item-row .mat-button-base{
+        width: 100%;
+    background: transparent;
+    border: 1px solid #f44336;
+    color: #f44336;
+}
+.del-item-row1{
+    margin-top: 15px;
+    max-width: 34%;
+    flex: 0 0 34%;
+    padding: 0px 15px;
+}
+.del-item-row1 .mat-button-base{
+    width: 100%;
+    background: transparent;
+    border: 1px solid #bbb6b6;
+    color: #bbb6b6;
+    cursor: default;
+}
+.variateOuter{
+    flex: auto;
+    padding: 0px 15px;
+    margin-top: 25px;
+}
+.single-variants .variateOuter{
+    padding: 0px;
+    margin-top: 0px;
+}
+.product-configure-view p{
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+.product-grey-box{
+    background-color: #f2f2f2;
+    border: 1px solid #e1e1e1;
+    padding: 20px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+.sp-weight{
+    position: relative;
+}
+.sp-weight::before{
+    content: '';
+    position: absolute;
+    height: 75px;
+    width: 1px;
+    background: #e1e1e1;
+    left: -50px;
+    top: -10px;
+}
+.product-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.save-product{
+    display: flex;
+    align-items: center;
+}
+.save-product p{
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+.save-product .mat-stroked-button{
+    margin-left: 15px;
+    color: #30b0d9;
+    padding: 0px 30px;
+}
+.product-group-name{
+    position: absolute;
+    right: 15px;
+    top: -55px;
+    width: 300px;
+}
+.product-group-name .row{
+    justify-content: flex-end;
+}

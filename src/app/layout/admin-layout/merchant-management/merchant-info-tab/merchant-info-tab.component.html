@@ -1,0 +1,43 @@
+<div class="d-flex justify-content-between" style="background: white;padding: 10px;box-shadow: 0 1px 5px rgba(15,32,60,.1);border-radius: 5px;">
+    <div class="store-profile-area">
+        <img src="../../../../../assets/img/merchantLogo.png">
+        <h4 style="margin-bottom: -3px; font-size: 18px;">Merchant-ID: {{ merchantId }}</h4>
+        <p>{{ MerchantAddress }}</p>
+    </div>
+    <div>
+        <button (click)="backMerchantList()" style="height: 42px;" mat-raised-button class="noshadow top-btn-font white-btn">
+            <mat-icon>arrow_back</mat-icon> Back
+        </button>
+    </div>
+</div>
+
+<div class="manage-store-profile">
+    <div class="manage-store-area">
+        <div class="tab-area">
+            <div class="manage-store-tab">
+                <mat-tab-group (selectedTabChange)="route($event)" [selectedIndex]="tabIndex">
+                    <mat-tab label="Merchant Info"></mat-tab>
+                    <mat-tab label="Hub List"></mat-tab>
+                    <mat-tab label="Store List"></mat-tab>
+                    <mat-tab label="User List"></mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==0">
+            <app-merchant-info></app-merchant-info>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==1">
+            <app-hub-list></app-hub-list>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==2">
+            <app-store-list></app-store-list>
+        </div>
+        <div class="flex-auto" *ngIf="tabIndex==3">
+            <app-users-info></app-users-info>
+        </div>
+    </div>
+</div>
+
+<div>
+    <router-outlet></router-outlet>
+</div>

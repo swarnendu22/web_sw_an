@@ -1,0 +1,104 @@
+.deliveryType {
+    width: auto;
+    display: inline-block;
+    font-weight: 600;
+    text-align: left;
+    font-size: 12px;
+    color: blue;
+    border: 2px solid blue;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-left:35px;
+    margin-right: 35px;
+}
+
+.paymentMode {
+    width: auto;
+    display: inline-block;
+    font-weight: 600;
+    text-align: left;
+    font-size: 12px;
+    color: #00a90c;
+    border: 2px solid #00a90c;
+    padding: 11px 30px;
+    border-radius: 5px;
+    margin-right: 35px;
+}
+
+.all-order-div{
+    width: 100%; 
+    display: flex; 
+    justify-content: space-between;
+    margin-bottom: 13px; 
+    align-items: center;
+}
+
+.delivery-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.shipment-date {
+    margin: 0px;
+    color: #a5a0a0;
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 3px;
+}
+
+
+.DeliveryDate {
+    width: 135px;
+    padding: 10px;
+    padding-top: 0px;
+    padding-bottom: 35px;
+}
+.DeliveryActivity {
+    border-left: 2.8px dashed gray;
+    padding: 10px;
+    padding-left: 30px;
+    position: relative;
+    padding-top: 0px;
+    padding-bottom: 35px;
+}
+.delivery-logo {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+    padding-right: 25px;
+}
+.bigger-circle {
+    position: absolute;
+    height: 30px;
+    top: 0px;
+    left: -16px;
+    display: flex;
+    width: 29.5px;
+    background: white;
+    border: 2px solid lightgray;
+    border-radius: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.smaller-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background: lightgray;
+}
+.delivery-details {
+    border-radius: 5px;
+    background-color: #e9e9e9;
+    margin-top: 10px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 22px;
+    display: flex;
+    justify-content: space-between;
+}

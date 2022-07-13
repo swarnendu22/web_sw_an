@@ -1,0 +1,119 @@
+<div class="de-dashboard">
+    <div class="side-de-dashboard hoz-form">
+        <mat-button-toggle-group [(ngModel)]="viewToggle" appearance="legacy" name="fontStyle" aria-label="Font Style">
+            <mat-button-toggle value="map">Map</mat-button-toggle>
+            <mat-button-toggle value="list">List</mat-button-toggle>
+        </mat-button-toggle-group>
+        <form [formGroup]="filterForm">
+            <div class="form-header-btn">
+                <mat-form-field appearance="outline">
+                    <mat-label>State</mat-label>
+                    <mat-select formControlName="state_name" (selectionChange)="selectRegion($event)">
+                        <mat-option *ngFor="let region of regionList" [value]="region">
+                            {{region.regionName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <!-- <mat-form-field appearance="outline">
+                    <mat-label>Zone</mat-label>
+                    <mat-select formControlName="area" [(ngModel)]="area"
+                        (selectionChange)="changeSearchPayload($event,'area')">
+                        <mat-option *ngFor="let zone of zoneList" [value]="zone.zoneName">
+                            {{zone.zoneName}}</mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <!-- <mat-form-field appearance="outline">
+                    <mat-label>DE Type</mat-label>
+                    <mat-select>
+                        <mat-option value="active_orders">Forced Login</mat-option>
+                        <mat-option value="delivered_orders">Forced Logout</mat-option>
+                        <mat-option value="cancelled_orders">Working</mat-option>
+                        <mat-option value="cancelled_orders">Suspend</mat-option>
+                        <mat-option value="cancelled_orders">Absconded</mat-option>
+                        <mat-option value="cancelled_orders">Terminated</mat-option>
+                        <mat-option value="cancelled_orders">Block</mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                <mat-form-field appearance="outline">
+                    <mat-label>Vehicle Type</mat-label>
+                    <mat-select formControlName="vehicle_type"
+                        (selectionChange)="changeSearchPayload($event,'vehicle_type')">
+                        <mat-option value="bicycle">Bicycle</mat-option>
+                        <mat-option value="two_wheeler">Two Wheeler</mat-option>
+                        <mat-option value="four_wheeler">Four Wheeler</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <div class="row">
+                    <div class="col-6 py-1">
+                        <mat-checkbox color="primary" labelPosition="after" checked="true"
+                            (change)="changeSearchPayload($event,'ACTIVE')">
+                            Active DE
+                        </mat-checkbox>
+                    </div>
+                    <div class="col-6 py-1">
+                        <mat-checkbox color="primary" labelPosition="after" checked="true"
+                            (change)="changeSearchPayload($event,'INACTIVE')">
+                            Inactive DE
+                        </mat-checkbox>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 py-1">
+                        <mat-checkbox color="primary" labelPosition="after" checked="true"
+                            (change)="changeSearchPayload($event,'IDEAL')">
+                            Free DE
+                        </mat-checkbox>
+                    </div>
+                    <div class="col-6 py-1">
+                        <mat-checkbox color="primary" labelPosition="after" checked="true"
+                            (change)="changeSearchPayload($event,'OCCUPIED')">
+                            Occupy
+                        </mat-checkbox>
+                    </div>
+                </div>
+            </div>
+            <mat-form-field appearance="outline">
+                <textarea rows="8" [formControl]="messageControl" matInput placeholder="Message"></textarea>
+                <span [tooltip]="message" *ngIf="!messageControl.valid && messageControl.touched"
+                    class="mandatory-alert" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </span>
+                <span [tooltip]="messageD"
+                    *ngIf="messageControl.valid && messageControl.touched && totalDeliveryBoys.length === 0"
+                    class="mandatory-alert" content-type="template">
+                    <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                </span>
+            </mat-form-field>
+            <ng-template #message>
+                <div>
+                    <p class="mb-1" *ngIf="messageControl.errors.required">Required
+                    </p>
+                </div>
+            </ng-template>
+            <ng-template #messageD>
+                <div>
+                    <p class="mb-1" *ngIf="totalDeliveryBoys.length === 0">Please Select atlease one DE
+                    </p>
+                </div>
+            </ng-template>
+            <div class="mt-2">
+                <button type="button" mat-raised-button color="primary" class="mr-2"
+                    (click)="broadcastMessage()">Send</button>
+                <button type="button" mat-raised-button color="basic" class="mr-2" (click)="reset()">Reset</button>
+            </div>
+        </form>
+    </div>
+    <!-- <mat-divider [vertical]="true"></mat-divider> -->
+    <div class="content-de-dashboard">
+        <ng-container *ngIf="viewToggle === 'list'">
+            <app-delivery-boy-dashboard-listview>
+            </app-delivery-boy-dashboard-listview>
+        </ng-container>
+
+        <ng-container *ngIf="viewToggle === 'map'">
+            <app-delivery-boy-dashboard-mapview></app-delivery-boy-dashboard-mapview>
+        </ng-container>
+
+    </div>
+</div>

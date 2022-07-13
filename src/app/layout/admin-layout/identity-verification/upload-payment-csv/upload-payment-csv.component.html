@@ -1,0 +1,81 @@
+<h2 mat-dialog-title>Payment Reconcile File</h2>
+<mat-dialog-content>
+    <div class="loading" *ngIf="submitted">
+        <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+    <div class="row">
+
+        <div class="col-12">
+            <div class="hoz-form">
+
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field appearance="fill">
+                            <mat-label>From Date</mat-label>
+                            <input matInput [matDatepicker]="startDate" [(ngModel)]="start_date">
+                            <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                            <mat-datepicker #startDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field appearance="fill">
+                            <mat-label>To Date</mat-label>
+                            <input matInput [matDatepicker]="endDate" [(ngModel)]="end_date">
+                            <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                            <mat-datepicker #endDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- <div class="row">
+
+                    <div *ngFor="let item of imageUrl" class="col-4 upload-doc">
+                        <div class="upload-xls">
+                            <img src="../../../../../../assets/img/xls.png">
+                            <p>{{item.name}}</p>
+                            <i class="fa fa-times delete-doc" (click)="deleteImage(item)"></i>
+                        </div>
+                    </div>
+
+                </div> -->
+
+                <div class="row">
+                    <div class="col-6">
+                        <div *ngIf="justPayCsvUrl" class="upload-doc">
+                            <div class="upload-xls">
+                                <img src="../../../../../../assets/img/xls.png">
+                                <p>{{justPayCsvUrl.name}}</p>
+                                <i class="fa fa-times delete-doc" (click)="deleteImage('justPayCsvUrl')"></i>
+                            </div>
+                        </div>
+                        <p class="fileText" *ngIf="!justPayCsvUrl">Upload Juspay File</p>
+                        <div class="attach-file" *ngIf="!justPayCsvUrl">
+                            <app-img-upload-aws [className]="'custom-input select-file'" [type]="'excel'" [awsFolderName]="'ndh-admin/gstn'" [accept]="'.xls,.xlsx'"
+                                (imgUploaded)="onFileUpload($event,'justPayCsvUrl')" [acceptedFileType]="">
+                            </app-img-upload-aws>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div *ngIf="paymentGatewayCsvUrl" class="upload-doc">
+                            <div class="upload-xls">
+                                <img src="../../../../../../assets/img/xls.png">
+                                <p>{{paymentGatewayCsvUrl.name}}</p>
+                                <i class="fa fa-times delete-doc" (click)="deleteImage('paymentGatewayCsvUrl')"></i>
+                            </div>
+                        </div>
+                        <p class="fileText" *ngIf="!paymentGatewayCsvUrl">Upload Payment Gateway File</p>
+                        <div class="attach-file" *ngIf="!paymentGatewayCsvUrl">
+                            <app-img-upload-aws [className]="'custom-input select-file'" [type]="'excel'" [awsFolderName]="'ndh-admin/gstn'" [accept]="'.xls,.xlsx'"
+                                (imgUploaded)="onFileUpload($event,'paymentGatewayCsvUrl')">
+                            </app-img-upload-aws>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button color="primary" cdkFocusInitial (click)="upload()" (keydown.enter)="$event.preventDefault()" [disabled]="!checkForm()">Upload</button>
+</mat-dialog-actions>

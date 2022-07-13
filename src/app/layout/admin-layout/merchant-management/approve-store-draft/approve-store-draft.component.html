@@ -1,0 +1,236 @@
+<div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">   {{this.pageDetail.pageTitle}} </h3>
+      </div>
+      <div class="">
+        <!--
+        <button type="button" [routerLink]="['/merchant/manage-draft']" mat-raised-button
+          class="noshadow top-btn-font white-btn custom-bak-btn">
+          <mat-icon>arrow_back</mat-icon> Back
+        </button>
+        -->
+      </div>
+    </div>
+</div>
+
+<div class="box-shadow bg-white padding-10 hoz-form" id="basicDetailsForm">
+    <form [formGroup]="basicDetailsForm" *ngIf="approveMode; else noDataForApprove">
+
+      <div class="content-head">
+        <div class="content-head-caption">
+          <h3>Change Request : {{responseStoreRequestDraft.code}} </h3>
+          <h3>Created At : {{responseStoreRequestDraft.createdAt | date:'mediumDate' }}</h3>
+        </div>
+        <div class="content-head-action">
+            <div class="apprive-reject-btn" *ngIf="approveMode">
+                  <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (click)="requestProcess('APPROVED')">
+                    <mat-icon>check</mat-icon> Accept
+                  </button>
+                  <button type="button" mat-raised-button class="noshadow top-btn-font" color="warn" (click)="requestProcess('REJECTED')">
+                    <mat-icon>cancel</mat-icon> Reject
+                  </button>
+            </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-sm-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Current Store Name
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <input matInput formControlName="store_display_name" trim="blur" />
+            <span *ngIf="!basicDetailsForm.get('store_display_name').valid && basicDetailsForm.get('store_display_name').touched" matTooltipClass="downline"
+              matTooltip="This is required Field" aria-label="This field is Required" class="mandatory-alert">
+              <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+          </mat-form-field>
+
+          <ng-container *ngIf="approveMode">
+            <mat-hint align="start" class="request_class" *ngIf="responseStoreRequestDraft.request && responseStoreRequestDraft.request.storeName">
+              <span *ngIf="responseStoreRequestDraft.request &&  responseStoreRequestDraft.request.storeName !== basicDetailsForm.get('store_display_name').value">
+                <a href="javascript:void(0);"> <p style="color:green;">Requested Change: {{responseStoreRequestDraft.request.storeName}} </p></a>
+              </span>
+            </mat-hint>
+          </ng-container>
+        </div>
+
+        <div class="col-sm-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Current Business Category
+                <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+              </mat-label>
+              <mat-select  formControlName="businessCategoryId" [value]="basicDetailsForm.get('businessCategoryId').value">
+                <ng-container *ngIf="detailsList.buisnessCategory">
+                  <mat-option [value]="sellerType.id" *ngFor="let sellerType of detailsList.buisnessCategory.payload">
+                    {{sellerType.businessCategoryName}}</mat-option>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+
+            <ng-container *ngIf="approveMode">
+              <mat-hint align="start" class="request_class" *ngIf="responseStoreRequestDraft.request && responseStoreRequestDraft.request.businessCategoryId">
+                <span *ngIf="responseStoreRequestDraft.request && responseStoreRequestDraft.request.businessCategoryId !== basicDetailsForm.get('businessCategoryId').value">
+                    <a href="javascript:void(0);"> 
+                       <p style="color:green;">
+                        Requested Change: {{getValueForDropDownInApprove('buisnessCategory',responseStoreRequestDraft.request.businessCategoryId,'businessCategoryName','id')}}
+                       </p>
+                    </a>
+                </span>
+              </mat-hint>
+            </ng-container>
+        </div>
+
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-6">
+            <mat-form-field appearance="outline">
+
+              <mat-label>Current Address
+                <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+              </mat-label>
+              <textarea matInput formControlName="store_address" trim="blur"></textarea>
+
+              <span *ngIf="!basicDetailsForm.get('store_address').valid && basicDetailsForm.get('store_address').touched" matTooltipClass="downline"
+               matTooltip="This Field Is Required" aria-label="This field is Required" class="mandatory-alert">
+               <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+
+            </mat-form-field>
+
+            <ng-container *ngIf="approveMode">
+              <mat-hint align="start" class="request_class" *ngIf="responseStoreRequestDraft.request && responseStoreRequestDraft.request.address">
+                <span *ngIf="responseStoreRequestDraft.request && responseStoreRequestDraft.request.address !== basicDetailsForm.get('store_address').value">
+                    <a href="javascript:void(0);"> 
+                     <p style="color:green;">  
+                      Requested Change: {{responseStoreRequestDraft.request.address}}
+                     </p>
+                    </a>
+                </span>
+              </mat-hint>
+            </ng-container>
+          </div>
+
+          <div class="col-sm-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Current Tag Line
+                <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+              </mat-label>
+              <input matInput formControlName="tagLine"  trim="blur" />
+              <span *ngIf="!basicDetailsForm.get('tagLine').valid && basicDetailsForm.get('tagLine').touched" matTooltipClass="downline"
+                matTooltip="This is required Field" aria-label="This field is Required" class="mandatory-alert">
+                <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+              </span>
+            </mat-form-field>
+  
+            <ng-container *ngIf="approveMode">
+              <mat-hint align="start" class="request_class" *ngIf="responseStoreRequestDraft.request && responseStoreRequestDraft.request.tagLine">
+                <span *ngIf="responseStoreRequestDraft.request && responseStoreRequestDraft.request.tagLine !== basicDetailsForm.get('tagLine').value">
+                    <a href="javascript:void(0);"> 
+                    <p style="color:green;">
+                      Requested Change: {{responseStoreRequestDraft.request.tagLine}}
+                    </p>
+                    </a>
+                </span>
+              </mat-hint>
+            </ng-container>
+          </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-12">
+        <mat-form-field appearance="outline">
+
+            <mat-label>remarks
+              <span matTooltip="This field is Required" aria-label="This field is Required" class="mandatory">*</span>
+            </mat-label>
+            <textarea matInput formControlName="remarks"  trim="blur"></textarea>
+
+            <span *ngIf="!basicDetailsForm.get('remarks').valid && basicDetailsForm.get('store_address').touched" matTooltipClass="downline"
+             matTooltip="This Field Is Required" aria-label="This field is Required" class="mandatory-alert">
+             <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+            </span>
+
+          </mat-form-field>
+        </div>
+    </div>
+     
+    <div class="row mt-3">
+
+        <div class="col-sm-6 form-content-body">
+            <div class="offset-1">
+                <div class="upload-image-view" >
+                <img *ngIf="basicDetailsForm.get('store_logo_url') && basicDetailsForm.get('store_logo_url').value && checkExtension(basicDetailsForm.get('store_logo_url').value)!='pdf'"
+                    height="99%" width="99%" [src]="basicDetailsForm.get('store_logo_url').value" />
+                    <img *ngIf="basicDetailsForm.get('logourl') && basicDetailsForm.get('store_logo_url').value && checkExtension(basicDetailsForm.get('store_logo_url').value)=='pdf'"
+                    height="99%" width="99%" src="../../../../../../assets/img/pdf.png" />
+                <br />
+                </div>
+                <a href="javascript:void(0);">  <p style="color:lightseagreen">Current Store Logo</p> </a>
+            </div>
+            
+        </div>
+
+        <div class="col-sm-6 form-content-body">
+          <div class="offset-1">
+              <div class="upload-image-view">
+              <img *ngIf="basicDetailsForm.get('store_cover_image') && basicDetailsForm.get('store_cover_image').value && checkExtension(basicDetailsForm.get('store_cover_image').value)!='pdf'"
+                  height="99%" width="99%" [src]="basicDetailsForm.get('store_cover_image').value" />
+                  <img *ngIf="basicDetailsForm.get('logourl') && basicDetailsForm.get('store_cover_image').value && checkExtension(basicDetailsForm.get('store_cover_image').value)=='pdf'"
+                  height="99%" width="99%" src="../../../../../../assets/img/pdf.png" />
+              <br />
+              </div>
+              <a href="javascript:void(0);">
+                <p style="color:lightseagreen;">Current Cover Image</p>
+                </a>
+          </div>     
+      </div>
+
+    </div>
+
+    <div class="row mt-3">
+
+      <div class="col-sm-6 form-content-body">
+          <ng-container *ngIf="responseStoreRequestDraft.request && responseStoreRequestDraft.request.logoUrl && responseStoreRequestDraft.request.logoUrl !== basicDetailsForm.get('store_logo_url').value">
+            <div class="offset-1">
+                <div class="upload-image-view">
+                <img *ngIf="responseStoreRequestDraft.request && responseStoreRequestDraft.request.logoUrl && checkExtension(responseStoreRequestDraft.request.logoUrl)!='pdf'"
+                    height="99%" width="99%" [src]="responseStoreRequestDraft.request.logoUrl" />
+                    <img *ngIf="responseStoreRequestDraft.request &&  responseStoreRequestDraft.request.logoUrl && checkExtension(responseStoreRequestDraft.request.logoUrl)=='pdf'"
+                    height="99%" width="99%" src="../../../../../../assets/img/pdf.png" />
+                <br />
+                </div>
+                <a href="javascript:void(0);">  
+                  <p style="color:green;">Requested  Store Logo</p> 
+                </a>
+            </div>   
+          </ng-container>        
+        </div>
+     
+        <div class="col-sm-6 form-content-body">
+            <ng-container *ngIf="responseStoreRequestDraft.request && responseStoreRequestDraft.request.coverImage && responseStoreRequestDraft.request.coverImage !== basicDetailsForm.get('store_cover_image').value">
+                <div class="offset-1">
+                    <div class="upload-image-view">
+                    <img *ngIf="responseStoreRequestDraft.request && responseStoreRequestDraft.request.coverImage && checkExtension(responseStoreRequestDraft.request.coverImage)!='pdf'"
+                        height="99%" width="99%" [src]="responseStoreRequestDraft.request.coverImage" />
+                        <img *ngIf="responseStoreRequestDraft.request && responseStoreRequestDraft.request.coverImage && checkExtension(responseStoreRequestDraft.request.coverImage)=='pdf'"
+                        height="99%" width="99%" src="../../../../../../assets/img/pdf.png" />
+                    <br />
+                    </div>
+                    <a href="javascript:void(0);">
+                      <p style="color:green;">Requested Cover Image</p>    
+                    </a> 
+                </div>  
+                 
+              </ng-container>         
+          </div>
+        </div>
+    </form>
+
+    <ng-template #noDataForApprove> 
+       No Data Pending For Operation!!
+    </ng-template>
+
+
+</div>

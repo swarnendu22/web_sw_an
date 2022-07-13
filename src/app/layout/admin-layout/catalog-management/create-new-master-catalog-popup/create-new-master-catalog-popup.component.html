@@ -1,0 +1,1025 @@
+<!-- MODALS TEMPLATE -->
+<ng-template #imageModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add Image</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-variant-image [productImagesArr]="modalImagesArr" (onproductImagesArrChange)="onProductImagesChangeInModal($event)"></app-variant-image>
+    </div>
+
+</ng-template>
+<ng-template #variantAddModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add Variant</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <table class="table-form" class="variant-modal">
+            <tr>
+                <th width="30%">Attribute (e.g. Color)</th>
+                <th width="50%">Value (e.g. Red, Blue, Green)</th>
+            </tr>
+
+            <tr *ngFor="let modalVariantDetails of newProductVariant;let i=index">
+                <app-add-new-variant-selection style="display:contents; " [newVariant]="modalVariantDetails" [tempProductVariant]="modalVariantDetails.variantDetails?[modalVariantDetails.variantDetails]:tempProductVariant"
+                    [showSelected]="modalVariantDetails.variantDetails?true:false" [variantBasedOnVariant]="variantBasedOnVariant"
+                    [isEdit]="editableProductId" (onproductVariantSelectChange)="productVariantSelectChange($event,modalVariantDetails)"
+                    (onproductVariantValueChange)="productVariantValueChange($event,modalVariantDetails)" (onremoveChosenVariantValue)="removeChosenVariantValue($event,modalVariantDetails)">
+                </app-add-new-variant-selection>
+            </tr>
+
+        </table>
+    </div>
+
+</ng-template>
+
+<div class="loading" *ngIf="loading">
+    <mat-spinner [diameter]="50"></mat-spinner>
+</div>
+<form [formGroup]="catalogForm" autocomplete="off" novalidate>
+    <div class="top-bar box-shadow">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title">{{eidtableId?'Edit Master Catalog ('+nupc+')':'Create Master Catalog'}}</h3>
+            </div>
+            <div class="mr-auto">
+                <h3 class="m-subheader__title"></h3>
+            </div>
+            <div class="form-header-btn">
+                <button type="button" *ngIf="eidtableId" mat-raised-button class="noshadow top-btn-font white-btn" color="primary" (click)="reIndex()">
+                    <mat-icon>save</mat-icon> ReIndex
+                </button>
+
+                <button type="button" mat-raised-button class="noshadow top-btn-font white-btn" color="primary" (click)="goBack()">
+                    <mat-icon>arrow_back</mat-icon> Back
+                </button>
+
+                <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" *ngIf="!eidtableId" (keydown.enter)="$event.preventDefault()"
+                    (click)="onFormSubmit($event)">
+                    <mat-icon>save</mat-icon> Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-shadow bg-white padding-10">
+        <div class="content-head">
+            <div class="content-head-caption">
+                <h3>Key Details </h3>
+                <span style="color: grey; font-size: 10px">
+                    <i>Note: (*) Indicates Required Field
+                    </i>
+                </span>
+                <br />
+            </div>
+            <div class="content-head-action">
+                <div class="edit-btns" *ngIf="eidtableId">
+                    <button type="button" mat-stroked-button (click)="removeDisable('basicDetails')">{{disableProps['basicDetails']?'Edit':'Cancel'}}</button>
+                    <button type="button" mat-flat-button color="primary" *ngIf="!disableProps['basicDetails']" (click)="submitEditableRequest('basicDetails')">Save</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-content-body">
+            <fieldset [disabled]="disableProps['basicDetails']">
+                <div class="hoz-form mt-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Product Name</mat-label>
+                        <input matInput tabindex="1" formControlName="productName" required />
+                    </mat-form-field>
+                    <ng-container *ngIf="
+                  !catalogForm.get('shippingMrp').valid &&
+                  catalogForm.get('shippingMrp').touched
+                ">
+                        <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingMrp').hasError('required')">
+                            Required Product Name</mat-hint>
+                    </ng-container>
+                    <div class="row">
+                        <div class="col-6">
+
+
+                            <mat-form-field appearance="outline" *ngIf="categories && !editableProductId">
+                                <mat-label>Category</mat-label>
+
+
+                                <mat-select tabindex="2" formControlName="categories" (selectionChange)="categorySelectionValue($event)">
+                                    <mat-option>
+                                        <ngx-mat-select-search #myCategoryInput [formControl]="categoryFilterCtrl" [placeholderLabel]="'Find Category...'" [noEntriesFoundLabel]="'no matches  found'">
+                                        </ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option [value]="category.id" *ngFor="let category of categories | dropdownfilter:myCategoryInput.value:'path'">
+                                        {{category.path}}</mat-option>
+                                </mat-select>
+
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" *ngIf="categories && editableProductId">
+                                <mat-label>Category</mat-label>
+
+                                <mat-select tabindex="2" formControlName="categories" (selectionChange)="categorySelectionValue($event)" [disabled]="disableProps['basicDetails']">
+                                    <mat-option>
+                                        <ngx-mat-select-search #myCategoryInput [formControl]="categoryFilterCtrl" [placeholderLabel]="'Find Category...'" [noEntriesFoundLabel]="'no matches  found'">
+                                        </ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option [value]="category.id" *ngFor="let category of categories | dropdownfilter:myCategoryInput.value:'path'">
+                                        {{category.path}}</mat-option>
+                                </mat-select>
+
+                            </mat-form-field>
+
+
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Brands
+                                    <span style="color: grey; font-size: 10px">*</span>
+                                </mat-label>
+                                <mat-select tabindex="3" formControlName="brand" [disabled]="disableProps['basicDetails']">
+                                    <ng-container *ngIf="brandsBasedOnCategory">
+                                        <mat-option>
+                                            <ngx-mat-select-search #myInput [formControl]="brandFilterCtrl" [placeholderLabel]="'Find Brand ..'">
+                                            </ngx-mat-select-search>
+                                        </mat-option>
+
+                                        <mat-option [ngClass]="{'barnd-not-link':brandItem.categoryLink=='0'}" #hasValue *ngFor="let brandItem of brandsBasedOnCategory| dropdownfilter:myInput.value:'brandName'"
+                                            [value]="brandItem.id">{{brandItem.brandName}}
+
+
+
+                                        </mat-option>
+
+
+                                        <mat-option>
+
+                                            <button (click)="openAddBrand()" style="padding: 0 8px;line-height: 24px;margin-left: 5px;" mat-flat-button color="primary">Add New Brand</button>
+                                        </mat-option>
+
+
+                                    </ng-container>
+                                    <!-- IF CATEGORY NOT SELECTED -->
+                                    <ng-container *ngIf="!brandsBasedOnCategory">
+                                        <mat-option>Select Category To Continue</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+
+
+
+                        </div>
+                        <div class="col-12">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Description</mat-label>
+                                <textarea matInput tabindex="4" placeholder="Enter Description" formControlName="description"></textarea>
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                    !catalogForm.get('description').valid &&
+                    catalogForm.get('description').touched
+                  ">
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('description').hasError('required')">
+                                    Required Description</mat-hint>
+                            </ng-container>
+                        </div>
+                        <div class="col-12">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Other Details</mat-label>
+                                <textarea matInput tabindex="5" placeholder="Enter Other Details" formControlName="otherDetails"></textarea>
+                            </mat-form-field>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="box-shadow bg-white padding-10 mt-3" #shippingPriceSection>
+        <div class="content-head">
+            <div class="content-head-caption">
+                <h3>Shipping & Pricing</h3>
+                <span style="color: grey; font-size: 10px">
+                    <i>Note: (*) Indicates Required Field</i>
+                </span>
+                <br />
+            </div>
+            <div class="content-head-action">
+                <div class="edit-btns" *ngIf="eidtableId">
+                    <button type="button" mat-stroked-button (click)="removeDisable('priceDetails')">{{disableProps['priceDetails']?'Edit':'Cancel'}}</button>
+                    <button type="button" mat-flat-button color="primary" *ngIf="!disableProps['priceDetails']" (click)="submitEditableRequest('priceDetails')">Save</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-content-body">
+            <fieldset [disabled]="disableProps['priceDetails']">
+                <div class="hoz-form mt-3">
+                    <div class="row">
+                        <div class="col-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>MRP</mat-label>
+                                <input type="number" tabindex="6" matInput formControlName="shippingMrp" maxlength="7" (paste)="onPaste($event)" required
+                                    (focusout)="checkMRPOverRP('shippingMrp','shippingRetailPrice'); minusCheckRP('shippingMrp')"
+                                    onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                    !(catalogForm.get('shippingMrp').valid && catalogForm.get('shippingMrp').dirty) &&
+                    catalogForm.get('shippingMrp').touched
+                  ">
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingMrp').hasError('required')">
+                                    Required MRP</mat-hint>
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingMrp').hasError('pattern')">
+                                    Invalid MRP</mat-hint>
+                            </ng-container>
+                            <!-- <mat-error></mat-error> -->
+                            <mat-form-field appearance="outline">
+                                <mat-hint style="color: grey; font-size: 10px">
+                                    <i>Note:ISBN number must be 13 digits</i>
+                                </mat-hint>
+                                <mat-label>ISBN</mat-label>
+                                <input tabIndex="9" matInput formControlName="shippingIsbn" (paste)="onPaste($event)" maxlength="13" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+
+                            <ng-container *ngIf="
+                !catalogForm.get('shippingIsbn').valid &&
+                catalogForm.get('shippingIsbn').touched
+              ">
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingIsbn').hasError('required')">
+                                    ISBN Field Required</mat-hint>
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingIsbn').hasError('pattern')">
+                                    Invalid ISBN, ISBN must be 13 digits</mat-hint>
+
+                            </ng-container>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Retail Price</mat-label>
+                                <input type="number" min="1" matInput tabindex="7" formControlName="shippingRetailPrice" maxlength="7" required (paste)="onPaste($event)"
+                                    (focusout)="checkMRPOverRP('shippingMrp','shippingRetailPrice'); minusCheckRP('shippingRetailPrice')"
+                                    onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                    !catalogForm.get('shippingRetailPrice').valid &&
+                    catalogForm.get('shippingRetailPrice').touched
+                  ">
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingMrp').value && catalogForm.get('shippingRetailPrice').hasError('lte')">
+                                    Retail Price should not be greater than MRP</mat-hint>
+
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingRetailPrice').hasError('required')">Required Retail Price</mat-hint>
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingRetailPrice').hasError('pattern')">Invalid Retail Price</mat-hint>
+                            </ng-container>
+                            <mat-form-field appearance="outline">
+                                <mat-hint style="color: grey; font-size: 10px">
+                                    <i>Note:EAN number must be 13 digits</i>
+                                </mat-hint>
+                                <mat-label>EAN</mat-label>
+                                <input matInput tabindex="10" formControlName="shippingEan" maxlength="13" (paste)="onPaste($event)" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                !catalogForm.get('shippingEan').valid &&
+                catalogForm.get('shippingEan').touched
+              ">
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingEan').hasError('pattern')">
+                                    Invalid EAN, EAN must be 13 digits</mat-hint>
+
+                            </ng-container>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Currency</mat-label>
+                                <mat-select tabindex="8" formControlName="shippingCurrency" [disabled]="disableProps['priceDetails']">
+                                    <mat-option value="INR">INR</mat-option>
+                                    <mat-option value="USD">USD</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                !catalogForm.get('shippingCurrency').valid &&
+                catalogForm.get('shippingCurrency').touched
+              ">
+
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingCurrency').hasError('required')">
+                                    Required Currency</mat-hint>
+
+                            </ng-container>
+                            <mat-form-field appearance="outline">
+                                <mat-hint style="color: grey; font-size: 10px">
+                                    <i>Note:UPC number must be 13 digits</i>
+                                </mat-hint>
+                                <mat-label>UPC</mat-label>
+                                <input matInput tabindex="11" formControlName="shippingUpc" maxlength="13" (paste)="onPaste($event)" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                catalogForm.get('shippingUpc').untouched &&
+                catalogForm.get('shippingUpc').touched
+              ">
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingUpc').hasError('pattern')">
+                                    Invalid UPC, UPC must be 13 digits</mat-hint>
+
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Length(cm)</mat-label>
+                                <input type="number" matInput tabindex="12" formControlName="shippingLength" maxlength="5" min="1" (paste)="onPaste($event)"
+                                    onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                !catalogForm.get('shippingLength').valid &&
+                catalogForm.get('shippingLength').touched
+              ">
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingLength').hasError('required')">
+                                    Required Length</mat-hint>
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingLength').hasError('pattern')">
+                                    Invalid Length</mat-hint>
+                            </ng-container>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Width(cm)</mat-label>
+                                <input type="number" tabindex="13" matInput formControlName="shippingWidth" maxlength="5" min="1" (paste)="onPaste($event)"
+                                    onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                !catalogForm.get('shippingWidth').valid &&
+                catalogForm.get('shippingWidth').touched
+              ">
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingWidth').hasError('required')">
+                                    Required Width</mat-hint>
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingWidth').hasError('pattern')">
+                                    Invalid Width</mat-hint>
+
+                            </ng-container>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Height(cm)</mat-label>
+                                <input type="number" matInput tabindex="14" formControlName="shippingHeight" maxlength="5" min="1" (paste)="onPaste($event)"
+                                    onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                !catalogForm.get('shippingHeight').valid &&
+                catalogForm.get('shippingHeight').touched
+              ">
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingHeight').hasError('required')">
+                                    Required Height</mat-hint>
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingHeight').hasError('pattern')">
+                                    Invalid Height</mat-hint>
+                            </ng-container>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Dead Weight(gm)</mat-label>
+                                <input type="number" matInput tabindex="15" formControlName="shippingWeight" (paste)="onPaste($event)" maxlength="5" min="1"
+                                    onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                !catalogForm.get('shippingWeight').valid &&
+                catalogForm.get('shippingWeight').touched
+              ">
+
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingWeight').hasError('required')">
+                                    Required Weight</mat-hint>
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingWeight').hasError('pattern')">
+                                    Invalid Weight</mat-hint>
+                            </ng-container>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>HSN Code</mat-label>
+                                <input matInput tabindex="16" formControlName="shippingHsnCode" maxlength="13" (paste)="onPaste($event)" />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                !catalogForm.get('shippingHsnCode').valid &&
+                catalogForm.get('shippingHsnCode').touched
+              ">
+
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingHsnCode').hasError('required')">
+                                    Required HSN Code</mat-hint>
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingHsnCode').hasError('pattern')">
+                                    Invalid HSN Code</mat-hint>
+                            </ng-container>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field appearance="outline">
+                                <mat-label>GST
+                                </mat-label>
+                                <mat-select tabindex="17" formControlName="shippingGst" [disabled]="disableProps['priceDetails']">
+                                    <mat-option value="3">3%</mat-option>
+                                    <mat-option value="5">5%</mat-option>
+                                    <mat-option value="8">8%</mat-option>
+                                    <mat-option value="12">12%</mat-option>
+                                    <mat-option value="18">18%</mat-option>
+                                    <mat-option value="28">28%</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                !catalogForm.get('shippingHsnCode').valid &&
+                catalogForm.get('shippingHsnCode').touched
+              ">
+
+                                <mat-hint align="start" class="error" *ngIf="catalogForm.get('shippingHsnCode').hasError('required')">
+                                    Required GST</mat-hint>
+
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <!-- <div class="box-shadow bg-white padding-10 mt-3">
+        <div class="content-head">
+            <div class="content-head-caption">
+                <h3>Attributes</h3>
+                <span style="color: grey; font-size: 10px">
+                    <i>Note: (*) Indicates Required Field</i>
+                </span>
+                <br />
+            </div>
+            <div class="content-head-action action-form">
+                <div class="d-flex">
+                    <mat-form-field appearance="outline" *ngIf="attributeSetsData">
+                        <mat-label>Attributes </mat-label>
+                        <mat-select (selectionChange)="attributeSetSelectionDropDown($event)" [value]="attributeSetId" [disabled]="eidtableId">
+                            <mat-option *ngFor="let attributes of attributeSetsData" [value]="attributes.id">{{attributes.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="edit-btns ml-2 mt-2" *ngIf="eidtableId">
+                        <button type="button" mat-stroked-button (click)="removeDisable('attrDetails')">{{disableProps['attrDetails']?'Edit':'Cancel'}}</button>
+                        <button type="button" mat-flat-button color="primary" *ngIf="!disableProps['attrDetails']" (click)="submitEditableRequest('attrDetails')">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-content-body">
+            <fieldset [disabled]="disableProps['attrDetails']">
+                <div class="hoz-form mt-3">
+                    <table class="table-form row-attribute" formArrayName="productAttributes">
+                        <tr>
+                            <th width="30%">Attribute Name</th>
+                            <th width="50%">Value</th>
+                            <th width="10%">Key Attribute</th>
+                            <th width="10%">Action</th>
+                        </tr>
+                        <tr *ngFor="let attribute of catalogForm.get('productAttributes')['controls'];let i=index;" [formGroupName]="i">
+                            <td>
+                                <mat-form-field>
+                                    <input matInput formControlName="name">
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field appearance="outline" *ngIf="attribute.get('type').value==='TEXT'">
+                                    <mat-hint *ngIf="attribute.get('option').value == 'M'" style="color: grey; font-size: 10px">
+                                        <i>* Required Field</i>
+                                    </mat-hint>
+                                    <input matInput formControlName="value" />
+                                </mat-form-field>
+                                <ng-container *ngIf="
+                !attribute.get('value').valid &&
+                attribute.get('value').touched
+              ">
+
+                                    <mat-hint align="start" class="error" *ngIf="attribute.get('value').hasError('required') && attribute.get('type').value==='TEXT'">
+                                        Required Field</mat-hint>
+                                </ng-container>
+                                <mat-form-field appearance="outline" *ngIf="attribute.get('type').value=='SELECT' || attribute.get('type').value === 'SWATCH'">
+                                    <mat-hint *ngIf="attribute.get('option').value == 'M'" style="color: grey; font-size: 10px">
+                                        <i>* Required Field</i>
+                                    </mat-hint>
+                                    <mat-select formControlName="value" [value]="attribute.get('value').value" [disabled]="disableProps['attrDetails']">
+                                        <mat-option>
+                                            <ngx-mat-select-search #existingAttrCtrl [formControl]="ExistingAttrCtrl" [placeholderLabel]="'Find Attribute ..'" [noEntriesFoundLabel]="'no matches  found'">
+                                            </ngx-mat-select-search>
+                                        </mat-option>
+                                     
+                                        <mat-option *ngFor="let existattrValue of attribute.get('dropDownValue').value|splitString:',' | dropdownfilter:existingAttrCtrl.value:''"
+                                            [value]="existattrValue">{{existattrValue}}</mat-option>
+                                        <mat-option>
+                                            <button (click)="addAttribute(attribute.get('type').value,attribute.get('id').value)" style="padding: 0 8px;line-height: 24px;margin-left: 5px;"
+                                                mat-flat-button color="primary">
+                                                Add
+                                            </button>
+
+
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <ng-container *ngIf="
+                !attribute.get('value').valid &&
+                attribute.get('value').touched
+              ">
+
+                                    <mat-hint align="start" class="error" *ngIf="attribute.get('value').hasError('required') && (attribute.get('type').value=='SELECT' || attribute.get('type').value === 'SWATCH')">
+                                        Required Field</mat-hint>
+                                </ng-container>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" [checked]="attribute.get('is_key').value" formControlName="is_key">
+                                </mat-checkbox>
+                            </td>
+                            <td>
+                                <button *ngIf="attribute.get('option').value == 'N'" type="button" mat-icon-button color="warn" [disabled]="disableProps['attrDetails']"
+                                    (click)="deleteFromAlreadyAddedAttribute(i)">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                                <button *ngIf="attribute.get('option').value == 'M'" type="button" mat-icon-button color="warn" [disabled]="true">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let tempAttribute of tempNewAttributesArr;let i=index">
+                            <td>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Select Attributes</mat-label>
+                                    <mat-select (selectionChange)="onTempAttributesSelectionChange($event,tempAttribute)" #attrSelection>
+                                        <mat-option>
+                                            <ngx-mat-select-search #myTempAttributeInput [formControl]="myTempAttributeInputCtrl" [placeholderLabel]="'Find Attribute ..'"
+                                                [noEntriesFoundLabel]="'no matches  found'">
+                                            </ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option *ngFor="let newAttr of attributesList | dropdownfilter:myTempAttributeInput.value:'name'" [value]="newAttr">{{newAttr.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="attrSelection.value && tempAttribute.addable">
+                                    <mat-form-field appearance="outline" *ngIf="attrSelection.value.type==='TEXT'">
+                                        <mat-label>Value</mat-label>
+                                        <input matInput (change)="onTempAttributeValueChange($event,tempAttribute)" />
+                                    </mat-form-field>
+                                    <mat-form-field *ngIf="attrSelection.value.type==='SELECT'  || attrSelection.value.type==='SWATCH'" appearance="outline">
+                                        <mat-label>Value</mat-label>
+                                        <mat-select (selectionChange)="onTempAttributeValueChange($event,tempAttribute,attributeBasedOnAttribute[attrSelection.value.id].join())">
+                                            <mat-option>
+                                                <ngx-mat-select-search #myTempAttributeValInput [formControl]="myTempAttributeValCtrl" [placeholderLabel]="'Find Attribute ..'"
+                                                    [noEntriesFoundLabel]="'no matches  found'">
+                                                </ngx-mat-select-search>
+                                            </mat-option>
+                                            <mat-option *ngFor="let attrValue of attributeBasedOnAttribute[attrSelection.value.id] | dropdownfilter:myTempAttributeValInput.value:''"
+                                                [value]="attrValue">{{attrValue}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </ng-container>
+                            </td>
+                            <td class="text-center">
+                                <mat-checkbox color="primary" (change)="onTempAttributeCheckedChange($event,tempAttribute)">
+                                </mat-checkbox>
+                            </td>
+                            <td>
+                                <button type="button" mat-icon-button color="warn" (click)="deleteAddedAttribute(i)">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+
+                    </table>
+                   
+                </div>
+            </fieldset>
+        </div>
+    </div> -->
+
+
+    <!-- <div class="ml-2">
+              <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary" (click)="addNewAttribute()">
+                <mat-icon>add</mat-icon> Add New Attribute
+              </button>
+            </div> -->
+
+
+
+
+    <!-- <ng-container *ngIf="!editableProductId">
+        <div class="box-shadow bg-white padding-10 mt-3">
+            <div class="content-head">
+                <div class="content-head-caption">
+                    <h3>Variants</h3>
+                </div>
+                <div class="content-head-action">
+                    <button type="button" mat-stroked-button color="primary" (click)="addNewProductVariant()" *ngIf="newProductVariant.length<2">Add New Variant</button>
+                </div>
+            </div>
+            <div class="form-content-body">
+                <div class="hoz-form mt-3">
+                    <table class="table-form">
+                        <tr>
+                            <th width="30%">Attribute (e.g. Color)</th>
+                            <th width="50%">Value (e.g. Red, Blue, Green)</th>
+                            <th width="10%"></th>
+                            <th width="10%"></th>
+                        </tr>
+                        <tr *ngFor="let newVariant of newProductVariant;let i=index">
+                            <app-add-new-variant-selection style="display:contents; " [newVariant]="newVariant" [isEdit]="editableProductId" [tempProductVariant]="tempProductVariant"
+                                [variantBasedOnVariant]="variantBasedOnVariant" (onproductVariantSelectChange)="productVariantSelectChange($event,newVariant)"
+                                (onproductVariantValueChange)="productVariantValueChange($event,newVariant)" (onremoveChosenVariantValue)="removeChosenVariantValue($event,newVariant)">
+                            </app-add-new-variant-selection>
+
+
+
+                            <td align="center" class="v-align">
+                                <button mat-icon-button type="button" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" *ngIf="newVariant.values.length>0">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item (click)="applyImageToSku(newVariant.values,true)">
+                                        <span>Apply single set of images to all SKUs</span>
+                                    </button>
+                                    <button mat-menu-item (click)="applyImageToSku(newVariant.values,false)">
+                                        <span>Apply unique images by attribute to each SKU</span>
+                                    </button>
+                                </mat-menu>
+                            </td>
+                            <td align="center" class="v-align">
+                                <button mat-icon-button color="warn" (click)="deleteProductVariant(i)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </ng-container> -->
+    <ng-container *ngIf="!editableProductId || typeId==='s'">
+        <div class="box-shadow bg-white padding-10 mt-3">
+            <div class="content-head">
+                <div class="content-head-caption">
+                    <h3>Images</h3>
+                </div>
+                <div class="content-head-action action-form">
+                    <div class="d-flex">
+                        <div class="edit-btns ml-2 mt-2" *ngIf="eidtableId">
+                            <button type="button" mat-stroked-button (click)="removeDisable('imgDetails')">{{disableProps['imgDetails']?'Edit':'Cancel'}}</button>
+                            <button type="button" mat-flat-button color="primary" *ngIf="!disableProps['imgDetails']" (click)="submitEditableRequest('imgDetails')">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <fieldset [disabled]="disableProps['imgDetails']">
+                <app-variant-image [productImagesArr]="productImagesArr" [disableImageSection]="disableProps['imgDetails']" (onproductImagesArrChange)="onproductImagesArrChange($event)"></app-variant-image>
+            </fieldset>
+        </div>
+    </ng-container>
+    <!-- <div class="box-shadow bg-white padding-10 mt-3" *ngIf="typeId!=='s'">
+        <div class="content-head">
+            <div class="content-head-caption">
+                <h3>Variant Products</h3>
+                <span style="color: grey; font-size: 10px">
+                    <i>Note: (*) Indicates Required Field</i>
+                </span>
+                <br />
+                <span style="color: grey; font-size: 10px">
+                    <i>Note: ISBN/EAN/UPC number should be 13 digits
+                    </i>
+                </span>
+            </div>
+           
+            <div class="content-head-action">
+
+                <button mat-icon-button type="button" [matMenuTriggerFor]="variantMnu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #variantMnu="matMenu">
+                    <button type="button" mat-menu-item (click)="applySinglePriceToAllSku()">
+                        <span>Apply single price to all SKUs</span>
+                    </button>
+                  
+                </mat-menu>
+            </div>
+        </div>
+        <div class="form-content-body">
+
+            <div class="hoz-form mt-3">
+                <table class="table-form" formArrayName="productVariantsDetails">
+                    <tr>
+                        <th width="150">Variant Name </th>
+                        <th *ngIf="editableProductId" width="104">Images</th>
+                        <th width="10%">NUPC</th>
+                        <th width="10%">ISBN</th>
+                        <th width="10%">EAN</th>
+                        <th width="10%">UPC</th>
+                        <th width="10%">MRP
+                            <span style="color: grey; font-size: 10px"> *</span>
+                        </th>
+                        <th width="10%">Selling Price
+                            <span style="color: grey; font-size: 10px">*</span>
+                        </th>
+                        <th width="5%">Default</th>
+                        <th style="width: 200px"></th>
+                    </tr>
+                    <tr *ngFor="let variantDetails of catalogForm.get('productVariantsDetails').controls;let i=index;" [formGroupName]="i">
+                        <td>
+                            <mat-form-field appearance="outline">
+                                <input matInput formControlName="variantName">
+                            </mat-form-field>
+                        </td>
+                        <td *ngIf="editableProductId" class="variant-product-td">
+                            <button type="button" (click)="openImageModal(imageModal,'exitingVariantEdit',variantDetails)" [disabled]="!variantDetails.get('editMode').value">
+                                <img [src]="variantDetails.get('updatedImages').value[0][0]+'?h=20'" *ngIf="variantDetails.get('updatedImages').value.length>0"
+                                />
+                            </button>
+                        </td>
+                        <td>
+                            <mat-form-field appearance="outline">
+                                <input matInput formControlName="variantNupc" />
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <fieldset [disabled]="variantDetails.get('editMode')?!variantDetails.get('editMode').value:false">
+                                <mat-form-field appearance="outline">
+                                    <input matInput formControlName="variantIsbn" (paste)="onPaste($event)" maxlength="13" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                    />
+                                </mat-form-field>
+                                <ng-container *ngIf="
+                      !variantDetails.get('variantIsbn').valid &&
+                      variantDetails.get('variantIsbn').touched
+                    ">
+                                    <mat-hint align="start" class="error" *ngIf="variantDetails.get('variantIsbn').hasError('required')">
+                                        ISBN Field Required</mat-hint>
+                                    <mat-hint align="start" class="error" *ngIf="variantDetails.get('variantIsbn').hasError('pattern')">
+                                        Invalid ISBN</mat-hint>
+
+                                </ng-container>
+                            </fieldset>
+                        </td>
+                        <td>
+                            <fieldset [disabled]="variantDetails.get('editMode')?!variantDetails.get('editMode').value:false">
+                                <mat-form-field appearance="outline">
+                                    <input matInput formControlName="variantEan" (paste)="onPaste($event)" maxlength="13" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                    />
+                                </mat-form-field>
+                                <ng-container *ngIf="
+                !variantDetails.get('variantEan').valid &&
+                variantDetails.get('variantEan').touched
+              ">
+                                    <mat-hint align="start" class="error" *ngIf="variantDetails.get('variantEan').hasError('pattern')">
+                                        Invalid EAN</mat-hint>
+
+                                </ng-container>
+                            </fieldset>
+                        </td>
+                        <td>
+                            <fieldset [disabled]="variantDetails.get('editMode')?!variantDetails.get('editMode').value:false">
+                                <mat-form-field appearance="outline">
+                                    <input matInput formControlName="variantUpc" (paste)="onPaste($event)" maxlength="13" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                    />
+                                </mat-form-field>
+                                <ng-container *ngIf="
+                variantDetails.get('variantUpc').untouched &&
+                variantDetails.get('variantUpc').touched
+              ">
+                                    <mat-hint align="start" class="error" *ngIf="variantDetails.get('variantUpc').hasError('pattern')">
+                                        Invalid UPC</mat-hint>
+
+                                </ng-container>
+                            </fieldset>
+                        </td>
+                        <td>
+                            <fieldset [disabled]="variantDetails.get('editMode')?!variantDetails.get('editMode').value:false">
+                                <mat-form-field appearance="outline">
+                                    <input matInput type="text" formControlName="variantMrp" maxlength="7" (paste)="onPaste($event)" required (focusout)="checkMRPOverRPArray('variantMrp','variantSellingPrice', i)"
+                                        onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                    />
+                                </mat-form-field>
+                                <ng-container *ngIf="
+                    !variantDetails.get('variantMrp').valid &&
+                    variantDetails.get('variantMrp').touched
+                  ">
+                                    <mat-hint align="start" class="error" *ngIf="variantDetails.get('variantMrp').hasError('required')">
+                                        Required MRP</mat-hint>
+                                    <mat-hint align="start" class="error" *ngIf="variantDetails.get('variantMrp').hasError('pattern')">
+                                        Invalid MRP</mat-hint>
+                                </ng-container>
+                            </fieldset>
+                        </td>
+                        <td>
+                            <fieldset [disabled]="variantDetails.get('editMode')?!variantDetails.get('editMode').value:false">
+                                <mat-form-field appearance="outline">
+                                    <input matInput type="text" formControlName="variantSellingPrice" maxlength="7" (paste)="onPaste($event)" required (focusout)="checkMRPOverRPArray('variantMrp','variantSellingPrice', i)"
+                                        onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                    />
+                                </mat-form-field>
+                                <ng-container *ngIf="
+                  !(variantDetails.get('variantSellingPrice').valid && variantDetails.get('variantSellingPrice').dirty) &&
+                  variantDetails.get('variantSellingPrice').touched
+                ">
+                                    <mat-hint align="start" class="error" *ngIf="variantDetails.get('variantMrp').value && variantDetails.get('variantSellingPrice').hasError('lte')">
+                                        SP should not be greater than MRP</mat-hint>
+
+                                    <mat-hint align="start" class="error" *ngIf="variantDetails.get('variantSellingPrice').hasError('required')">Required Selling Price
+                                    </mat-hint>
+                                    <mat-hint align="start" class="error" *ngIf="variantDetails.get('variantSellingPrice').hasError('pattern')">Invalid Selling Price
+                                    </mat-hint>
+                                </ng-container>
+                            </fieldset>
+                        </td>
+                        <td align="center">
+                            <fieldset [disabled]="variantDetails.get('editMode')?!variantDetails.get('editMode').value:false">
+                                <mat-radio-button color="primary" value="1" [checked]="variantDetails.get('variantIsDefault').value" (change)="onProductVariantDetailsRadioClick($event,i,'productVariantsDetails')"></mat-radio-button>
+                            </fieldset>
+                        </td>
+                        <td *ngIf="editableProductId" class="text-center">
+                            <button type="button" class="btn-sm" mat-stroked-button color="primary" (click)="toggleVariantEditMode(variantDetails)">
+                                <mat-icon>{{!variantDetails.get('editMode').value?'create':'clear'}}</mat-icon>
+                            </button>
+                            <button type="button" class="ml-2 btn-sm" mat-flat-button color="primary" *ngIf="variantDetails.get('editMode').value" (click)="saveExistingVariantDetails(variantDetails,i)">
+                                <mat-icon>save</mat-icon>
+                            </button>
+                           
+                        </td>
+                    </tr>
+                </table>
+                <table class="table-form" *ngIf="editableProductId" formArrayName="tempNewVariantsForEditableMode">
+                  
+                    <tr *ngFor="let tempvariantDetails of catalogForm.get('tempNewVariantsForEditableMode').controls;let j=index;" [formGroupName]="j">
+                        <td width="150">
+                            <mat-form-field appearance="outline">
+                                <input matInput formControlName="variantName">
+                            </mat-form-field>
+                        </td>
+                        <td class="variant-product-td" width="104">
+                            <button type="button" (click)="openImageModal(imageModal,'newVariantAdded',tempvariantDetails)">
+                                <img [src]="tempvariantDetails.get('updatedImages').value[0][0]" *ngIf="tempvariantDetails.get('updatedImages').value.length>0"
+                                />
+                            </button>
+                        </td>
+                        <td width="10%">
+                            <mat-form-field appearance="outline">
+                                <input matInput formControlName="variantNupc" />
+                            </mat-form-field>
+                        </td>
+                        <td width="10%">
+                            <mat-form-field appearance="outline">
+                                <input matInput formControlName="variantIsbn" (paste)="onPaste($event)" maxlength="13" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                !tempvariantDetails.get('variantIsbn').valid &&
+                tempvariantDetails.get('variantIsbn').touched
+              ">
+                                <mat-hint align="start" class="error" *ngIf="tempvariantDetails.get('variantIsbn').hasError('required')">
+                                    ISBN Field Required</mat-hint>
+                                <mat-hint align="start" class="error" *ngIf="tempvariantDetails.get('variantIsbn').hasError('pattern')">
+                                    Invalid ISBN</mat-hint>
+
+                            </ng-container>
+                        </td>
+                        <td width="10%">
+                            <mat-form-field appearance="outline">
+                                <input matInput formControlName="variantEan" (paste)="onPaste($event)" maxlength="13" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                !tempvariantDetails.get('variantEan').valid &&
+                tempvariantDetails.get('variantEan').touched
+              ">
+                                <mat-hint align="start" class="error" *ngIf="tempvariantDetails.get('variantEan').hasError('pattern')">
+                                    Invalid EAN</mat-hint>
+
+                            </ng-container>
+                        </td>
+                        <td width="10%">
+                            <mat-form-field appearance="outline">
+                                <input matInput formControlName="variantUpc" (paste)="onPaste($event)" maxlength="13" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                tempvariantDetails.get('variantUpc').untouched &&
+                tempvariantDetails.get('variantUpc').touched
+              ">
+                                <mat-hint align="start" class="error" *ngIf="tempvariantDetails.get('variantUpc').hasError('pattern')">
+                                    Invalid UPC</mat-hint>
+
+                            </ng-container>
+                        </td>
+                        <td width="10%">
+                            <mat-form-field appearance="outline">
+                                <input matInput type="text" formControlName="variantMrp" maxlength="7" (paste)="onPaste($event)" required onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                !tempvariantDetails.get('variantMrp').valid &&
+                tempvariantDetails.get('variantMrp').touched
+              ">
+                                <mat-hint align="start" class="error" *ngIf="tempvariantDetails.get('variantMrp').hasError('required')">
+                                    Required MRP</mat-hint>
+                                <mat-hint align="start" class="error" *ngIf="tempvariantDetails.get('variantMrp').hasError('pattern')">
+                                    Invalid MRP</mat-hint>
+                            </ng-container>
+                        </td>
+                        <td width="10%">
+                            <mat-form-field appearance="outline">
+                                <input matInput type="text" formControlName="variantSellingPrice" maxlength="7" (paste)="onPaste($event)" required onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+                                />
+                            </mat-form-field>
+                            <ng-container *ngIf="
+                !tempvariantDetails.get('variantSellingPrice').valid &&
+                tempvariantDetails.get('variantSellingPrice').touched
+              ">
+                                <mat-hint align="start" class="error" *ngIf="tempvariantDetails.get('variantMrp').value && tempvariantDetails.get('variantSellingPrice').hasError('highRetailPrice')">
+                                    SP should not be greater than MRP</mat-hint>
+
+                                <mat-hint align="start" class="error" *ngIf="tempvariantDetails.get('variantSellingPrice').hasError('required')">Required Selling Price
+                                </mat-hint>
+                                <mat-hint align="start" class="error" *ngIf="tempvariantDetails.get('variantSellingPrice').hasError('pattern')">Invalid Selling Price
+                                </mat-hint>
+                            </ng-container>
+                        </td>
+                        <td align="center" width="5%">
+                            <mat-radio-button color="primary" value="1" [checked]="tempvariantDetails.get('variantIsDefault').value" (change)="onProductVariantDetailsRadioClick($event,j,'tempNewVariantsForEditableMode')">
+                            </mat-radio-button>
+                        </td>
+                        <td style="width: 171px; text-align: center">
+                            <button type="button" class="mr-2" mat-flat-button color="primary" (click)="saveNewVariantInEditableMode(tempvariantDetails,j)">Save</button>
+                            <button type="button" mat-flat-button color="warn" (click)="deleteNewVariantInEditableMode(j)">Delete</button>
+                        </td>
+                    </tr>
+                </table>
+               
+            </div>
+        </div>
+    </div> -->
+
+    <!-- internal server error -->
+    <!-- <div class="ml-2">
+                    <button type="button" style="max-width: 180px" mat-flat-button color="primary" *ngIf="editableProductId" (click)="openVariantModal(variantAddModal)">
+                        <mat-icon>add</mat-icon> Add New Variant
+                    </button>
+                </div> -->
+
+
+    <div class="box-shadow bg-white padding-10 mt-3">
+        <div class="content-head">
+            <div class="content-head-caption">
+                <h3>Search Engine Optimization</h3>
+            </div>
+            <div class="content-head-action">
+                <div class="d-flex align-items-center">
+                    <mat-checkbox color="primary" formControlName="metaExclude" [disabled]="disableProps['meta']">
+                        Exclude Sitemap</mat-checkbox>
+                    <div class="edit-btns ml-3" *ngIf="eidtableId">
+                        <button type="button" mat-stroked-button (click)="removeDisable('meta')">{{disableProps['meta']?'Edit':'Cancel'}}</button>
+                        <button type="button" mat-flat-button color="primary" *ngIf="!disableProps['meta']" (click)="submitEditableRequest('meta')">Save</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="form-content-body">
+            <fieldset [disabled]="disableProps['meta']">
+                <div class="hoz-form mt-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Meta Title</mat-label>
+                        <input matInput formControlName="metaTitle">
+                    </mat-form-field>
+                    <div *ngIf="!catalogForm.get('metaTitle').valid && catalogForm.get('metaTitle').touched" class="has-danger form-control-feedback">
+
+                        <!-- <span class="text-danger" *ngIf="catalogForm.get('metaTitle').errors">Max Length 100</span> -->
+                        <span class="text-danger" *ngIf="catalogForm.get('metaTitle').errors.maxlength">Max Length 100</span>
+
+                    </div>
+
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Meta keyword</mat-label>
+                        <input matInput formControlName="metaKeyword">
+                    </mat-form-field>
+                    <div *ngIf="!catalogForm.get('metaKeyword').valid && catalogForm.get('metaKeyword').touched" class="has-danger form-control-feedback">
+
+                        <span class="text-danger" *ngIf="catalogForm.get('metaKeyword').errors.maxlength">Max Length 100</span>
+
+                    </div>
+
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Meta Description</mat-label>
+                        <textarea matInput formControlName="metaDesc"></textarea>
+                    </mat-form-field>
+                    <div *ngIf="!catalogForm.get('metaDesc').valid && catalogForm.get('metaDesc').touched" class="has-danger form-control-feedback">
+
+                        <span class="text-danger" *ngIf="catalogForm.get('metaDesc').errors.maxlength">Max Length 255</span>
+
+                    </div>
+
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+</form>

@@ -1,0 +1,25 @@
+<div class="tab-area-content pt-0 pl-0">
+    <div class="store-promotion-section">
+        <div class="store-promotion-tab">
+            <mat-tab-group (selectedTabChange)="route($event)" [selectedIndex]="tabIndex">
+                <mat-tab label="Active Brands">
+                    <app-active-brand *ngIf="tabIndex==0"></app-active-brand>
+                </mat-tab>
+                <!-- <mat-tab label="Pending Brands">
+                    <app-pending-brand *ngIf="tabIndex==1"></app-pending-brand>
+                </mat-tab> -->
+                <mat-tab label="Inactive Brands">
+                    <app-in-active-brand *ngIf="tabIndex==1"></app-in-active-brand>
+                </mat-tab>
+            </mat-tab-group>
+            <div class="form-header-btn">
+                <button routerLink="/category/manage/add-new-brand" mat-raised-button class="noshadow top-btn-font btn-ontab" color="primary">
+                    <mat-icon>add</mat-icon> Add New Brand
+                </button>
+
+                <mat-icon (click)="refreshBand()" class="btn-ontab" style="top: 15px;
+                right: 180px; cursor: pointer;">cached</mat-icon>
+            </div>
+        </div>
+    </div>
+</div>

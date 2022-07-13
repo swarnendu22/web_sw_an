@@ -1,0 +1,73 @@
+<div class="top-bar box-shadow">
+  <div class="d-flex align-items-center">
+    <div class="mr-auto">
+      <h3 class="m-subheader__title">Approved Applications</h3>
+    </div>
+    <div class="form-header-btn">
+      <mat-form-field class="min-form" appearance="outline">
+        <mat-label>Vehicle Type</mat-label>
+        <mat-select [(value)]="vehicleType">
+          <mat-option value="Bicycle">Bicycle</mat-option>
+          <mat-option value="Two Wheeler">Two Wheeler</mat-option>
+          <mat-option value="Four Wheeler">Four Wheeler</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="min-form" appearance="outline">
+        <mat-label>State</mat-label>
+        <mat-select [(value)]="state_name" (selectionChange)="selectRegion($event)">
+          <mat-option *ngFor="let region of regionList" [value]="region.regionName">
+            {{region.regionName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!-- <mat-form-field class="min-form" appearance="outline">
+        <mat-label>Zone</mat-label>
+        <mat-select [(value)]="zone">
+          <mat-option *ngFor="let zone of zoneList" [value]="zone.zoneName">
+            {{zone.zoneName}}</mat-option>
+        </mat-select>
+      </mat-form-field> -->
+    </div>
+    <div class="form-header-btn">
+      <div class="input-group mr-2" style="width: 420px;">
+        <input type="text" style="height:45px;" [(ngModel)]="searchTerm" class="form-control"
+          placeholder="Search by DE ID/Mobile No.">
+        <div class="input-group-append">
+          <button class="btn btn-info d-flex align-items-center" style="height: 45px;" type="button" (click)="search()">
+            <mat-icon>search</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-header-btn">
+      <mat-form-field class="min-form" appearance="outline">
+        <mat-label>DE Action</mat-label>
+        <mat-select [formControl]="DEAction" (selectionChange)="deliveryBoyActionPopup($event)"
+          [disabled]="!selectedDE.length">
+          <mat-option value="FORCE_LOGIN">Forced Login</mat-option>
+          <mat-option value="FORCE_LOGOUT">Forced Logout</mat-option>
+          <!-- <mat-option value="APPROVED">Approve</mat-option> -->
+          <mat-option value="SUSPENDED">Suspend</mat-option>
+          <mat-option value="ABSCONDED">Absconded</mat-option>
+          <mat-option value="TERMINATED">Terminated</mat-option>
+          <mat-option value="BLOCKED">Block</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+
+<div class="bg-white single-pagination" style="height: calc(100% - 40px)">
+  <ag-grid-angular style="width:100%; height: 100%;" class="ag-theme-balham" [rowData]="rowData"
+    [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" (firstDataRendered)="onFirstDataRendered($event)"
+    (gridReady)="onGridReady($event)" [enableFilter]="true" [floatingFilter]="true"
+    (gridSizeChanged)="onGridSizeChanged($event)">
+  </ag-grid-angular>
+
+  <ul style="display: none;">
+    <li
+      *ngFor="let item of rowData | paginate: { id: 'dataPagination', itemsPerPage: 9999, currentPage: pageNo, totalItems: totalRecords }">
+      {{ item.id }}</li>
+  </ul>
+  <pagination-controls (pageChange)="getPageNoData($event)" id="dataPagination"></pagination-controls>
+
+</div>

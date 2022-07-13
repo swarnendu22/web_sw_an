@@ -1,0 +1,33 @@
+<div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title">History</h3>
+        </div>
+        <div class="form-header-btn">
+            <div class="input-group mr-2" style="width: 420px;">
+                <input type="text" style="height: 38px;" class="form-control" placeholder="Search by DE ID/Mobile No.">
+                <div class="input-group-append">
+                    <button class="btn btn-info" style="height: 38px;" type="button" (click)="search()">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white single-pagination" style="height: calc(100% - 90px)">
+    <ag-grid-angular style="width:100%; height: 470px;" class="ag-theme-balham" [rowData]="rowData"
+        [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" (firstDataRendered)="onFirstDataRendered($event)"
+        (gridReady)="onGridReady($event)" [enableFilter]="true" [floatingFilter]="true"
+        (gridSizeChanged)="onGridSizeChanged($event)">
+    </ag-grid-angular>
+
+    <ul style="display: none;">
+        <li
+            *ngFor="let item of rowData | paginate: { id: 'dataPagination', itemsPerPage: 9999, currentPage: pageNo, totalItems: totalRecords }">
+            {{ item.id }}</li>
+    </ul>
+    <pagination-controls (pageChange)="getPageNoData($event)" id="dataPagination"></pagination-controls>
+
+</div>

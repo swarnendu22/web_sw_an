@@ -1,0 +1,175 @@
+<form [formGroup]="addAppversionForm" autocomplete="off">
+  <div class="top-bar box-shadow">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto">
+        <h3 class="m-subheader__title">
+          {{ isEdit ? 'Update' : 'Add New' }} App Version
+        </h3>
+      </div>
+      <div class="form-header-btn">
+        <ng-container>
+          <ng-container *ngIf="getFormDisableStats('addAppversionForm')">
+            <button routerLink="/store/app-version-management" mat-raised-button
+              class="noshadow top-btn-font white-btn">
+              <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <button type="button" mat-raised-button class="noshadow top-btn-font white-btn"
+              (click)="toggleFormDisable('addAppversionForm')">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!getFormDisableStats('addAppversionForm')">
+            <button type="button" mat-raised-button class="noshadow top-btn-font" color="defalt"
+              (click)="toggleFormDisable('addAppversionForm')">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+
+            <button type="button" mat-raised-button class="noshadow top-btn-font" color="primary"
+              (keydown.enter)="$event.preventDefault()" (click)="submitAppVersion($event)">
+              <mat-icon>save</mat-icon> {{ isEdit ? 'Update' : 'Save' }}
+            </button>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="box-shadow bg-white padding-10 hoz-form">
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>OS</mat-label>
+          <mat-select formControlName="os" trim="blur" autocomplete="off">
+            <mat-option value="ANDROID">Android</mat-option>
+            <mat-option value="IOS">IOS</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <ng-container *ngIf="!addAppversionForm.get('os').valid && addAppversionForm.get('os').touched">
+          <mat-hint class="error" align="start" *ngIf="addAppversionForm.get('os').hasError('required')">Required
+            Field
+          </mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Version Code</mat-label>
+          <input matInput type="text" formControlName="versionCode" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addAppversionForm.get('versionCode').valid && addAppversionForm.get('versionCode').touched">
+          <mat-hint class="error" align="start" *ngIf="addAppversionForm.get('versionCode').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Version Name Space</mat-label>
+          <input matInput type="text" formControlName="versionNamespace" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addAppversionForm.get('versionNamespace').valid && addAppversionForm.get('versionNamespace').touched">
+          <mat-hint class="error" align="start" *ngIf="addAppversionForm.get('versionNamespace').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Release Date</mat-label>
+          <input matInput [matDatepicker]="dPicker" formControlName="releaseDate"
+            [value]="addAppversionForm.get('releaseDate').value" />
+          <mat-datepicker-toggle matSuffix [for]="dPicker"></mat-datepicker-toggle>
+          <mat-datepicker #dPicker></mat-datepicker>
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addAppversionForm.get('releaseDate').valid && addAppversionForm.get('releaseDate').touched">
+          <mat-hint class="error" align="start" *ngIf="addAppversionForm.get('releaseDate').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Version Number</mat-label>
+          <input matInput type="text" formControlName="versionNumber" trim="blur" autocomplete="off" />
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addAppversionForm.get('versionNumber').valid && addAppversionForm.get('versionNumber').touched">
+          <mat-hint class="error" align="start" *ngIf="addAppversionForm.get('versionNumber').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Is Mandatory</mat-label>
+          <mat-select formControlName="isMandatory">
+            <mat-option [value]="true">Yes</mat-option>
+            <mat-option [value]="false">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addAppversionForm.get('isMandatory').valid && addAppversionForm.get('isMandatory').touched">
+          <mat-hint class="error" align="start" *ngIf="addAppversionForm.get('isMandatory').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+
+        <!-- <mat-form-field appearance="outline">
+        <mat-label>Package</mat-label>
+        <input matInput />
+       </mat-form-field> -->
+        <div class="row">
+          <div class="col-12">
+            <div class="custom-input-file">
+              <label>Package</label>
+              <p>{{ showFile }}</p>
+              <!-- <input (change)="getFileDetails($event)" type="file" /> -->
+              <app-img-upload-aws [className]="'custom-input'" [awsFolderName]="'appversions'" [accept]="'*'"
+                (imgUploaded)="onFileUpload($event)"></app-img-upload-aws>
+            </div>
+          </div>
+          <div class="col-4 app-size">
+            <mat-spinner color="primary" *ngIf="loading"></mat-spinner>
+          </div>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Live Date</mat-label>
+          <input matInput [matDatepicker]="liveDate" formControlName="liveDate" />
+          <mat-datepicker-toggle matSuffix [for]="liveDate"></mat-datepicker-toggle>
+          <mat-datepicker #liveDate></mat-datepicker>
+        </mat-form-field>
+        <ng-container *ngIf="!addAppversionForm.get('liveDate').valid && addAppversionForm.get('liveDate').touched">
+          <mat-hint class="error" align="start" *ngIf="addAppversionForm.get('liveDate').hasError('required')">Required
+            Field
+          </mat-hint>
+        </ng-container>
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="outline">
+          <mat-label>Product Description</mat-label>
+          <textarea type="text" matInput formControlName="productDesc" trim="blur" autocomplete="off"></textarea>
+        </mat-form-field>
+        <ng-container
+          *ngIf="!addAppversionForm.get('productDesc').valid && addAppversionForm.get('productDesc').touched">
+          <mat-hint class="error" align="start" *ngIf="addAppversionForm.get('productDesc').hasError('required')">
+            Required
+            Field
+          </mat-hint>
+        </ng-container>
+        <mat-form-field appearance="outline">
+          <mat-label>Bug Fixed</mat-label>
+          <textarea matInput type="text" formControlName="bugFixed" trim="blur" autocomplete="off"></textarea>
+        </mat-form-field>
+        <ng-container *ngIf="!addAppversionForm.get('bugFixed').valid && addAppversionForm.get('bugFixed').touched">
+          <mat-hint class="error" align="start" *ngIf="addAppversionForm.get('bugFixed').hasError('required')">Required
+            Field
+          </mat-hint>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</form>

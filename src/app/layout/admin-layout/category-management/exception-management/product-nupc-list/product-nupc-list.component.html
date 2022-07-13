@@ -1,0 +1,36 @@
+<div>
+
+    <h2 mat-dialog-title>
+        Product List</h2>
+    <mat-dialog-content class="mat-typography">
+
+        <div infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="showMore()" style="height: 50vh;
+        overflow-y: scroll;" [scrollWindow]="false" id="containerDivFilter">
+            <div class="hoz-form">
+                <mat-form-field appearance="outline">
+                    <input matInput [(ngModel)]="searchTerm" (keydown.enter)="serach()" />
+                    <button matSuffix mat-flat-button color="primary" type="button" (click)="serach()">Search</button>
+                </mat-form-field>
+            </div>
+
+            <div *ngIf="listType=='single'">
+                <mat-radio-group class="radio-full-list" aria-label="Select a Product" *ngFor="let item of products" [(ngModel)]="productId"
+                    #button>
+                    <mat-radio-button color="primary" [value]="item.id">{{item.productName}} ({{item.nupc}})</mat-radio-button>
+
+                </mat-radio-group>
+            </div>
+        </div>
+
+
+
+
+
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-flat-button color="primary" type="button" (click)="done()">
+            Done
+        </button>
+    </mat-dialog-actions>
+</div>

@@ -1,0 +1,59 @@
+<!-- <form [formGroup]="driverDetailsForm"> -->
+<div class="driver-details-view">
+    <div class="driver-details-view-area">
+        <div class="hoz-form">
+            <h4>Delivery Boy Action</h4>
+            <div class="row mb-3">
+                <div class="col-md-">
+                    <mat-form-field
+                        *ngIf="DE === 'ACTIVE' && (DE_ACTION !== 'FORCE_LOGIN' && DE_ACTION != 'FORCE_LOGOUT')"
+                        appearance="outline">
+                        <mat-label>Delivery Boy Action</mat-label>
+                        <mat-select [(ngModel)]="status">
+                            <mat-option value="SUSPENDED">Suspend</mat-option>
+                            <mat-option value="ABSCONDED">Absconded</mat-option>
+                            <mat-option value="TERMINATED">Terminated</mat-option>
+                            <mat-option value="BLOCKED">Block</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field
+                        *ngIf="DE === 'ACTIVE' && (DE_ACTION === 'FORCE_LOGIN' || DE_ACTION === 'FORCE_LOGOUT')"
+                        appearance="outline">
+                        <mat-label>Delivery Boy Action</mat-label>
+                        <mat-select [(ngModel)]="status">
+                            <mat-option value="FORCE_LOGIN">Forced Login</mat-option>
+                            <mat-option value="FORCE_LOGOUT">Forced Logout</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="DE === 'INACTIVE'" appearance="outline">
+                        <mat-label>Delivery Boy Action</mat-label>
+                        <mat-select [(ngModel)]="status">
+                            <mat-option value="APPROVED">Approve</mat-option>
+                            <mat-option value="SUSPENDED">Suspend</mat-option>
+                            <mat-option value="ABSCONDED">Absconded</mat-option>
+                            <mat-option value="TERMINATED">Terminated</mat-option>
+                            <mat-option value="BLOCKED">Block</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Reason</mat-label>
+                        <textarea [(ngModel)]="comment" rows="10" matInput></textarea>
+                        <!-- <span [tooltip]="comment" *ngIf="commentError" class="mandatory-alert" content-type="template">
+                            <mat-icon fontSet="material-icons-outlined">info</mat-icon>
+                        </span> -->
+                    </mat-form-field>
+                    <div style="color: red" *ngIf="commentError">
+                        <p class="mb-1">Required
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <button type="button" mat-raised-button color="primary" class="mr-2"
+                    (click)="submitDE()">Submit</button>
+                <button mat-button color="primary" matDialogClose>Dismiss</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- </form> -->

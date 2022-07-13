@@ -1,0 +1,17 @@
+
+	<div class="store-promotion-view" *ngIf="tabIndex==0">
+		<div class="d-flex justify-content-between mb-2 align-items-center">
+			<h5 class="mb-0">Quick Links</h5>
+			<button mat-stroked-button color="primary" (click)="addNewQuickLink()"><mat-icon>add</mat-icon> Add New Quick Link</button>
+		</div>
+		<div>
+			<div class="bg-white single-pagination" style="height: calc(100% - 90px)">
+				<ag-grid-angular style="width:100%; height: 470px;" class="ag-theme-balham" [rowData]="rowData" [columnDefs]="columnDefs"
+				 [defaultColDef]="defaultColDef" (firstDataRendered)="onFirstDataRendered($event)" (gridReady)="onGridReady($event)"
+				 [enableFilter]="true" [floatingFilter]="true" (gridSizeChanged)="onGridSizeChanged($event)">
+				</ag-grid-angular>
+
+			</div>
+		</div>
+
+	</div>

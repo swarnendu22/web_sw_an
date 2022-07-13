@@ -1,0 +1,61 @@
+<div class="tab-area-content">
+	<div>
+		<div style="display: flex; align-items: center;">
+			<div class="col-sm-2">
+				<h4>Store Logo</h4>
+			</div>
+			<div class="col-sm-8"></div>
+			<div style="display:flex; justify-content: flex-end;" class="col-sm-2">
+				<div *ngIf="!storeLogoImage" class="upload-new-store-cover">
+					<input accept="image/*" type="file" (change)="onSelectFile($event,'store_logo_url')">
+					<button mat-stroked-button color="primary">
+						<mat-icon>add</mat-icon> Add Store Logo
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<div style="margin-left: 5px;" class="store-logo-img">
+			<img [src]="storeLogoImage">
+			<div class="btnon-hover">
+				<div class="change-store-img">
+					<input accept="image/*" type="file" (change)="onSelectFile($event,'store_logo_url')">
+					<button mat-mini-fab color="primary" aria-label="Change Image">
+						<mat-icon>edit</mat-icon>
+					</button>
+				</div>
+				<!-- <button mat-mini-fab color="warn" aria-label="Delete Image">
+					<mat-icon>delete</mat-icon>
+				</button> -->
+			</div>
+		</div>
+	</div>
+	<div class="store-cover-area">
+		<div class="d-flex justify-content-between mb-2">
+			<h4>Store Cover Images</h4>
+			<div *ngIf="storeCoverImages.length == 0" class="upload-new-store-cover">
+				<input accept="image/*" type="file" (change)="onSelectFile($event,'store_cover_image')">
+				<button mat-stroked-button color="primary">
+					<mat-icon>add</mat-icon> Add New Images</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6" *ngFor="let storeCoverImage of storeCoverImages;let i=index;">
+				<div class="store-cover-img">
+					<img [src]="storeCoverImage">
+					<div class="btnon-hover">
+						<div class="change-store-img">
+							<input accept="image/*" type="file" (change)="onSelectFile($event,'store_cover_image',i)">
+							<button mat-mini-fab color="primary" aria-label="Change Image">
+								<mat-icon>edit</mat-icon>
+							</button>
+						</div>
+						<!-- <button mat-mini-fab color="warn" aria-label="Delete Image">
+							<mat-icon>delete</mat-icon>
+						</button> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

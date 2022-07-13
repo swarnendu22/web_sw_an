@@ -1,0 +1,53 @@
+<div>
+    <div class="top-bar box-shadow" style="position: relative;">
+        <div class="d-flex align-items-center">
+          <div class="mr-auto">
+            <h3 class="m-subheader__title">Copy Product To Outlet</h3>
+          </div>
+          <div class="form-header-btn">
+            <button mat-dialog-close mat-raised-button class="noshadow ml-2 top-btn-font" color="primary">
+              <mat-icon>close</mat-icon> Close
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="box-shadow bg-white padding-10">
+        <div class="hoz-form">
+          <div class="row">  
+            <div class="col-md-12">
+              <mat-form-field appearance="outline">
+                  <mat-label>Copy From Store</mat-label>
+                  <mat-select [disabled]="true" [(ngModel)]="CopyFromStoreId">
+                      <ng-container *ngFor="let copystores of copyFromList; let i = index;">
+                        <mat-option [value]="copystores.id">{{ copystores.storeName }}</mat-option>
+                      </ng-container>                      
+                  </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-12">
+              <mat-form-field appearance="outline">
+                  <mat-label>Copy To Store</mat-label>
+                  <mat-select [(ngModel)]="CopyToStoreId" multiple>
+                      <ng-container *ngFor="let stores of CopyToStoreList">
+                        <mat-option *ngIf="!stores.productCount"  [value]="stores.id">{{ stores.storeName }}</mat-option>
+                      </ng-container>                      
+                  </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-md-12">
+              <p *ngIf="!storesWithNoProd" style="margin: 0px; color: red;" >* All Stores Have Product</p>
+            </div>            
+            
+            <div class="col-md-12" style="text-align: right;">
+              <button mat-raised-button class="noshadow top-btn-font" color="primary" [disabled]="CopyFromStoreId === undefined || CopyToStoreId === undefined" (click)="Submit()">
+                  <mat-icon>save</mat-icon> Submit
+                </button>
+            </div>
+
+          </div>
+        </div>
+    </div>  
+    
+</div>

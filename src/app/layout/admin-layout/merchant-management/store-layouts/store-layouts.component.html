@@ -1,0 +1,205 @@
+<div class="tab-area-content">
+	<div class="store-layout-section">
+		<!-- <div class="new-store-layout">
+			<button mat-stroked-button color="primary">
+				<mat-icon>add</mat-icon> Add New Listing Layout
+			</button>
+			<button mat-stroked-button color="primary">
+				<mat-icon>add</mat-icon> Add New Store Design
+			</button>
+		</div> -->
+		<div class="store-layout-tab">
+			<mat-tab-group>
+				<mat-tab label="Listing Layout">
+					<div class="store-listing-view">
+						<h5 class="mb-2">My Layouts</h5>
+						<div class="row">
+
+							<div class="col-4" *ngFor="let item of myLayouts">
+								<div class="store-listing-layout">
+
+									<div *ngIf="item.layout_id.layout_name=='L1001'">
+										<img src="../../../../../assets/img/L1001.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_id.layout_name=='L2001'">
+										<img src="../../../../../assets/img/L2001.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_id.layout_name=='L2002'">
+										<img src="../../../../../assets/img/L2002.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_id.layout_name=='L2003'">
+										<img src="../../../../../assets/img/L2003.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_id.layout_name=='L2004'">
+										<img src="../../../../../assets/img/L2004.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_id.layout_name=='L2005'">
+										<img src="../../../../../assets/img/L2005.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_id.layout_name=='L2006'">
+										<img src="../../../../../assets/img/L2006.jpg" />
+
+									</div>
+
+									<div *ngIf="item.layout_id.layout_name=='L3001'">
+										<img src="../../../../../assets/img/L3001.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_id.layout_name=='L3002'">
+										<img src="../../../../../assets/img/L3002.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_id.layout_name=='L3003'">
+										<img src="../../../../../assets/img/L3003.jpg" />
+
+									</div>
+
+									<div class="store-listing-layout-bottom">
+										<h3 class="d-flex align-items-center justify-content-center">{{item.layout_id.layout_desc}}
+											<mat-icon color="primary" *ngIf="item.layout_id.layout_name!='L1001'" (click)="openLayoutEdit(item.layout_id.layout_name,item.data,item.layout_id.id,item.is_default,'preview')"
+											 style="font-size: 24px;
+											margin-left: 5px;
+											height: auto;
+											color: #30b0d9;
+											cursor: pointer;">remove_red_eye</mat-icon>
+										</h3>
+										<button type="button" style="margin-right: -15px;" mat-button color="primary" *ngIf="item.layout_id.layout_name!='L1001'"
+										 (click)="openLayoutEdit(item.layout_id.layout_name,item.data,item.layout_id.id,item.is_default,'edit')" class="single-round-button">Edit</button>
+										<button type="button" mat-button color="primary" *ngIf="item.is_default==true" class="single-round-button">Applied</button>
+
+										<button type="button" mat-button color="primary" class="single-round-button" *ngIf="checkApplyButton(item.data,item.is_default)"
+										 (click)="applyLayout(item.layout_id.id)">Apply</button>
+
+									</div>
+
+
+								</div>
+							</div>
+
+
+						</div>
+						<h5 class="mb-2">Other Layouts</h5>
+						<div class="row">
+
+							<div class="col-4" *ngFor="let item of layoutTemplates">
+								<div class="store-listing-layout">
+
+									<div *ngIf="item.layout_name=='L1001'">
+										<img src="../../../../../assets/img/L1001.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_name=='L2001'">
+										<img src="../../../../../assets/img/L2001.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_name=='L2002'">
+										<img src="../../../../../assets/img/L2002.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_name=='L2003'">
+										<img src="../../../../../assets/img/L2003.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_name=='L2004'">
+										<img src="../../../../../assets/img/L2004.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_name=='L2005'">
+										<img src="../../../../../assets/img/L2005.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_name=='L2006'">
+										<img src="../../../../../assets/img/L2006.jpg" />
+
+									</div>
+
+									<div *ngIf="item.layout_name=='L3001'">
+										<img src="../../../../../assets/img/L3001.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_name=='L3002'">
+										<img src="../../../../../assets/img/L3002.jpg" />
+
+									</div>
+									<div *ngIf="item.layout_name=='L3003'">
+										<img src="../../../../../assets/img/L3003.jpg" />
+
+									</div>
+
+									<div class="store-listing-layout-bottom">
+										<h3>{{item.layout_desc}}</h3>
+										<button type="button" mat-button color="primary" class="single-round-button" (click)="purchaseLayout(item.id)">Get This Layout</button>
+
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</mat-tab>
+				<mat-tab label="Store Design">
+					<div class="store-listing-view">
+						<!-- <h5 class="mb-2">My Layouts</h5> -->
+						<div class="row">
+
+							<div class="col-4" *ngFor="let item of detailMyLayoutTemplates">
+								<div class="store-listing-layout">
+
+									<div *ngIf="item.layout_id.layout_name">
+										<img src="https://ndh.imgix.net/ndh-assets/img/{{item.layout_id.layout_name}}.{{getImageExtensiion(item.layout_id.layout_name)}}"
+										/>
+
+									</div>
+
+
+									<div class="store-listing-layout-bottom">
+										<h3>{{item.layout_id.layout_desc}}</h3>
+										<button type="button" mat-button color="primary" *ngIf="item.is_default==true" class="single-round-button">Applied</button>
+										<button type="button" style="margin-right: -15px;" mat-button color="primary" *ngIf="item.is_default==false" class="single-round-button"
+										 (click)="switchStoreLayout(item.layout_id.id)">Use This Layout</button>
+
+
+									</div>
+
+
+								</div>
+							</div>
+
+
+						</div>
+						<!-- <h5 class="mb-2">Other Layouts</h5> -->
+						<div class="row">
+
+							<div class="col-4" *ngFor="let item of detailLayoutTemplates">
+								<div class="store-listing-layout">
+
+									<div *ngIf="item.layout_name">
+										<img src="https://ndh.imgix.net/ndh-assets/img/{{item.layout_name}}.{{getImageExtensiion(item.layout_name)}}" />
+
+									</div>
+
+									<div class="store-listing-layout-bottom">
+										<h3>{{item.layout_desc}}</h3>
+										<!-- <button type="button" mat-button color="primary" *ngIf="item.is_default==true" class="single-round-button">Applied</button> -->
+										<button type="button" style="margin-right: -15px;" mat-button color="primary" class="single-round-button" (click)="switchStoreLayout(item.id)">Use This Layout</button>
+
+
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</mat-tab>
+			</mat-tab-group>
+		</div>
+	</div>
+</div>

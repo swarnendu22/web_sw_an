@@ -1,0 +1,147 @@
+<div class="driver-details-view">
+	<!-- <div class="d-flex justify-content-between align-items-center mb-2">
+		<h1>#NDH-9978987789-09</h1>
+		<div class="field-action-btn">
+			<button mat-raised-button class="mr-2"><mat-icon>create</mat-icon> Edit</button>
+			<button mat-raised-button color="primary"><mat-icon>save</mat-icon> Update</button>
+		</div>
+	</div> -->
+	<div class="driver-details-view-area driver-order-readonly">
+		<div class="hoz-form">
+			<h4>#NDH83738939-87</h4>
+			<div class="row mb-3">
+				<div class="col-md-2">
+					<mat-form-field appearance="outline">
+						<mat-label>Order Date</mat-label>
+						<input readonly matInput [value]="orderDate">
+					</mat-form-field>
+				</div>
+				<div class="col-md-2">
+					<mat-form-field appearance="outline">
+						<mat-label>Order Time</mat-label>
+						<input readonly matInput [value]="orderTime">
+					</mat-form-field>
+				</div>
+				<div class="col-md-2">
+					<mat-form-field appearance="outline">
+						<mat-label>Order Status</mat-label>
+						<input readonly matInput [value]="orderStatus">
+					</mat-form-field>
+				</div>
+				<div class="col-md-6">
+					<mat-form-field appearance="outline">
+						<mat-label>Order From</mat-label>
+						<input readonly matInput [value]="orderFrom">
+					</mat-form-field>
+				</div>
+			</div>
+			<h4>Address Details</h4>
+			<div class="row mb-3">
+				<div class="col-md-6">
+					<mat-form-field appearance="outline">
+						<mat-label>Pickup Location</mat-label>
+						<textarea readonly matInput [value]="source"></textarea>
+					</mat-form-field>
+				</div>
+				<div class="col-md-6">
+					<mat-form-field appearance="outline">
+						<mat-label>Destination Location</mat-label>
+						<textarea readonly matInput [value]="destination"></textarea>
+					</mat-form-field>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					<h4>Item Details</h4>
+					<table class="table layout-fixed box-shadow">
+						<thead>
+							<tr>
+								<th class="widthP70">Product</th>
+								<th class="widthP15">Price</th>
+								<th class="widthP15">Quantity</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let item of itemDetails">
+								<td>
+									<mat-form-field appearance="outline">
+										<input readonly matInput [value]="item.description" />
+									</mat-form-field>
+								</td>
+								<td>
+									<mat-form-field appearance="outline">
+										<span matPrefix>₹</span>
+										<input readonly matInput [value]="item.price" />
+									</mat-form-field>
+								</td>
+								<td>
+									<mat-form-field appearance="outline">
+										<input readonly matInput [value]="item.qty_ordered" />
+									</mat-form-field>
+								</td>
+							</tr>
+							<!-- <tr>
+								<td>
+									<mat-form-field appearance="outline">
+										<input readonly matInput value="Lactose Free Milk" />
+									</mat-form-field>
+								</td>
+								<td>
+									<mat-form-field appearance="outline">
+										<span matPrefix>₹</span>
+										<input readonly matInput value="200" />
+									</mat-form-field>
+								</td>
+								<td>
+									<mat-form-field appearance="outline">
+										<input readonly matInput value="1" />
+									</mat-form-field>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<mat-form-field appearance="outline">
+										<input readonly matInput value="Lactose Free Milk" />
+									</mat-form-field>
+								</td>
+								<td>
+									<mat-form-field appearance="outline">
+										<span matPrefix>₹</span>
+										<input readonly matInput value="200" />
+									</mat-form-field>
+								</td>
+								<td>
+									<mat-form-field appearance="outline">
+										<input readonly matInput value="1" />
+									</mat-form-field>
+								</td>
+							</tr> -->
+						</tbody>
+
+					</table>
+					<div class="order-item-total">
+						<h5>Order Total</h5>
+						<h5>₹{{orderTotal}}</h5>
+					</div>
+					<div class="order-item-total mt-3">
+						<h5>Total Earnings</h5>
+						<h5>₹{{totalEarnings}}</h5>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<h4>Trip Details</h4>
+					<div class="trip-status">
+						<ul>
+							<li *ngFor="let trip of tripDetails">
+								<p>{{trip.message}}</p>
+								<div class="trip-time">
+									{{trip.created_at | date :'shortTime'}}
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
